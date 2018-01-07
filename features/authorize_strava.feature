@@ -7,3 +7,9 @@ Feature: Authorize Strava
 
         When I visit "/"
         Then I will see the title "Justletic"
+        And I will see "Justletic" in the header
+        And I am invited to type in a text box that says "Enter your email"
+
+        When I type "edith@mailinator.com" into a text box and press enter
+        #Then I am redirected to a Strava authorisation page
+

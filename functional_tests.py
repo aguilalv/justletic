@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 import unittest
 
 class NewVisitorTest(unittest.TestCase):
@@ -16,14 +17,23 @@ class NewVisitorTest(unittest.TestCase):
 
         # She notices the page title and header mention its name "Justletic"
         self.assertIn('Justletic', self.browser.title)
-        self.fail('Finish the test!')
+        header_text = self.browser.find_element_by_tag_name('h1').text
+        self.assertIn('Justletic',header_text)
 
-        # She is invited to enter her user name straight away
+        # She is invited to enter her email straight away
+        inputbox = self.browser.find_element_by_id('id_email_in')
+        self.assertEqual(
+            inputbox.get_attribute('placeholder'),
+            'Enter your email'
+        )
 
-        # She types "edith" into a text box
+        # She types "edith@mailinator.com"" into a text box
+        inputbox.send_keys('edith@mailinator.com')
 
         # When she hits enter, she is redirected to a Strava page to authorise
         # accessing some of her data
+        inputbox.send_keys(Keys.ENTER)
+        self.fail('Finish the test!')
 
         # She accepts to authorise Justletic to access her Strava data
 
