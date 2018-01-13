@@ -30,14 +30,21 @@ class NewVisitorTest(unittest.TestCase):
         # She types "edith@mailinator.com"" into a text box
         inputbox.send_keys('edith@mailinator.com')
 
+        # When she hits enter, she sees her email and strava key
+        inputbox.send_keys(Keys.ENTER)
+        table = self.browser.find_element_by_id('id_keys_table')
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertIn('edith@mailinator.com',[row.text for row in rows])
+        self.assertIn('123456',[row.text for row in rows])
+        self.fail('Finish the test!')
+
+
         # When she hits enter, she is redirected to a Strava page to authorise
         # accessing some of her data
-        inputbox.send_keys(Keys.ENTER)
-        self.fail('Finish the test!')
 
         # She accepts to authorise Justletic to access her Strava data
 
-        # She is redirected to a Justletic page that congratulates here
+        # She is redirected to a Justletic page that congratulates her
 
         # Satisfied she goes to sleep
 
