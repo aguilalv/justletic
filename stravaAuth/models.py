@@ -1,3 +1,6 @@
 from django.db import models
 
-# Create your models here.
+class Key(models.Model):
+    email = models.TextField(default='')
+    text = models.TextField(default='')
+

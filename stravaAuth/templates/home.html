@@ -4,6 +4,12 @@
     </head>
     <body>
         <h1>Justletic</h1>
-        <input id="id_email_in" placeholder="Enter your email"/>
+        <form method="POST">
+            <input name="email" id="id_email_in" placeholder="Enter your email"/>
+            {% csrf_token %}
+        </form>
+        <table id='id_keys_table'>
+            <tr><td>{{ email_text }}</td></tr>
+        </table>
     </body>
 </html>
