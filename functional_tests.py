@@ -33,7 +33,7 @@ class NewVisitorTest(unittest.TestCase):
 
         # When she hits enter, she sees her email and strava key
         inputbox.send_keys(Keys.ENTER)
-        time.sleep(1)
+        time.sleep(3)
         table = self.browser.find_element_by_id('id_keys_table')
         rows = table.find_elements_by_tag_name('tr')
         self.assertIn('edith@mailinator.com',[row.text for row in rows])

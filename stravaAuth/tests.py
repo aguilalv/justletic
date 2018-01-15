@@ -9,11 +9,24 @@ class HomePageTest(TestCase):
     def test_uses_home_template(self):
         response = self.client.get('/')
         self.assertTemplateUsed(response, 'home.html')
+    
+    def test_GET_does_not_save(self):
+        self.client.get('/')
+        self.assertEqual(Key.objects.all().count(),0)
 
-    def test_can_save_a_POST_request(self):
-        response = self.client.post('/', data={'email': 'edit@mailinator.com'})
-        self.assertIn('edit@mailinator.com', response.content.decode())
-        self.assertTemplateUsed(response,'home.html')
+    def test_POST_saves_email(self):
+        response = self.client.post('/', data={'email': 'edith@mailinator.com'})
+        
+        self.assertEqual(Key.objects.count(),1)
+        new_key = Key.objects.all()[0]
+        self.assertEqual(new_key.email, 'edith@mailinator.com')
+
+    def test_POST_redirects_after_save(self):
+        response = self.client.post('/', data={'email': 'edith@mailinator.com'})
+        
+        self.assertEqual(response.status_code,302)
+        self.assertEqual(response['location'],'/')
+
 
 class KeyModelTest(TestCase):
 
