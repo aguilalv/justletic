@@ -12,5 +12,6 @@ def home_page(request):
 
         return redirect('/')
 
-    return render(request,'home.html')
+    keys = Key.objects.all()
+    return render(request,'home.html', {'keys': keys})
 

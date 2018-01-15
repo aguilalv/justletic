@@ -9,7 +9,9 @@
             {% csrf_token %}
         </form>
         <table id='id_keys_table'>
-            <tr><td>{{ email_text }}</td></tr>
+            {% for key in keys %}
+                <tr><td>{{ key.email }}</td></tr>
+            {% endfor %}
         </table>
     </body>
 </html>

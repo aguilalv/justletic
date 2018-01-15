@@ -14,6 +14,15 @@ class HomePageTest(TestCase):
         self.client.get('/')
         self.assertEqual(Key.objects.all().count(),0)
 
+    def test_GET_displays_all_keys(self):
+        Key.objects.create(email='emailey1')
+        Key.objects.create(email='emailey2')
+
+        response = self.client.get('/')
+
+        self.assertIn ('emailey1',response.content.decode())
+        self.assertIn ('emailey2',response.content.decode())
+
     def test_POST_saves_email(self):
         response = self.client.post('/', data={'email': 'edith@mailinator.com'})
         
