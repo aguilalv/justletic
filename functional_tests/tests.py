@@ -1,7 +1,10 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import WebDriverException
 from django.test import LiveServerTestCase
 import time
+
+MAX_WAIT = 10
 
 class NewVisitorTest(LiveServerTestCase):
 
@@ -10,6 +13,19 @@ class NewVisitorTest(LiveServerTestCase):
 
     def tearDown(self):
         self.browser.quit()
+
+    def wait_for_row_in_keys_table(self,target_row_text):
+        start_time = time.time()
+        while True:
+            try:
+                table = self.browser.find_element_by_id('id_keys_table')
+                rows = table.find_elements_by_tag_name('tr')
+                self.assertIn(target_row_text,[row.text for row in rows])
+                return
+            except(AssertionError, WebDriverException) as e:
+                if time.time() - start_time > MAX_WAIT:
+                    raise e
+                time.sleep(0.5)
 
     def test_can_authorise_a_strava_accoun(self):
         # Edith has heard about a cool new online training app. She goes
@@ -33,11 +49,8 @@ class NewVisitorTest(LiveServerTestCase):
 
         # When she hits enter, she sees her email and strava key
         inputbox.send_keys(Keys.ENTER)
-        time.sleep(3)
-        table = self.browser.find_element_by_id('id_keys_table')
-        rows = table.find_elements_by_tag_name('tr')
-        self.assertIn('edith@mailinator.com',[row.text for row in rows])
-        self.assertIn('123456',[row.text for row in rows])
+        self.wait_for_row_in_keys_table('edith@mailinator.com')
+        self.wait_for_row_in_keys_table('123456')
         self.fail('Finish the test!')
 
 
