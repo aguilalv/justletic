@@ -1,3 +1,6 @@
+#SQLite database
+db.sqlite3
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -86,6 +89,7 @@ celerybeat-schedule
 .venv
 venv/
 ENV/
+virtualenv/
 
 # Spyder project settings
 .spyderproject
@@ -99,4 +103,3 @@ ENV/
 
 # mypy
 .mypy_cache/
-virtualenv

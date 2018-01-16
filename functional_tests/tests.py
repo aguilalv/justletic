@@ -1,9 +1,9 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from django.test import LiveServerTestCase
 import time
-import unittest
 
-class NewVisitorTest(unittest.TestCase):
+class NewVisitorTest(LiveServerTestCase):
 
     def setUp(self):
         self.browser = webdriver.Firefox()
@@ -14,7 +14,7 @@ class NewVisitorTest(unittest.TestCase):
     def test_can_authorise_a_strava_accoun(self):
         # Edith has heard about a cool new online training app. She goes
         # to check out its homepge
-        self.browser.get('http://localhost:8000')
+        self.browser.get(self.live_server_url)
 
         # She notices the page title and header mention its name "Justletic"
         self.assertIn('Justletic', self.browser.title)
@@ -49,7 +49,4 @@ class NewVisitorTest(unittest.TestCase):
         # She is redirected to a Justletic page that congratulates her
 
         # Satisfied she goes to sleep
-
-if __name__ == '__main__':
-    unittest.main(warnings='ignore')
 
