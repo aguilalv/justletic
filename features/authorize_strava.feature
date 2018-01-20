@@ -13,3 +13,7 @@ Feature: Authorize Strava
         When I type "edith@mailinator.com" into a text box and press enter
         #Then I am redirected to a Strava authorisation page
 
+        #When I authorize Justletic to access my Strava data
+        #Then I am redirected back to Justletic
+        #And I see a thank you message
+        #And I see my last workout was on xxx
