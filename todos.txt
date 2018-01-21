@@ -1,6 +1,4 @@
 Display multiple keys in the table (one for each authenticated service)
-Support more than 1 user
-Support more than 1 service per user
-Each user has her own URL where she can check all authenticated services
-There is one URL to authenticate
-
+Support more than 1 user: Each user has her own URL where she can check all authenticated services
+Support more than 1 service per user: There is one URL to authenticate for each service
+Get the real key from each service using OAuth2 - Start with Strava
