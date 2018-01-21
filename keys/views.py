@@ -8,6 +8,7 @@ def home_page(request):
     if request.method == 'POST':
         new_key = Key()
         new_key.email = request.POST['email']
+        new_key.value = 'e1234'
         new_key.save()
 
         return redirect('/')

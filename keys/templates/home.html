@@ -10,7 +10,7 @@
         </form>
         <table id='id_keys_table'>
             {% for key in keys %}
-                <tr><td>{{ key.email }}</td></tr>
+            <tr><td>{{ key.email }}</td><td>{{ key.value }}</td></tr>
             {% endfor %}
         </table>
     </body>

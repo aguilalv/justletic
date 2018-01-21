@@ -23,12 +23,13 @@ class HomePageTest(TestCase):
         self.assertIn ('emailey1',response.content.decode())
         self.assertIn ('emailey2',response.content.decode())
 
-    def test_POST_saves_email(self):
+    def test_POST_saves_email_and_key(self):
         response = self.client.post('/', data={'email': 'edith@mailinator.com'})
         
         self.assertEqual(Key.objects.count(),1)
         new_key = Key.objects.all()[0]
         self.assertEqual(new_key.email, 'edith@mailinator.com')
+        self.assertEqual(new_key.value, 'e1234')
 
     def test_POST_redirects_after_save(self):
         response = self.client.post('/', data={'email': 'edith@mailinator.com'})
@@ -42,12 +43,12 @@ class KeyModelTest(TestCase):
     def test_saving_and_retrieving_items(self):
         first_key = Key()
         first_key.email = 'first_email@mailinator.com'
-        first_key.text = '1'
+        first_key.value = '1'
         first_key.save()
 
         second_key = Key()
         second_key.email = 'second_email@mailinator.com'
-        second_key.text = '2'
+        second_key.value = '2'
         second_key.save()
 
         saved_keys = Key.objects.all()
@@ -56,9 +57,9 @@ class KeyModelTest(TestCase):
         first_saved_key = saved_keys[0]
         second_saved_key = saved_keys[1]
         self.assertEqual (first_saved_key.email, 'first_email@mailinator.com')
-        self.assertEqual (first_saved_key.text, '1')
+        self.assertEqual (first_saved_key.value, '1')
         self.assertEqual (second_saved_key.email, 'second_email@mailinator.com')
-        self.assertEqual (second_saved_key.text, '2')
+        self.assertEqual (second_saved_key.value, '2')
 
 
 

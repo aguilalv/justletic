@@ -49,9 +49,7 @@ class NewVisitorTest(LiveServerTestCase):
 
         # When she hits enter, she sees her email and Strava key 
         inputbox.send_keys(Keys.ENTER)
-        self.wait_for_row_in_keys_table('edith@mailinator.com')
-        self.wait_for_row_in_keys_table('e1234')
-        
+        self.wait_for_row_in_keys_table('edith@mailinator.com e1234')
         
         # When she hits enter, she is redirected to a Strava page to authorise
         # accessing some of her data
@@ -68,8 +66,7 @@ class NewVisitorTest(LiveServerTestCase):
         inputbox = self.browser.find_element_by_id('id_email_in')
         inputbox.send_keys('edith@mailinator.com')
         inputbox.send_keys(Keys.ENTER)
-        self.wait_for_row_in_keys_table('edith@mailinator.com')
-        self.wait_for_row_in_keys_table('e1234')
+        self.wait_for_row_in_keys_table('edith@mailinator.com e1234')
 
         # She notices that her summary page has a unique URL
         edith_summary_url = self.browser.current_url
@@ -92,8 +89,7 @@ class NewVisitorTest(LiveServerTestCase):
         inputbox = self.browser.find_element_by_id('id_email_in')
         inputbox.send_keys('francis@mailinator.com')
         inputbox.send_keys(Keys.ENTER)
-        self.wait_for_row_in_keys_table('francis@mailinator.com')
-        self.wait_for_row_in_keys_table('f1234')
+        self.wait_for_row_in_keys_table('francis@mailinator.com f1234')
 
         # Francis gets his own unique URL
         francis_summary_url = self.browser.current_url
