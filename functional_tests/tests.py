@@ -82,8 +82,8 @@ class NewVisitorTest(LiveServerTestCase):
         # Francis visits the home page. There is no sign of Edith´s keys
         self.browser.get(self.live_server_url)
         page_text = self.browser.find_element_by_tag_name('body').text
-        self.asserNotIn('edith@mailinator.com', page_text)
-        self.asserNotIn('e1234', page_text)
+        self.assertNotIn('edith@mailinator.com', page_text)
+        self.assertNotIn('e1234', page_text)
 
         # Francis authenticates his own Strava account
         inputbox = self.browser.find_element_by_id('id_email_in')
@@ -98,7 +98,7 @@ class NewVisitorTest(LiveServerTestCase):
 
         # Again, there is no trace of Edith´s keys
         page_text = self.browser.find_element_by_tag_name('body').text
-        self.asserNotIn('edith@mailinator.com', page_text)
-        self.asserNotIn('e1234', page_text)
+        self.assertNotIn('edith@mailinator.com', page_text)
+        self.assertNotIn('e1234', page_text)
 
         # Satisfied, they both go back to sleep

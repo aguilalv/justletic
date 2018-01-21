@@ -1,0 +1,13 @@
+<html>
+    <head>
+        <title>Justletic</title>
+    </head>
+    <body>
+        <h1>Justletic</h1>
+        <table id='id_keys_table'>
+            {% for key in keys %}
+            <tr><td>{{ key.email }}</td><td>{{ key.value }}</td></tr>
+            {% endfor %}
+        </table>
+    </body>
+</html>

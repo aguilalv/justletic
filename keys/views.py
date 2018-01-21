@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 
-from keys.models import Key
+from .models import Key
 
 def home_page(request):
     
@@ -11,8 +11,10 @@ def home_page(request):
         new_key.value = 'e1234'
         new_key.save()
 
-        return redirect('/')
+        return redirect('/users/the-only-user/')
 
+    return render(request,'home.html')
+
+def view_user(request):
     keys = Key.objects.all()
-    return render(request,'home.html', {'keys': keys})
-
+    return render(request,'user.html', {'keys': keys})

@@ -2,7 +2,7 @@ from django.urls import resolve
 from django.test import TestCase
 from django.http import HttpRequest
 
-from keys.models import Key
+from .models import Key
 
 class HomePageTest(TestCase):
 
@@ -13,15 +13,6 @@ class HomePageTest(TestCase):
     def test_GET_does_not_save(self):
         self.client.get('/')
         self.assertEqual(Key.objects.all().count(),0)
-
-    def test_GET_displays_all_keys(self):
-        Key.objects.create(email='emailey1')
-        Key.objects.create(email='emailey2')
-
-        response = self.client.get('/')
-
-        self.assertIn ('emailey1',response.content.decode())
-        self.assertIn ('emailey2',response.content.decode())
 
     def test_POST_saves_email_and_key(self):
         response = self.client.post('/', data={'email': 'edith@mailinator.com'})
@@ -35,7 +26,23 @@ class HomePageTest(TestCase):
         response = self.client.post('/', data={'email': 'edith@mailinator.com'})
         
         self.assertEqual(response.status_code,302)
-        self.assertEqual(response['location'],'/')
+        self.assertEqual(response['location'],'/users/the-only-user/')
+
+
+class UserSummaryViewTest(TestCase):
+
+    def test_uses_user_template(self):
+        response = self.client.get('/users/the-only-user/')
+        self.assertTemplateUsed(response, 'user.html')
+    
+    def test_displays_all_keys(self):
+        Key.objects.create(email='emailey1')
+        Key.objects.create(email='emailey2')
+
+        response = self.client.get('/users/the-only-user/')
+
+        self.assertContains(response, 'emailey1')
+        self.assertContains(response, 'emailey2')
 
 
 class KeyModelTest(TestCase):
