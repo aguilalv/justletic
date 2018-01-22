@@ -22,4 +22,5 @@ urlpatterns = [
 #    url(r'^admin/', admin.site.urls),
     url(r'^$', views.home_page, name='home'),
     url(r'^users/the-only-user/$', views.view_user, name='view_user'),
+    url(r'^users/new$', views.new_user, name='new_user'),
 ]

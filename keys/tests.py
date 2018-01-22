@@ -14,20 +14,6 @@ class HomePageTest(TestCase):
         self.client.get('/')
         self.assertEqual(Key.objects.all().count(),0)
 
-    def test_POST_saves_email_and_key(self):
-        response = self.client.post('/', data={'email': 'edith@mailinator.com'})
-        
-        self.assertEqual(Key.objects.count(),1)
-        new_key = Key.objects.all()[0]
-        self.assertEqual(new_key.email, 'edith@mailinator.com')
-        self.assertEqual(new_key.value, 'e1234')
-
-    def test_POST_redirects_after_save(self):
-        response = self.client.post('/', data={'email': 'edith@mailinator.com'})
-        
-        self.assertEqual(response.status_code,302)
-        self.assertEqual(response['location'],'/users/the-only-user/')
-
 
 class UserSummaryViewTest(TestCase):
 
@@ -43,6 +29,22 @@ class UserSummaryViewTest(TestCase):
 
         self.assertContains(response, 'emailey1')
         self.assertContains(response, 'emailey2')
+
+
+class NewUserTest(TestCase):
+
+    def test_POST_saves_email_and_key(self):
+        response = self.client.post('/users/new', data={'email': 'edith@mailinator.com'})
+        
+        self.assertEqual(Key.objects.count(),1)
+        new_key = Key.objects.all()[0]
+        self.assertEqual(new_key.email, 'edith@mailinator.com')
+        self.assertEqual(new_key.value, 'e1234')
+
+    def test_POST_redirects_after_save(self):
+        response = self.client.post('/users/new', data={'email': 'edith@mailinator.com'})
+        
+        self.assertRedirects(response, '/users/the-only-user/')
 
 
 class KeyModelTest(TestCase):
