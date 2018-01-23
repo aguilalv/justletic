@@ -18,7 +18,12 @@ class HomePageTest(TestCase):
 class UserSummaryViewTest(TestCase):
 
     def test_uses_user_template(self):
+        user = User()
+        user.email = 'emailey 1'
+        user.save()
+        
         response = self.client.get('/users/the-only-user/')
+        
         self.assertTemplateUsed(response, 'user.html')
     
     def test_displays_all_keys(self):

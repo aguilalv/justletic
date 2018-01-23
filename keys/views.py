@@ -18,5 +18,6 @@ def new_user(request):
     return redirect('/users/the-only-user/')
 
 def view_user(request):
+    user = User.objects.all()[0]
     keys = Key.objects.all()
-    return render(request,'user.html', {'keys': keys})
+    return render(request,'user.html', {'keys': keys, 'user': user})
