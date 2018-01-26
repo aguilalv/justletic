@@ -12,12 +12,24 @@ def new_user(request):
     new_user.save()
 
     new_key = Key()
-    new_key.value = 'e1234'
+    new_key.value = request.POST['email'][0] + '1234'
     new_key.user = new_user
     new_key.save()
-    return redirect('/users/the-only-user/')
 
-def view_user(request):
-    user = User.objects.all()[0]
-    keys = Key.objects.all()
+    return redirect(f'/users/{new_user.id}/')
+
+def view_user(request, user_id):
+    user = User.objects.get(id=user_id)
+    keys = Key.objects.filter(user=user)
+
     return render(request,'user.html', {'keys': keys, 'user': user})
+            
+def add_service(request, user_id):
+    user = User.objects.get(id=user_id)
+    
+    new_key = Key()
+    new_key.value = user.email[1] + '1234'
+    new_key.user = user
+    new_key.save()
+    
+    return redirect(f'/users/{user_id}/')

@@ -74,6 +74,40 @@ class NewVisitorTest(LiveServerTestCase):
 
         # Satisfied she goes to sleep
 
+    def test_can_authorise_multiple_services(self):
+        # Edith authenticates Justletic to access her Strava data
+        self.browser.get(self.live_server_url)
+        inputbox = self.browser.find_element_by_id('id_email_in')
+        inputbox.send_keys('edith@mailinator.com')
+        inputbox.send_keys(Keys.ENTER)
+        self.wait_for_page_element('h3', 'edith@mailinator.com')
+        self.wait_for_row_in_keys_table('e1234')
+
+        # She notices that her summary page has a unique url and a link to add another service
+        edith_summary_url = self.browser.current_url
+        self.assertRegex(edith_summary_url, '/users/.+')
+        link = self.browser.find_element_by_id('id_link_add_service')
+
+        # She clicks the link, she sees her email and the keys to her 2 services
+        link.click()
+        self.wait_for_page_element('h3', 'edith@mailinator.com')
+        self.wait_for_row_in_keys_table('e1234')
+        self.wait_for_row_in_keys_table('d1234')
+
+        # When she hits enter, she is redirected to a XXX page to authorise
+        # accessing some of her data
+
+        # She accepts to authorise Justletic to access her Strava data
+
+        # She is redirected to a Justletic page that congratulates her
+
+        # Satisfied she goes to sleep
+        
+
+
+
+
+
     def test_multiple_users_show_different_key_lists_at_different_urls(self):
         # Edith authenticates Justletic to access her Strava data
         self.browser.get(self.live_server_url)
