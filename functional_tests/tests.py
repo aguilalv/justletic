@@ -102,11 +102,6 @@ class NewVisitorTest(LiveServerTestCase):
         # She is redirected to a Justletic page that congratulates her
 
         # Satisfied she goes to sleep
-        
-
-
-
-
 
     def test_multiple_users_show_different_key_lists_at_different_urls(self):
         # Edith authenticates Justletic to access her Strava data
@@ -152,3 +147,19 @@ class NewVisitorTest(LiveServerTestCase):
         self.assertNotIn('e1234', page_text)
 
         # Satisfied, they both go back to sleep
+
+    def test_layout_and_styling(self):
+        # Edith goes to the home page
+        self.browser.get(self.live_server_url)
+        self.browser.set_window_size(1024,768)
+
+        # She notices the input box is nicely centered
+        inputbox = self.browser.find_element_by_id('id_email_in')
+        self.assertAlmostEqual(
+            inputbox.location['x'] + inputbox.size['width'] / 2,
+            512,
+            delta = 10
+        )
+
+        # She authorises her first service and sees her email address
+        # is nicely centered in her user summary page too
