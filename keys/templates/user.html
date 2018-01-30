@@ -1,15 +1,14 @@
-<html>
-    <head>
-        <title>Justletic</title>
-    </head>
-    <body>
-        <h1>Justletic</h1>
-        <h3>{{ user.email }}</h3> 
-        <table id='id_keys_table'>
-            {% for key in keys %}
+
+{% extends 'base.html' %}
+
+{% block email_text %}<h3>{{ user.email }}<h3>{% endblock %}
+{% block table %}
+    <table id='id_keys_table'>
+        {% for key in keys %}
             <td>{{ key.value }}</td></tr>
-            {% endfor %}
-        </table>
-        <a href="/users/{{ user.id }}/add_service" id='id_link_add_service'>Add another service</a>
-    </body>
-</html>
+        {% endfor %}
+    </table>
+{% endblock %}
+{% block additional_services %}
+    <a href="/users/{{ user.id }}/add_service" id='id_link_add_service'>Add another service</a>
+{% endblock %}
