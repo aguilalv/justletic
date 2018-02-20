@@ -1,9 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-{% extends 'base.html' %}
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>Justletic - Achieve your goals</title>
+        
+        <link rel="icon" href="favicon.ico">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:400,800">
+        <link rel='stylesheet' href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/static/css/bootstrap.css">
+        <link rel="stylesheet" href="/static/css/styles.css">
+    </head>
 
-{% block email_form %}
-    <form method="POST" action='/users/new'>
-        <input name="email" id="id_email_in" placeholder="Enter your email"/>
-        {% csrf_token %}
-    </form>
-{% endblock %}
+    <body id="page-top">
+        
+        <!-- NAVIGATION -->
+        <nav class="navbar sticky-top navbar-expand-md navbar-dark">
+            <a class="navbar-brand" href="#page-top"><img src="/static/assets/img/logo_justletic_white.png" alt="Logo"></a>
+            
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-outline-primary btn-sm" href="#">Login</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>        
+        
+        <!-- HERO SECTION -->
+        <header>
+            <div class="container">
+                <div class="slider-container">
+                    <div class="intro-text">
+                        <div class="intro-heading">Achieve your goals</div>
+                        <div class="intro-lead-in">Connect your Strava account and start today</div>
+                        <form method="POST" action='/users/new'>
+                            <div class="form-row">
+                                <div class="col-2 col-md-3 col-lg-4"></div>
+                                <div class="col-8 col-md-6 col-lg-4">
+                                    <div class="input-group">
+                                        <input name="email" type="email" class="form-control" id="id_email_in" aria-describedby="emailHelp" placeholder="Enter your email">
+                                        <button type="submit" class="btn btn-primary ">Get me started</button>
+                                    </div>
+                                </div> 
+                                <div class="col-2 col-md-3 col-lg-4"></div>
+                            </div>
+                            {% csrf_token %}
+                        </form>
+                
+                    </div>
+                </div>
+            </div>
+        </header> 
+
+        <!-- PRODUCT HIGHLIGHTS SECTION -->
+        <section id="about" class="light-bg">
+            <div class="container">
+                <div class="row">
+                        <div class="col-lg-12 text-center">
+                                <div class="section-title">
+                                    <h2>ABOUT</h2>
+                                    <p>Justletic is an artifical intelligence personal coach based on your unique goals and progression. Wheter you want to get healthier or to run your best marathon, Justletic is a personal coach in your pocket.</p>
+                                </div>
+                        </div>
+                </div>
+                <div class="row">
+                    <!-- about module -->
+                    <div class="col-md-4 text-center">
+                        <div class="mz-module-about">
+                            <i class="fa fa-calendar ot-circle"></i>
+                                <h3>The right session everytime</h3>
+                                <p>Your intelligent personal coach adapts the plan to your personal goals and progress</p>
+                        </div>
+                    </div>
+
+                    <!-- about module -->
+                    <div class="col-md-4 text-center">
+                        <div class="mz-module-about">
+                            <i class="fa fa-line-chart ot-circle"></i>
+                                <h3>See your progress</h3>
+                                <p>Simple visual presentation of your form to keep you motivated</p>
+                        </div>
+                    </div>
+                
+                    <!-- about module -->
+                    <div class="col-md-4 text-center">
+                        <div class="mz-module-about">
+                            <i class="fa fa-headphones ot-circle"></i>
+                                <h3>Make the most of each session</h3>
+                                <p>Real time coaching in your headphones to push yourself just the right amount</p>
+                        </div>
+                    </div> 
+                </div>
+            </div> <!-- /.container -->
+        </section>
+
+        <!-- KEY FIGURES SECTION -->
+        <section class="dark-bg short-section">
+            <div class="container text-center">
+                <div class="row">
+                    <div class="col-md-4 mb-sm-30">
+                        <div class="counter-item">
+                            <h2 data-count="1251">1,251</h2>
+                            <h6>Hours of exercise to learn from</h6>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-sm-30">
+                        <div class="counter-item">
+                            <h2 data-count="56">56</h2>
+                            <h6>Athletes</h6>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-sm-30">
+                        <div class="counter-item">
+                            <h2 data-count="10">10</h2>
+                            <h6>Goals achieved</h6>
+                        </div>
+                    </div>
+                </div> <!-- .row -->
+            </div> <!-- .container -->
+        </section> <!-- KEY FIGURES SECTION -->
+
+        <!-- FOOTER -->
+        <footer>
+            <div class="container text-center">
+                <p>Copright 2018 <a href="http://justletic.com"><span>JUST</span>letic.com</a></p>
+            </div>
+        </footer>
+
+
+        <!-- BOOTSTRAP REQUIRED SCRIPTS -->
+        <script src="/static/js/jquery.min.js"></script>
+        <script src="/static/js/popper.min.js"></script>
+        <script src="/static/js/bootstrap.min.js"></script>
+
+        <!-- PAGE SPECIFIC SCRIPTS -->
+        <script>window.addEventListener("hashchange", function() { scrollBy(0, -90) })</script>
+    </body>
+</html>

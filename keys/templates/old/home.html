@@ -1,0 +1,9 @@
+
+{% extends 'base.html' %}
+
+{% block email_form %}
+    <form method="POST" action='/users/new'>
+        <input name="email" id="id_email_in" placeholder="Enter your email"/>
+        {% csrf_token %}
+    </form>
+{% endblock %}
