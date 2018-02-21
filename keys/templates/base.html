@@ -1,38 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
-
     <head>
         <meta charset="utf-8">
-        <meta http-equiv="C-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Justletic</title>
-        <link rel="stylesheet" href="/static/css/bootstrap.css"> 
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>Justletic - Achieve your goals</title>
+        
+        <link rel="icon" href="favicon.ico">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:400,800">
+        <link rel='stylesheet' href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/static/css/bootstrap.css">
+        <link rel="stylesheet" href="/static/css/styles.css">
     </head>
 
-    <body
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6 col-md-offset-3">
-            <div class="text-center">
-              <h1>Justletic</h1>
-              {% block email_text %}{% endblock %}
-              {% block email_form %}{% endblock %}
-            </div> <!-- text-center -->
-          </div> <!-- col-md-6 col-md-offset-3 -->
-        </div> <!-- row -->
+    <body id="page-top">
         
-        <div class="row">
-          <div class="col-md-6 col-md-offset-3">
-              {% block table %}{% endblock %}
-          </div> <!-- col-md-6 col-md-offset-3 -->
-        </div> <!-- row --> 
-      
-        <div class="row">
-          <div class="col-md-6 col-md-offset-3">
-              {% block additional_services %}{% endblock %}
-          </div> <!-- col-md-6 col-md-offset-3 -->
-        </div> <!-- row --> 
-      
-      </div> <!-- container -->
+        <!-- NAVIGATION -->
+        <nav class="navbar sticky-top navbar-expand-md navbar-dark">
+            <a class="navbar-brand" href="#page-top"><img src="/static/assets/img/logo_justletic_white.png" alt="Logo"></a>
+            
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-outline-primary btn-sm" href="#">Login</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>        
+        
+        <!-- HERO SECTION -->
+        {% block hero_section  %}{% endblock %}
+
+        <!-- PRODUCT HIGHLIGHTS SECTION -->
+        {% block product_highlights %}{% endblock %}
+
+        <!-- KEY FIGURES SECTION -->
+        {% block key_figures %}{% endblock %}
+
+
+        <!-- USER SUMMARY SECTIONS -->
+        {% block email_text %}{% endblock %}
+        {% block table %}{% endblock %}
+        {% block additional_services %}{% endblock %}
+
+
+        <!-- FOOTER -->
+        <footer>
+            <div class="container text-center">
+                <p>Copright 2018 <a href="http://justletic.com"><span>JUST</span>letic.com</a></p>
+            </div>
+        </footer>
+
+
+        <!-- BOOTSTRAP REQUIRED SCRIPTS -->
+        <script src="/static/js/jquery.min.js"></script>
+        <script src="/static/js/popper.min.js"></script>
+        <script src="/static/js/bootstrap.min.js"></script>
+
+        <!-- PAGE SPECIFIC SCRIPTS -->
+        <script>window.addEventListener("hashchange", function() { scrollBy(0, -90) })</script>
     </body>
 </html>

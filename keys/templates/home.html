@@ -1,46 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="x-ua-compatible" content="ie=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+{% extends 'base.html' %}
 
-        <meta name="description" content="">
-        <meta name="author" content="">
-        <title>Justletic - Achieve your goals</title>
-        
-        <link rel="icon" href="favicon.ico">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:400,800">
-        <link rel='stylesheet' href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="/static/css/bootstrap.css">
-        <link rel="stylesheet" href="/static/css/styles.css">
-    </head>
 
-    <body id="page-top">
-        
-        <!-- NAVIGATION -->
-        <nav class="navbar sticky-top navbar-expand-md navbar-dark">
-            <a class="navbar-brand" href="#page-top"><img src="/static/assets/img/logo_justletic_white.png" alt="Logo"></a>
-            
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#about">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Products</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-outline-primary btn-sm" href="#">Login</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>        
-        
+
         <!-- HERO SECTION -->
+{% block hero_section %}
         <header>
             <div class="container">
                 <div class="slider-container">
@@ -65,7 +28,10 @@
                 </div>
             </div>
         </header> 
+{% endblock %}
 
+
+{% block product_highlights %}
         <!-- PRODUCT HIGHLIGHTS SECTION -->
         <section id="about" class="light-bg">
             <div class="container">
@@ -107,7 +73,10 @@
                 </div>
             </div> <!-- /.container -->
         </section>
+{% endblock %}
 
+
+{% block key_figures %}
         <!-- KEY FIGURES SECTION -->
         <section class="dark-bg short-section">
             <div class="container text-center">
@@ -133,21 +102,6 @@
                 </div> <!-- .row -->
             </div> <!-- .container -->
         </section> <!-- KEY FIGURES SECTION -->
-
-        <!-- FOOTER -->
-        <footer>
-            <div class="container text-center">
-                <p>Copright 2018 <a href="http://justletic.com"><span>JUST</span>letic.com</a></p>
-            </div>
-        </footer>
+{% endblock %}
 
 
-        <!-- BOOTSTRAP REQUIRED SCRIPTS -->
-        <script src="/static/js/jquery.min.js"></script>
-        <script src="/static/js/popper.min.js"></script>
-        <script src="/static/js/bootstrap.min.js"></script>
-
-        <!-- PAGE SPECIFIC SCRIPTS -->
-        <script>window.addEventListener("hashchange", function() { scrollBy(0, -90) })</script>
-    </body>
-</html>
