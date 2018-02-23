@@ -1,8 +1,8 @@
+Get the real key from each service using OAuth2 - Start with Strava
+
 Support more than 1 service per user
     - There is one URL to authenticate for each service
     - Single view to get service key receives service name from url and stores service name in key model
     - 'Table' of supported services with name and redirect URL (In database? constant?)
-
-Get the real key from each service using OAuth2 - Start with Strava
 
 Review functional test for multiple users (Currently passing even with keys from different user)

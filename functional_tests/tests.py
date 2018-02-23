@@ -45,10 +45,10 @@ class NewVisitorTest(StaticLiveServerTestCase):
         # to check out its homepge
         self.browser.get(self.live_server_url)
  
-        # She notices the page title and header mention its name "Justletic"
+        # She notices the page title mention its name "Justletic" and the header says "Ahieve your goals"
         self.assertIn('Justletic', self.browser.title)
- #        header_text = self.browser.find_element_by_tag_name('h1').text
- #        self.assertIn('Justletic',header_text)
+        header_text = self.browser.find_element_by_class_name('intro-heading').text
+        self.assertIn('ACHIEVE YOUR GOALS',header_text)
  
         # She is invited to enter her email straight away
         inputbox = self.browser.find_element_by_id('id_email_in')
@@ -155,11 +155,15 @@ class NewVisitorTest(StaticLiveServerTestCase):
 
         # She notices the input box is nicely centered
         inputbox = self.browser.find_element_by_id('id_email_in')
-#        self.assertAlmostEqual(
-#            inputbox.location['x'] + inputbox.size['width'] / 2,
-#            512,
-#            delta = 10
-#        )
+        header = self.browser.find_element_by_class_name('intro-heading')
+        #print(header.location['x'])
+        #print('--')
+        #print(header.size['width'])
+        self.assertAlmostEqual(
+            (header.location['x'] + (header.size['width'] / 2)),
+            512,
+            delta = 10
+        )
 
         # She authorises her first service and sees her email address
         # is nicely centered in her user summary page too
