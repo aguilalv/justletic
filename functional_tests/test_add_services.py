@@ -1,44 +1,8 @@
+from .base import FunctionalTest
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-from selenium.common.exceptions import WebDriverException
-from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-import time
 
-MAX_WAIT = 10
-
-class NewVisitorTest(StaticLiveServerTestCase):
-
-    def setUp(self):
-        self.browser = webdriver.Firefox()
-
-    def tearDown(self):
-        self.browser.quit()
-
-    def wait_for_row_in_keys_table(self,target_row_text):
-        start_time = time.time()
-        while True:
-            try:
-                table = self.browser.find_element_by_id('id_keys_table')
-                rows = table.find_elements_by_tag_name('tr')
-                self.assertIn(target_row_text,[row.text for row in rows])
-                return
-            except(AssertionError, WebDriverException) as e:
-                if time.time() - start_time > MAX_WAIT:
-                    raise e
-                time.sleep(0.5)
-    
-    def wait_for_page_element(self,element,target_text):
-        start_time = time.time()
-        while True:
-            try:
-                found_text = self.browser.find_element_by_tag_name(element).text
-                self.assertEqual(target_text,found_text)
-                return
-            except(AssertionError, WebDriverException) as e:
-                if time.time() - start_time > MAX_WAIT:
-                    raise e
-                time.sleep(0.5)
-
+class NewVisitorTest(FunctionalTest):
 
     def test_can_authorise_a_strava_account(self):
         # Edith has heard about a cool new online training app. She goes
@@ -73,33 +37,6 @@ class NewVisitorTest(StaticLiveServerTestCase):
         # She is redirected to a Justletic page that congratulates her
  
         # Satisfied she goes to sleep
-
-    def test_can_authorise_multiple_services(self):
-        # Edith authenticates Justletic to access her Strava data
-        self.browser.get(self.live_server_url)
-        inputbox = self.browser.find_element_by_id('id_email_in')
-        inputbox.send_keys('edith@mailinator.com')
-        inputbox.send_keys(Keys.ENTER)
-        self.wait_for_page_element('h3', 'edith@mailinator.com')
-        self.wait_for_row_in_keys_table('e1234')
-
-        # She notices that her summary page has a unique url and a link to add another service
-        edith_summary_url = self.browser.current_url
-        self.assertRegex(edith_summary_url, '/users/.+')
-        link = self.browser.find_element_by_id('id_link_add_service')
-
-        # She clicks the link, she sees her email and the keys to her 2 services
-        link.click()
-        self.wait_for_page_element('h3', 'edith@mailinator.com')
-        self.wait_for_row_in_keys_table('e1234')
-        self.wait_for_row_in_keys_table('d1234')
-
-        # When she hits enter, she is redirected to a XXX page to authorise
-        # accessing some of her data
-
-        # She accepts to authorise Justletic to access her Strava data
-
-        # She is redirected to a Justletic page that congratulates her
 
         # Satisfied she goes to sleep
 
@@ -148,22 +85,31 @@ class NewVisitorTest(StaticLiveServerTestCase):
 
         # Satisfied, they both go back to sleep
 
-    def test_layout_and_styling(self):
-        # Edith goes to the home page
+class ReturningVisitorTest(FunctionalTest):
+
+    def test_can_authorise_multiple_services(self):
+        # Edith authenticates Justletic to access her Strava data
         self.browser.get(self.live_server_url)
-        self.browser.set_window_size(1024,768)
-
-        # She notices the input box is nicely centered
         inputbox = self.browser.find_element_by_id('id_email_in')
-        header = self.browser.find_element_by_class_name('intro-heading')
-        #print(header.location['x'])
-        #print('--')
-        #print(header.size['width'])
-        self.assertAlmostEqual(
-            (header.location['x'] + (header.size['width'] / 2)),
-            512,
-            delta = 10
-        )
+        inputbox.send_keys('edith@mailinator.com')
+        inputbox.send_keys(Keys.ENTER)
+        self.wait_for_page_element('h3', 'edith@mailinator.com')
+        self.wait_for_row_in_keys_table('e1234')
 
-        # She authorises her first service and sees her email address
-        # is nicely centered in her user summary page too
+        # She notices that her summary page has a unique url and a link to add another service
+        edith_summary_url = self.browser.current_url
+        self.assertRegex(edith_summary_url, '/users/.+')
+        link = self.browser.find_element_by_id('id_link_add_service')
+
+        # She clicks the link, she sees her email and the keys to her 2 services
+        link.click()
+        self.wait_for_page_element('h3', 'edith@mailinator.com')
+        self.wait_for_row_in_keys_table('e1234')
+        self.wait_for_row_in_keys_table('d1234')
+
+        # When she hits enter, she is redirected to a XXX page to authorise
+        # accessing some of her data
+
+        # She accepts to authorise Justletic to access her Strava data
+
+        # She is redirected to a Justletic page that congratulates her
