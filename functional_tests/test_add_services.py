@@ -26,7 +26,10 @@ class NewVisitorTest(FunctionalTest):
  
         # When she hits enter, she sees her email and Strava key 
         inputbox.send_keys(Keys.ENTER)
-        self.wait_for_page_element('h3', 'edith@mailinator.com')
+        self.wait_for(lambda: self.assertEqual(
+            self.browser.find_element_by_tag_name('h3').text,
+            'edith@mailinator.com'
+        ))
         self.wait_for_row_in_keys_table('e1234')
          
         # When she hits enter, she is redirected to a Strava page to authorise
@@ -46,7 +49,10 @@ class NewVisitorTest(FunctionalTest):
         inputbox = self.browser.find_element_by_id('id_email_in')
         inputbox.send_keys('edith@mailinator.com')
         inputbox.send_keys(Keys.ENTER)
-        self.wait_for_page_element('h3', 'edith@mailinator.com')
+        self.wait_for(lambda: self.assertEqual(
+            self.browser.find_element_by_tag_name('h3').text,
+            'edith@mailinator.com'
+        ))
         self.wait_for_row_in_keys_table('e1234')
 
         # She notices that her summary page has a unique URL
@@ -70,7 +76,10 @@ class NewVisitorTest(FunctionalTest):
         inputbox = self.browser.find_element_by_id('id_email_in')
         inputbox.send_keys('francis@mailinator.com')
         inputbox.send_keys(Keys.ENTER)
-        self.wait_for_page_element('h3', 'francis@mailinator.com')
+        self.wait_for(lambda: self.assertEqual(
+            self.browser.find_element_by_tag_name('h3').text,
+            'francis@mailinator.com'
+        ))
         self.wait_for_row_in_keys_table('f1234')
 
         # Francis gets his own unique URL
@@ -93,7 +102,10 @@ class ReturningVisitorTest(FunctionalTest):
         inputbox = self.browser.find_element_by_id('id_email_in')
         inputbox.send_keys('edith@mailinator.com')
         inputbox.send_keys(Keys.ENTER)
-        self.wait_for_page_element('h3', 'edith@mailinator.com')
+        self.wait_for(lambda: self.assertEqual(
+            self.browser.find_element_by_tag_name('h3').text,
+            'edith@mailinator.com'
+        ))
         self.wait_for_row_in_keys_table('e1234')
 
         # She notices that her summary page has a unique url and a link to add another service
@@ -103,7 +115,10 @@ class ReturningVisitorTest(FunctionalTest):
 
         # She clicks the link, she sees her email and the keys to her 2 services
         link.click()
-        self.wait_for_page_element('h3', 'edith@mailinator.com')
+        self.wait_for(lambda: self.assertEqual(
+            self.browser.find_element_by_tag_name('h3').text,
+            'edith@mailinator.com'
+        ))
         self.wait_for_row_in_keys_table('e1234')
         self.wait_for_row_in_keys_table('d1234')
 

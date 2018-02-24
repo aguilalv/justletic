@@ -26,14 +26,12 @@ class FunctionalTest(StaticLiveServerTestCase):
                 if time.time() - start_time > MAX_WAIT:
                     raise e
                 time.sleep(0.5)
-    
-    def wait_for_page_element(self,element,target_text):
+
+    def wait_for(self,fn):
         start_time = time.time()
         while True:
             try:
-                found_text = self.browser.find_element_by_tag_name(element).text
-                self.assertEqual(target_text,found_text)
-                return
+                return fn()
             except(AssertionError, WebDriverException) as e:
                 if time.time() - start_time > MAX_WAIT:
                     raise e
