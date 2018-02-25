@@ -1,5 +1,5 @@
 from django.test import TestCase
-
+from unittest import skip
 from ..models import Key,User
 
 class UserAndKeyModelTest(TestCase):
@@ -31,3 +31,7 @@ class UserAndKeyModelTest(TestCase):
         self.assertEqual(second_saved_key.value, second_key.value)
         self.assertEqual(second_saved_key.user, second_key.user)
 
+    @skip ("Discovered error in test_saving_and_retrieving")
+    def test_cannot_save_empty_email(self):
+        user = User()
+        key = Key()

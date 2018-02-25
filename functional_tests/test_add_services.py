@@ -94,8 +94,6 @@ class NewVisitorTest(FunctionalTest):
 
         # Satisfied, they both go back to sleep
 
-class ReturningVisitorTest(FunctionalTest):
-
     def test_can_authorise_multiple_services(self):
         # Edith authenticates Justletic to access her Strava data
         self.browser.get(self.live_server_url)
@@ -128,3 +126,28 @@ class ReturningVisitorTest(FunctionalTest):
         # She accepts to authorise Justletic to access her Strava data
 
         # She is redirected to a Justletic page that congratulates her
+
+    def test_cannot_use_empty_email(self):
+        # Edith goes to the homepage and accidentally tries to submit
+        # an empty email. She hits Enter on the empty input box
+        self.browser.get(self.live_server_url)
+        inputbox = self.browser.find_element_by_id('id_email_in')
+        inputbox.send_keys(Keys.ENTER)
+    
+        # The home page refreshes, and there is an error message saying
+        # that email cannot be blank
+        self.wait_for(lambda: self.assertEqual(
+            self.browser.find_element_by_css_selector('.alert-danger').text,
+            'You need to enter a valid email'
+       )) 
+
+        # She tries again with her email and it works
+        inputbox = self.browser.find_element_by_id('id_email_in')
+        inputbox.send_keys('edith@mailinator.com')
+        inputbox.send_keys(Keys.ENTER)
+        self.wait_for(lambda: self.assertEqual(
+            self.browser.find_element_by_tag_name('h3').text,
+            'edith@mailinator.com'
+       )) 
+
+        # Satisfied she goes to sleep
