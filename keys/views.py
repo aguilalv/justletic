@@ -21,7 +21,7 @@ def new_user(request):
     new_key.user = new_user
     new_key.save()
 
-    return redirect(f'/users/{new_user.id}/')
+    return redirect('view_user', new_user.id)
 
 def view_user(request, user_id):
     user = User.objects.get(id=user_id)
@@ -37,4 +37,4 @@ def add_service(request, user_id):
     new_key.user = user
     new_key.save()
     
-    return redirect(f'/users/{user_id}/')
+    return redirect('view_user', user_id)
