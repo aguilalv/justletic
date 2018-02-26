@@ -37,3 +37,7 @@ class UserAndKeyModelTest(TestCase):
         with self.assertRaises(ValidationError):
             user.full_clean()
             user.save()
+
+    def test_get_absolute_url(self):
+        user = User.objects.create()
+        self.assertEqual(user.get_absolute_url(),f'/users/{user.id}/')
