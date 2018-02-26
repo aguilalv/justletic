@@ -10,5 +10,5 @@
     </table>
 {% endblock %}
 {% block additional_services %}
-    <a href="/users/{{ user.id }}/add_service" id='id_link_add_service'>Add another service</a>
+    <a href="{% url 'add_service' user.id %}" id='id_link_add_service'>Add another service</a>
 {% endblock %}

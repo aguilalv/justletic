@@ -8,7 +8,7 @@
                     <div class="intro-text">
                         <div class="intro-heading">Achieve your goals</div>
                         <div class="intro-lead-in">Connect your Strava account and start today</div>
-                        <form method="POST" action='/users/new'>
+                        <form method="POST" action={% url 'new_user' %}>
                             <div class="form-row">
                                 <div class="col-2 col-md-3 col-lg-4"></div>
                                 <div class="col-8 col-md-6 col-lg-4">
@@ -101,5 +101,3 @@
             </div> <!-- .container -->
         </section> <!-- KEY FIGURES SECTION -->
 {% endblock %}
-
-
