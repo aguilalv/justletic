@@ -1,11 +1,12 @@
-from django.test import TestCase
 from unittest import skip
+from django.test import TestCase
+from django.core.exceptions import ValidationError
 from ..models import Key,User
 
 class UserAndKeyModelTest(TestCase):
 
     def test_saving_and_retrieving_keys(self):
-        user = User()
+        user = User(email='edith@mailinator.com')
         user.save()
 
         first_key = Key()
@@ -31,7 +32,8 @@ class UserAndKeyModelTest(TestCase):
         self.assertEqual(second_saved_key.value, second_key.value)
         self.assertEqual(second_saved_key.user, second_key.user)
 
-    @skip ("Discovered error in test_saving_and_retrieving")
     def test_cannot_save_empty_email(self):
-        user = User()
-        key = Key()
+        user = User(email='')
+        with self.assertRaises(ValidationError):
+            user.full_clean()
+            user.save()

@@ -1,5 +1,7 @@
 Get the real key from each service using OAuth2 - Start with Strava
 
+Change danger color in bootstrap template to a nicer one
+
 Support more than 1 service per user
     - There is one URL to authenticate for each service
     - Single view to get service key receives service name from url and stores service name in key model

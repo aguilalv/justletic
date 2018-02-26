@@ -1,5 +1,5 @@
 from django.test import TestCase
-
+from django.utils.html import escape
 from ..models import Key,User
 
 class HomePageTest(TestCase):
@@ -58,6 +58,17 @@ class NewUserTest(TestCase):
         user = User.objects.first()
 
         self.assertRedirects(response,f'/users/{user.id}/')
+
+    def test_validation_errors_are_sent_back_to_home_page_template(self):
+        response = self.client.post('/users/new', data={'email': ''})
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'home.html')
+        expected_error = escape("You need to enter a valid email")
+        self.assertContains(response, expected_error)
+
+    def test_invalid_users_are_not_saved(self):
+        response = self.client.post('/users/new', data={'email': ''})
+        self.assertEqual(User.objects.count(), 0)
 
 class NewServiceTest(TestCase):
     

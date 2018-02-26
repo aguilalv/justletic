@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.core.exceptions import ValidationError
 
 from .models import Key, User
 
@@ -9,7 +10,11 @@ def home_page(request):
 def new_user(request):
     new_user = User()
     new_user.email = request.POST['email']
-    new_user.save()
+    try:
+        new_user.full_clean()
+        new_user.save()
+    except ValidationError:
+        return render(request,'home.html',{'error': "You need to enter a valid email"})
 
     new_key = Key()
     new_key.value = request.POST['email'][0] + '1234'
