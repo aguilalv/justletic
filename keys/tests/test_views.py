@@ -7,11 +7,6 @@ class HomePageTest(TestCase):
     def test_uses_home_template(self):
         response = self.client.get('/')
         self.assertTemplateUsed(response, 'home.html')
-    
-    def test_GET_does_not_save(self):
-        self.client.get('/')
-        self.assertEqual(Key.objects.all().count(),0)
-
 
 class UserViewTest(TestCase):
 
@@ -59,15 +54,21 @@ class NewUserTest(TestCase):
 
         self.assertRedirects(response,f'/users/{user.id}/')
 
-    def test_validation_errors_are_sent_back_to_home_page_template(self):
-        response = self.client.post('/users/new', data={'email': ''})
+    def post_empty_email(self):
+        return self.client.post('/users/new', data={'email': ''})
+
+    def test_for_empty_email_renders_home_page(self):
+        response = self.post_empty_email()
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'home.html')
+
+    def test_for_empty_email_shows_error_on_page(self):
+        response = self.post_empty_email()
         expected_error = escape("You need to enter a valid email")
         self.assertContains(response, expected_error)
 
-    def test_invalid_users_are_not_saved(self):
-        response = self.client.post('/users/new', data={'email': ''})
+    def test_form_empty_email_notthing_saved_to_db(self):
+        response = self.post_empty_email()
         self.assertEqual(User.objects.count(), 0)
 
 class NewServiceTest(TestCase):
