@@ -8,3 +8,5 @@ Support more than 1 service per user
     - 'Table' of supported services with name and redirect URL (In database? constant?)
 
 Review functional test for multiple users (Currently passing even with keys from different user)
+
+Install and configure PyLint and hook it to check code quality im every commit
