@@ -34,7 +34,12 @@
                         <a class="nav-link" href="#">Products</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link btn btn-outline-primary btn-sm" id="id_login_button" data-toggle="modal" data-target="#id_login_modal">Login</a>
+                        {% if user.is_authenticated %}
+                            <span id='id_logged_in_email'>{{ user.email }}</span>
+                            <a class="nav-link" id="id_logout_button">Logout</a> 
+                        {% else %}
+                            <a class="nav-link btn btn-outline-primary btn-sm" id="id_login_button" data-toggle="modal" data-target="#id_login_modal">Login</a>
+                        {% endif %}
                     </li>
                 </ul>
             </div>
@@ -58,7 +63,7 @@
                         </button>
                     </div> <!-- .modal-header -->
                     <div class="modal-body">
-                        <form method="GET" action="{% url 'login' %}">
+                        <form method="POST" action="{% url 'login' %}">
                             <div class="form-group">
                                 <input id="id_modal_email_in" name="email" type="email" class="form-control" placeholder="Email">
                                 <input id="id_modal_password_in" name="password" type="password" class="form-control" placeholder="Password">

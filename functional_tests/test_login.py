@@ -2,9 +2,17 @@ from selenium.webdriver.common.keys import Keys
 from unittest import skip
 
 from .base import FunctionalTest
+from accounts.factories import UserFactory as AccountsUserFactory
+from keys.factories import UserFactory as KeysUserFactory
 
 
 class LoginTest(FunctionalTest):
+    
+    def setUp(self):
+        self.user = AccountsUserFactory.create()
+        KeysUserFactory.create(id=self.user.id)
+        return super(LoginTest, self).setUp()
+    
     
     @skip("Test still not implemented")
     def test_can_create_new_user(self):
@@ -27,21 +35,20 @@ class LoginTest(FunctionalTest):
         password_in = self.browser.find_element_by_id('id_modal_password_in')
         submit_btn = self.browser.find_element_by_id('id_modal_button')
         email_in.send_keys('edith@mailinator.com')
-        password_in.send_keys('edithpwd_1234')
+        password_in.send_keys('epwd')
         submit_btn.click() 
 
-        # She sees her user summary page
-        # And the navbar menu indicates she is now logged in
-        self.wait_for(lambda: self.assertEqual(
-            self.browser.find_element_by_tag_name('h3').text,
-            'edith@mailinator.com'
-        ))
-        self.wait_for_row_in_keys_table('e1234')
+        # The navbar menu indicates she is now logged in
         logout = self.browser.find_element_by_id('id_logout_button')
-        logged_in_email = self.browser.find_element_by_id('id_logged_in_email')
-        self.assertEqual(logged_in_email,'edit@mailinator.com')
+        logged_in_email = self.browser.find_element_by_id('id_logged_in_email').text
+        self.assertEqual(logged_in_email,'edith@mailinator.com')
 
+        # In the future may want to check that she has been redirected to her summary pagee
 
     @skip("Test still not implemented")
     def test_existing_user_cannot_login_with_incorrect_password(self):
+        pass
+    
+    @skip("Test still not implemented")
+    def test_logged_in_user_can_logout(self):
         pass
