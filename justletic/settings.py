@@ -114,6 +114,7 @@ NOSE_ARGS = [
     '--with-coverage',
     '--cover-package=accounts,keys',
     '--cover-html',
+    '--cover-erase',
 ]
 
 # Internationalization

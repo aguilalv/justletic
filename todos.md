@@ -19,3 +19,4 @@ coverage run --source=myapp,anotherapp ---omit=*/migrations/* ./manage.py test
 coverage run --source='.' manage.py test
 coverage report
 coverage html
+nosetests -v --with-coverage --cover-erase --cover-html
