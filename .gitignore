@@ -1,3 +1,6 @@
+# Temporary for a test
+create_session_cookie.py
+
 #SQLite database
 db.sqlite3
 
