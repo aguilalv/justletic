@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_nose',
     'behave_django',
     'keys',
     'accounts',
@@ -105,6 +106,14 @@ AUTH_PASSWORD_VALIDATORS = [
 AUTH_USER_MODEL='accounts.User'
 AUTHENTICATION_BACKENDS = [
     'accounts.authentication.JustleticAuthenticationBackend',
+]
+
+# Test runner
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+NOSE_ARGS = [
+    '--with-coverage',
+    '--cover-package=accounts,keys',
+    '--cover-html',
 ]
 
 # Internationalization

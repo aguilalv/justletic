@@ -36,17 +36,33 @@ class LoginViewTest(TestCase):
         )
         self.assertRedirects(response,reverse('home'))
     
-    def test_POST_fail_renders_home_page(self):
+    def test_POST_wrong_password_renders_home_page(self):
         response = self.client.post(
             '/accounts/login', 
             data={'email': 'edith@mailinator.com','password': 'wrongpwd'}
         )
         self.assertTemplateUsed(response, 'home.html')
     
-    def test_POST_fail_shows_error(self):
+    def test_POST_wrong_password_shows_error(self):
         response = self.client.post(
             '/accounts/login', 
             data={'email': 'edith@mailinator.com','password': 'wrongpwd'}
         )
         expected_error = escape("Ooops, wrong user or password")
         self.assertContains(response, expected_error)
+
+    def test_POST_non_existing_user_renders_home_page(self):
+        response = self.client.post(
+            '/accounts/login', 
+            data={'email': 'non_existent@non.com','password': 'wrongpwd'}
+        )
+        self.assertTemplateUsed(response, 'home.html')
+
+    def test_POST_non_existing_user_shows_error(self):
+        response = self.client.post(
+            '/accounts/login', 
+            data={'email': 'non_existent@non.com','password': 'wrongpwd'}
+        )
+        expected_error = escape("Ooops, wrong user or password")
+        self.assertContains(response, expected_error)
+
