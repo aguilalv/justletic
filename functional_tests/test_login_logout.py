@@ -1,4 +1,5 @@
 from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import WebDriverException
 from unittest import skip
 
 from .base import FunctionalTest
@@ -15,12 +16,6 @@ class LoginTest(FunctionalTest):
         )
         KeysUserFactory.create(id=self.user.id)
         return super(LoginTest, self).setUp()
-    
-    
-    @skip("Test still not implemented")
-    def test_can_create_new_user(self):
-        pass
-    
     
     def test_existing_user_can_login_with_correct_password(self):
         # Edith goes to the justletic page
@@ -86,22 +81,32 @@ class LoginTest(FunctionalTest):
 
         # Satisfied she goes to sleep
 
-    @skip("Test still not implemented")
     def test_logged_in_user_can_logout(self):
         # Edith is an existint justletic user (created in set-up)
         # she is already logged in to Justletic
-        
+        self.browser.get(self.live_server_url)
+        login_link = self.browser.find_element_by_id('id_login_button')
+        login_link.click()
+        modal = self.browser.find_element_by_id('id_login_modal')
+        email_in = self.browser.find_element_by_id('id_modal_email_in')
+        password_in = self.browser.find_element_by_id('id_modal_password_in')
+        submit_btn = self.browser.find_element_by_id('id_modal_button')
+        email_in.send_keys('edith@mailinator.com')
+        password_in.send_keys('epwd')
+        submit_btn.click() 
 
         # She notices a logout button in the navigation bar
         # And clicks on it
+        logout_button = self.wait_for(lambda: self.browser.find_element_by_id('id_logout_button'))
+        logout_button.click()
 
         # She notices she has been sent back to the home page
-        # and is not logged in anymore
+        # and notices she is not logged in anymore
         # because she can see a log in button and she cannot see her email anymore
         self.wait_for(lambda: self.browser.find_element_by_id('id_login_button'))
         ### TODO: Learn how to check for things not present in selenium
-#        self.wait_for(lambda: self.assertEqual(
-#            self.browser.find_element_by_id('id_logged_in_email').text,
-#            'edith@mailinator.com'
-#        ))
+        with self.assertRaises(WebDriverException):
+            self.wait_for(
+                lambda: self.browser.find_element_by_id('id_logged_in_email').text
+            )
 

@@ -68,3 +68,29 @@ class LoginViewTest(TestCase):
         expected_error = escape("Ooops, wrong user or password")
         self.assertContains(response, expected_error)
 
+class LogoutViewTest(TestCase):
+
+    def setUp(self):
+        self.existing_user = AccountsUserFactory.create(
+            email='edith@mailinator.com',
+            password='epwd'
+        )
+        user = auth.authenticate(
+            email = self.existing_user.email,
+            password = self.existing_user.password
+        )
+        self.client.login(email='edith@mailinator.com',password='epwd')
+    
+    def test_renders_home_page(self):
+        response = self.client.post(
+            '/accounts/logout' 
+        )
+        self.assertTemplateUsed(response, 'home.html')
+
+    def test_logs_user_out(self):
+        response = self.client.post(
+            '/accounts/logout' 
+        )
+        user = auth.get_user(self.client)
+        self.assertFalse(user.is_authenticated)
+        

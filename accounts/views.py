@@ -11,3 +11,7 @@ def login(request):
         return redirect('home')
     else:
         return render(request,'home.html',{'error':'Ooops, wrong user or password'})
+
+def logout(request):
+    auth_logout(request)
+    return render(request,'home.html')
