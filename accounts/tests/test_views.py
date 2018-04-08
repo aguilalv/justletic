@@ -9,8 +9,10 @@ from keys.factories import UserFactory as KeysUserFactory
 class LoginViewTest(TestCase):
 
     def setUp(self):
-        # Create factory default user [email=edith@mailinator.com/password = epwd]
-        self.existing_user = AccountsUserFactory.create()
+        self.existing_user = AccountsUserFactory.create(
+            email='edith@mailinator.com',
+            password='epwd'
+        )
         # Create keys/user to redirect to (need to refactor this out)
         self.existing_keysuser = KeysUserFactory.create()
 
