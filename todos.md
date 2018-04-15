@@ -10,7 +10,6 @@
 and then coverage report
 [ ] Use django messages instead of passing an error elment in the context
 [ ] Think if I need to use request.user inside the 'view detail' view and check that a user is logged in and that it is the same user in the session that the user id to show
-[ ] Refactoring of accounts and tests to eliminate duplicate code
 
 
 NOTES
