@@ -1,4 +1,5 @@
 [run]
 omit = 
-    */__init__.py
+    *__init__*
+    *model*
 branch = True

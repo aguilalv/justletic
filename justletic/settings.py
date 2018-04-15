@@ -115,8 +115,8 @@ NOSE_ARGS = [
     '--cover-package=accounts,keys',
     '--cover-html',
     '--cover-erase',
-#    '--logging-filter=selenium',
-    '--nologcapture',
+    "--logging-filter='selenium'",
+#    '--nologcapture',
 ]
 
 # Internationalization
