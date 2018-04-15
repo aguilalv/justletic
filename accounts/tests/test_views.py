@@ -3,6 +3,8 @@ from django.utils.html import escape
 from django.contrib import auth
 from django.urls import reverse
 
+from ..views import LOGIN_ERROR
+
 from ..factories import UserFactory as AccountsUserFactory
 from keys.factories import UserFactory as KeysUserFactory
 
@@ -13,7 +15,7 @@ class LoginViewTest(TestCase):
             email='edith@mailinator.com',
             password='epwd'
         )
-        # Create keys/user to redirect to (need to refactor this out)
+        #TODO Create keys/user to redirect to (need to refactor this out)
         self.existing_keysuser = KeysUserFactory.create()
 
     def test_POST_logs_user_in_if_password_correct(self):
@@ -50,7 +52,7 @@ class LoginViewTest(TestCase):
             '/accounts/login', 
             data={'email': 'edith@mailinator.com','password': 'wrongpwd'}
         )
-        expected_error = escape("Ooops, wrong user or password")
+        expected_error = escape(LOGIN_ERROR)
         self.assertContains(response, expected_error)
 
     def test_POST_non_existing_user_renders_home_page(self):
@@ -65,7 +67,7 @@ class LoginViewTest(TestCase):
             '/accounts/login', 
             data={'email': 'non_existent@non.com','password': 'wrongpwd'}
         )
-        expected_error = escape("Ooops, wrong user or password")
+        expected_error = escape(LOGIN_ERROR)
         self.assertContains(response, expected_error)
 
 class LogoutViewTest(TestCase):

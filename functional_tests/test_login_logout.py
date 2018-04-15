@@ -2,6 +2,8 @@ from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import WebDriverException
 from unittest import skip
 
+from accounts.views import LOGIN_ERROR
+
 from .base import FunctionalTest
 from accounts.factories import UserFactory as AccountsUserFactory
 from keys.factories import UserFactory as KeysUserFactory
@@ -43,7 +45,7 @@ class LoginTest(FunctionalTest):
         # The home page refreshes, and there is an error message
         self.wait_for(lambda: self.assertEqual(
             self.browser.find_element_by_css_selector('.alert-danger').text,
-            'Ooops, wrong user or password'
+            LOGIN_ERROR
         )) 
 
         # She tries again with the right password and this time it works
