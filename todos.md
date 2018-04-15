@@ -1,5 +1,3 @@
-[ ] Use constants instead of hardcoded strings for errors (both in tests and code)
-
 [ ] Get the real key from each service using OAuth2 - Start with Strava
 
 [ ] Change danger color in bootstrap template to a nicer one

@@ -2,8 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth import authenticate
 
-#LOGIN_ERROR = '!!!Ooops, wrong user or password'
-LOGIN_ERROR = 'This error does not make sense'
+LOGIN_ERROR = 'Ooops, wrong user or password'
 
 def login(request):
     email = request.POST['email']
