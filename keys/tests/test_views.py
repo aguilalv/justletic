@@ -1,6 +1,9 @@
 from django.test import TestCase
 from django.utils.html import escape
+
 from ..models import Key,User
+from ..views import EMAIL_ERROR
+
 
 class HomePageTest(TestCase):
 
@@ -64,7 +67,7 @@ class NewUserTest(TestCase):
 
     def test_for_empty_email_shows_error_on_page(self):
         response = self.post_empty_email()
-        expected_error = escape("You need to enter a valid email")
+        expected_error = escape(EMAIL_ERROR)
         self.assertContains(response, expected_error)
 
     def test_form_empty_email_notthing_saved_to_db(self):

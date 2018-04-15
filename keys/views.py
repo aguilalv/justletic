@@ -4,6 +4,8 @@ from django.core.exceptions import ValidationError
 
 from .models import Key, User
 
+EMAIL_ERROR = "You need to enter a valid email"
+
 def home_page(request):
     return render(request,'home.html')
 
@@ -14,7 +16,7 @@ def new_user(request):
         new_user.full_clean()
         new_user.save()
     except ValidationError:
-        return render(request,'home.html',{'error': "You need to enter a valid email"})
+        return render(request,'home.html',{'error': EMAIL_ERROR})
 
     new_key = Key()
     new_key.value = request.POST['email'][0] + '1234'

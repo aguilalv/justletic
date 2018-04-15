@@ -2,6 +2,8 @@ from .base import FunctionalTest
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
+from keys.views import EMAIL_ERROR
+
 class NewVisitorTest(FunctionalTest):
 
     def test_can_authorise_a_strava_account(self):
@@ -138,7 +140,7 @@ class NewVisitorTest(FunctionalTest):
         # that email cannot be blank
         self.wait_for(lambda: self.assertEqual(
             self.browser.find_element_by_css_selector('.alert-danger').text,
-            'You need to enter a valid email'
+            EMAIL_ERROR
        )) 
 
         # She tries again with her email and it works
