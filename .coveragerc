@@ -2,4 +2,11 @@
 omit = 
     *__init__*
     *model*
+    *migration*
 branch = True
+
+[report]
+omit = 
+    *__init__*
+    *model*
+    *migration*
