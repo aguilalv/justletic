@@ -36,7 +36,6 @@ class LoginTest(FunctionalTest):
         #Satisfied she goes to sleep    
 
     def test_existing_user_cannot_login_with_incorrect_password(self):
-        
         # Edith is an existint justletic user (created in set-up)
         # she goes to the justletic page and tries to log in
         # but she enters the wrong password by mistake
@@ -77,6 +76,17 @@ class LoginTest(FunctionalTest):
             self.wait_for(
                 lambda: self.browser.find_element_by_id('id_logged_in_email').text
             )
+
+    def test_non_existing_user_cannot_login(self):
+        # Francis is still not registered with Justletic
+        # he goes to the justletic page and tries to log in
+        self.login_helper('francis@mailinator.com','epwd')
+
+        # The home page refreshes, and there is an error message
+        self.wait_for(lambda: self.assertEqual(
+            self.browser.find_element_by_css_selector('.alert-danger').text,
+            LOGIN_ERROR
+        )) 
 
     def login_helper(self, email, password):
         # User notices a "Log in" button in the navbar
