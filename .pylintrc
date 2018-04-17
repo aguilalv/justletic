@@ -1,0 +1,10 @@
+[MESSAGES CONTROL]
+#Disable the message, report, categry or checker with the given id(s). You
+#can give multiple identifiers separated by comma (,)
+disable=no-member,
+
+[BASIC]
+
+# Regular expression matching correct method names. Overrides method-naming-
+# style
+method-rgx=[a-z_][a-z0-9_]{2,100}$
