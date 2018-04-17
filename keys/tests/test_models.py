@@ -1,11 +1,14 @@
-from unittest import skip
+"""Unit Tests for Keys models"""
 from django.test import TestCase
 from django.core.exceptions import ValidationError
-from ..models import Key,User
+from ..models import Key, User
 
 class UserAndKeyModelTest(TestCase):
 
+    """Unit tests for Keys models (and its internal user models)"""
+
     def test_saving_and_retrieving_keys(self):
+        """Test that Key model can be saved and retrieved"""
         user = User(email='edith@mailinator.com')
         user.save()
 
@@ -33,11 +36,13 @@ class UserAndKeyModelTest(TestCase):
         self.assertEqual(second_saved_key.user, second_key.user)
 
     def test_cannot_save_empty_email(self):
+        """Test database validation prevents from saving user with empty email"""
         user = User(email='')
         with self.assertRaises(ValidationError):
             user.full_clean()
             user.save()
 
     def test_get_absolute_url(self):
+        """Test method that returns url to view user details"""
         user = User.objects.create()
-        self.assertEqual(user.get_absolute_url(),f'/users/{user.id}/')
+        self.assertEqual(user.get_absolute_url(), f'/users/{user.id}/')

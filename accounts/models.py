@@ -7,7 +7,7 @@ from django.contrib.auth.models import (
 
 class User(AbstractBaseUser, PermissionsMixin):
 
-    """Tests for accounts models"""
+    """Model to store Justletic user accounts"""
 
     email = models.EmailField(unique=True)
 
