@@ -1,5 +1,9 @@
 [ ] Get the real key from each service using OAuth2 - Start with Strava
+    [ ] Write a functional test for this
 
+[ ] Refactor duplication of httpretty code in keys views unit tests
+[ ] Include set-up and tear-down in functional tests to make sure Justletic is not authorised before starting and is not left authorised at the end
+[ ] Design the error in Strava authorization ux flow and the page
 [ ] Change danger color in bootstrap template to a nicer one
 [ ] Support more than 1 service per user
     - There is one URL to authenticate for each service
@@ -8,9 +12,9 @@
 [ ] Review functional test for multiple users (Currently passing even with keys from different user)
 [ ] Use django messages instead of passing an error elment in the context
 [ ] Think if I need to use request.user inside the 'view detail' view and check that a user is logged in and that it is the same user in the session that the user id to show
-
-[ ] Reserch if it would be good to run tests and coverage report on a pre-commit hook (research on is jenkins or similar better than a pre-commit hook)
 [ ] Review layout and styling functional test to make sure it is still adequate andtests the right things 
+[ ] It might be worth having separate tests for the authentication backend. Build them - Then use mocks to patch authentication and avoid retesting it in views
+[ ] Write functional tests for all links, buttons, actions ... in the webpage
 
 NOTES
 =====
@@ -20,3 +24,7 @@ coverage run --source='.' manage.py test
 coverage report
 coverage html
 nosetests -v --with-coverage --cover-erase --cover-html
+
+set -a; source .env; set +a
+
+grep -r -l -e TODO  . | grep -e py | grep -v -e cover

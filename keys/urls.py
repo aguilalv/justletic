@@ -21,4 +21,5 @@ urlpatterns = [
     url(r'^new$', views.new_user, name='new_user'),
     url(r'^(\d+)/$', views.view_user, name='view_user'),
     url(r'^(\d+)/add_service$', views.add_service, name='add_service'),
+    url(r'^stravatokenexchange$', views.strava_token_exchange, name='strava_token_exchange')
 ]

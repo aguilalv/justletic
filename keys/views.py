@@ -1,10 +1,16 @@
 """ Views to manage Keys for Justletic external services """
 from django.shortcuts import render, redirect
 from django.core.exceptions import ValidationError
+from django.http import HttpResponse
+
+import requests
+import json
+import os
 
 from .models import Key, User
 
 EMAIL_ERROR = "You need to enter a valid email"
+STRAVA_AUTH_ERROR = "It seems like there was a problem ..."
 
 def home_page(request):
     """Render Justletic home page"""
@@ -50,3 +56,21 @@ def add_service(request, user_id):
     new_key.save()
 
     return redirect('view_user', user_id)
+
+def strava_token_exchange(request):
+    """Receives Strava authorisation code and sends request for user token"""
+
+    code = request.GET.get('code')
+    parameters = {
+        'client_id': '15873',
+        'client_secret': os.environ['STRAVA_CLIENT_SECRET'], 
+        'code': code
+    }
+
+    response = requests.post('https://www.strava.com/oauth/token', parameters)
+    
+    data_received = response.json()
+    if 'errors' not in data_received:
+        return render(request, 'congratulations.html')
+    else:
+        return render(request, 'home.html', {'error': STRAVA_AUTH_ERROR})

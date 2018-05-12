@@ -32,7 +32,7 @@ class LoginTest(FunctionalTest):
             'edith@mailinator.com'
         ))
 
-        # In the future may want to check that she has been redirected to her summary pagee
+        # In the future may want to check that she has been redirected to her summary page
         ### TODO
 
         #Satisfied she goes to sleep
