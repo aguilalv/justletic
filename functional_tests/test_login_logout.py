@@ -3,7 +3,6 @@ from selenium.common.exceptions import WebDriverException
 
 from accounts.views import LOGIN_ERROR
 from accounts.factories import UserFactory as AccountsUserFactory
-from keys.factories import UserFactory as KeysUserFactory
 
 from .base import FunctionalTest
 
@@ -17,7 +16,6 @@ class LoginTest(FunctionalTest):
             email='edith@mailinator.com',
             password='epwd'
         )
-        KeysUserFactory.create(id=self.user.id)
         return super(LoginTest, self).setUp()
 
     def test_existing_user_can_login_with_correct_password(self):
