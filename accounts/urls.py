@@ -20,4 +20,5 @@ from . import views
 urlpatterns = [
     url(r'^login$', views.login, name='login'),
     url(r'^logout$', views.logout, name='logout'),
+    url(r'^new/strava$', views.create_new_strava_user, name='create_new_strava_user'),
 ]

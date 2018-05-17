@@ -108,14 +108,11 @@ class NewVisitorTest(FunctionalTest):
         )
 
         # She types "edith@mailinator.com"" into a text box
-#        inputbox.send_keys('edith@mailinator.com')
-# TODO: Change click on about button for enter email and hit ENTER
-        temp = self.browser.find_element_by_id('about_id')
-        temp.click()
+        inputbox.send_keys('edith@mailinator.com')
 
         # When she hits enter, she is redirected to a Strava page to authorise
         # accessing some of her data
-#        inputbox.send_keys(Keys.ENTER)
+        inputbox.send_keys(Keys.ENTER)
         self.wait_for(lambda: self.assertRegex(
             self.browser.current_url,
             '.+strava.+'
@@ -144,6 +141,14 @@ class NewVisitorTest(FunctionalTest):
             self.browser.find_element_by_tag_name('h3').text,
             'CONGRATULATIONS'
         ))
+
+        # Edith sees that Justletic can now tell her how many Km she run in her
+        # last session
+        self.wait_for(lambda: self.assertEqual(
+            self.browser.find_element_by_tag_name('h4').text,
+            '7.97 Km'
+        ))
+        
 
         # Satisfied she goes to sleep
 
