@@ -17,6 +17,7 @@ class NewVisitorTest(FunctionalTest):
     def setUp(self):
         """Revoke Justletic access to Strava before all tests"""
         super().setUp()
+        os.environ['STRAVA_REDIRECT_URI'] = f'{self.live_server_url}/users/stravatokenexchange'
         self.strava_revoke_access()
 
     def tearDown(self):

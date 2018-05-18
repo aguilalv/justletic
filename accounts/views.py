@@ -1,10 +1,16 @@
 """ Views to manage Justletic user accounts """
+import os
+
 import django.contrib.auth
+
+from urllib.parse import urlencode
 
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth import authenticate
+
+from keys.views import STRAVA_CLIENT_ID, STRAVA_AUTHORIZE_URL
 
 LOGIN_ERROR = 'Ooops, wrong user or password'
 
@@ -31,4 +37,12 @@ def create_new_strava_user(request):
 
     auth_login(request, user)
 
-    return redirect('https://www.strava.com/oauth/authorize?client_id=15873&redirect_uri=http://127.0.0.1:8000/users/stravatokenexchange&response_type=code&scope=view_private')
+    parameters_dict = {
+        'client_id': STRAVA_CLIENT_ID,
+        'redirect_uri': os.environ['STRAVA_REDIRECT_URI'], 
+        'response_type': 'code',
+        'scope': 'view_private'
+    }
+    parameters = urlencode(parameters_dict)
+    url = f'{STRAVA_AUTHORIZE_URL}?{parameters}'
+    return redirect(url)   

@@ -1,4 +1,7 @@
 """Unit tests for accounts app views"""
+import os
+from urllib.parse import urlencode
+
 from django.test import TestCase
 from django.utils.html import escape
 from django.contrib import auth
@@ -7,6 +10,8 @@ from django.urls import reverse
 from ..models import User
 from ..views import LOGIN_ERROR
 from ..factories import UserFactory as AccountsUserFactory
+
+from keys.views import STRAVA_CLIENT_ID, STRAVA_AUTHORIZE_URL
 
 class LoginViewTest(TestCase):
 
@@ -143,8 +148,17 @@ class CreateNewStravaUserTest(TestCase):
             '/accounts/new/strava',
             data={'email':'edith@mailinator.com'}
         )
+    
+        parameters_dict = {
+            'client_id': STRAVA_CLIENT_ID,
+            'redirect_uri' : os.environ['STRAVA_REDIRECT_URI'], 
+            'response_type' : 'code',
+            'scope' : 'view_private'
+        }
+        parameters = urlencode(parameters_dict)
+        url = f'{STRAVA_AUTHORIZE_URL}?{parameters}'
         
-        self.assertRedirects(response,f'https://www.strava.com/oauth/authorize?client_id=15873&redirect_uri=http://127.0.0.1:8000/users/stravatokenexchange&response_type=code&scope=view_private',fetch_redirect_response=False)
+        self.assertRedirects(response,url,fetch_redirect_response=False)
 
 #    def test_xxx_if_email_is_empty(self):
 #        """ Test that create new strava user view does xxx if email is empty """
