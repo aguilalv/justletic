@@ -31,8 +31,13 @@ def strava_token_exchange(request):
     data_received = response.json()
     if 'errors' not in data_received:
         token_received = data_received.get('access_token')
+        id_received = data_received.get('athlete').get('id')
         logged_in_user = request.user 
-        new_key = Key(user=logged_in_user,token=token_received)
+        new_key = Key(
+            user=logged_in_user,
+            token=token_received,
+            strava_id=id_received
+        )
         new_key.save()
         return render(request, 'congratulations.html')
     else:

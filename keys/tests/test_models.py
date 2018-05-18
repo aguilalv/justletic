@@ -17,10 +17,11 @@ class KeyModelTest(TestCase):
             password='epwd'
         )
         
-        key = Key(user=existing_user,token='abcd')
+        key = Key(user=existing_user,token='abcd',strava_id='10')
         key.save()
 
         saved_key = Key.objects.all()[0]
         self.assertEqual(saved_key, key)
         self.assertEqual(saved_key.user, existing_user)
         self.assertEqual(saved_key.token, 'abcd') 
+        self.assertEqual(saved_key.strava_id, '10') 
