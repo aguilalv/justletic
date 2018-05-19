@@ -1,5 +1,3 @@
-[ ] Refactor repetition to log user in, etc. in Token Exchange View unit tests (Move to Set-up)
-[ ] Refactor duplication of httpretty code in keys views unit tests
 [ ] Design the error in Strava authorization ux flow and the page
 [ ] Change danger color in bootstrap template to a nicer one
 [ ] Support more than 1 service per user
