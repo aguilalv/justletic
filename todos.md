@@ -1,5 +1,7 @@
 [ ] Design the error in Strava authorization ux flow and the page
 [ ] Change danger color in bootstrap template to a nicer one
+[ ] Refactor to group all httpretty setup helper functions in a separate file
+[ ] Understand if Strava always sends back metric units or depends on user configuration (if so code needs to be adapted)
 [ ] Support more than 1 service per user
     - There is one URL to authenticate for each service
     - Single view to get service key receives service name from url and stores service name in key model
@@ -25,3 +27,7 @@ nosetests -v --with-coverage --cover-erase --cover-html
 set -a; source .env; set +a
 
 grep -r -l -e TODO  . | grep -e py | grep -v -e cover
+
+url = "https://www.strava.com/api/v3/athlete/activities"
+headers = {'Authorization': 'Bearer 245756813830c8e24116ce778dfabf2c827a079e'}
+r = requests.get(url,headers=headers)

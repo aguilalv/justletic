@@ -7,7 +7,7 @@ from django.contrib import auth
 import httpretty
 import os
 
-from ..views import STRAVA_AUTH_ERROR, STRAVA_TOKEN_EXCHANGE_URL
+from ..views import STRAVA_AUTH_ERROR, STRAVA_TOKEN_EXCHANGE_URL, STRAVA_CLIENT_ID,STRAVA_GET_ACTIVITIES_URL
 from ..models import Key
 from accounts.factories import UserFactory as AccountsUserFactory
 
@@ -65,6 +65,71 @@ class StravaTokenExchangeView(TestCase):
             STRAVA_TOKEN_EXCHANGE_URL,
             body = mock_body
         )
+    
+    def register_get_activities_url_in_httpretty(self):
+        mock_body = '''
+            [{"resource_state":2,
+                "athlete":{
+                    "id":21400992,
+                    "resource_state":1
+                },
+                "name":"Evening Run",
+                "distance":7972.5,
+                "moving_time":2909,
+                "elapsed_time":2909,
+                "total_elevation_gain":110.0,
+                "type":"Run",
+                "workout_type":3,
+                "id":1574689979,
+                "external_id":"2701804443.fit",
+                "upload_id":1693199790,
+                "start_date":"2018-05-15T18:12:19Z",
+                "start_date_local":"2018-05-15T19:12:19Z",
+                "timezone":"(GMT+00:00) Europe/London",
+                "utc_offset":3600.0,
+                "start_latlng":[51.579065,-0.150119],
+                "end_latlng":[51.579198,-0.150102],
+                "location_city":null,
+                "location_state":null,
+                "location_country":"Reino Unido",
+                "start_latitude":51.579065,
+                "start_longitude":-0.150119,
+                "achievement_count":0,
+                "kudos_count":0,
+                "comment_count":0,
+                "athlete_count":2,
+                "photo_count":0,
+                "map":{
+                    "id":"a1574689979",
+                    "summary_polyline":"c`yyHfi\\\\mAs@aFhDkCbJiFrCaMaHuF{YyBo@iBmUaFoHmNcJJqEcJcOkEcV~AwGgCgG{E_JgBKaC|W}AlAuB_FlCkH}AiFu@sPbEmKsDwPtXlXfDnHbBhOsDba@nG~PdApH]dEbNdI|FtIbB`TxAHxDjXzF`HnG~A`HuBnAeJlE{DfBf@",
+                    "resource_state":2
+                },
+                "trainer":false,
+                "commute":false,
+                "manual":false,
+                "private":false,
+                "flagged":false,
+                "gear_id":null,
+                "from_accepted_tag":false,
+                "average_speed":2.741,
+                "max_speed":11.6,
+                "average_cadence":79.1,
+                "average_temp":22.0,
+                "has_heartrate":true,
+                "average_heartrate":151.1,
+                "max_heartrate":161.0,
+                "elev_high":103.0,
+                "elev_low":38.2,
+                "pr_count":0,
+                "total_photo_count":0,
+                "has_kudoed":false
+            }]
+        '''   
+        httpretty.register_uri(
+            httpretty.GET,
+            STRAVA_GET_ACTIVITIES_URL,
+            body = mock_body
+        )
 
     def setUp(self):
         """Create a user in the database and log it in before runinng each test"""
@@ -75,7 +140,7 @@ class StravaTokenExchangeView(TestCase):
         """Test that when receiving a code the view sends request to exchange for a token"""
         self.register_token_exchange_url_in_httpretty()
         expected_parameters = {
-            'client_id': '15873', 
+            'client_id': STRAVA_CLIENT_ID,
             'client_secret': os.environ['STRAVA_CLIENT_SECRET'], 
             'code': 'abc123',
         }
@@ -148,5 +213,3 @@ class StravaTokenExchangeView(TestCase):
         self.assertEqual(stored_key.user.email,'edith@mailinator.com')
         self.assertEqual(stored_key.token,'87a407fc475a61ef97265b4bf8867f3ecfc102af')
         self.assertEqual(stored_key.strava_id,'1234567')
-
-

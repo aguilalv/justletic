@@ -12,6 +12,7 @@ STRAVA_AUTH_ERROR = "Oops, something went wrong asking Strava about you ..."
 STRAVA_CLIENT_ID = '15873'
 STRAVA_TOKEN_EXCHANGE_URL = 'https://www.strava.com/oauth/token' 
 STRAVA_AUTHORIZE_URL = 'https://www.strava.com/oauth/authorize'
+STRAVA_GET_ACTIVITIES_URL = 'https://www.strava.com/api/v3/athlete/activities'
 
 def home_page(request):
     """Render Justletic home page"""
@@ -29,16 +30,18 @@ def strava_token_exchange(request):
     response = requests.post(STRAVA_TOKEN_EXCHANGE_URL, parameters)
     
     data_received = response.json()
-    if 'errors' not in data_received:
-        token_received = data_received.get('access_token')
-        id_received = data_received.get('athlete').get('id')
-        logged_in_user = request.user 
-        new_key = Key(
-            user=logged_in_user,
-            token=token_received,
-            strava_id=id_received
-        )
-        new_key.save()
-        return render(request, 'congratulations.html')
-    else:
+
+    if 'errors' in data_received:
         return render(request, 'home.html', {'error': STRAVA_AUTH_ERROR})
+
+    token_received = data_received.get('access_token')
+    id_received = data_received.get('athlete').get('id')
+    logged_in_user = request.user 
+    new_key = Key(
+        user=logged_in_user,
+        token=token_received,
+        strava_id=id_received
+    )
+    new_key.save()
+
+    return render(request, 'congratulations.html')
