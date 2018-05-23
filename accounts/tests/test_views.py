@@ -11,7 +11,7 @@ from ..models import User
 from ..views import LOGIN_ERROR
 from ..factories import UserFactory as AccountsUserFactory
 
-from keys.views import STRAVA_CLIENT_ID, STRAVA_AUTHORIZE_URL
+from utils.strava_utils import STRAVA_CLIENT_ID, STRAVA_AUTHORIZE_URL
 
 class LoginViewTest(TestCase):
 

@@ -112,7 +112,7 @@ AUTHENTICATION_BACKENDS = [
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 NOSE_ARGS = [
     '--with-coverage',
-    '--cover-package=accounts,keys',
+    '--cover-package=accounts,keys, utils',
     '--cover-html',
     '--cover-erase',
     "--logging-filter='selenium'",

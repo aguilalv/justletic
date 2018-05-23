@@ -1,3 +1,7 @@
+[ ] Refactor all Strava related functionality to helper module
+    [ ] Review Strava helper module to account for receiving an error at token excange
+[ ] Change keys views to use mocks for calling utils and can eliminate httpretty current tests
+[ ] Add logging to Justletic code
 [ ] Design the error in Strava authorization ux flow and the page
 [ ] Change danger color in bootstrap template to a nicer one
 [ ] Refactor to group all httpretty setup helper functions in a separate file

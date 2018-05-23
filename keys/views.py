@@ -8,11 +8,8 @@ from django.http import HttpResponse
 from .models import Key
 from accounts.models import User
 
-STRAVA_AUTH_ERROR = "Oops, something went wrong asking Strava about you ..."
-STRAVA_CLIENT_ID = '15873'
-STRAVA_TOKEN_EXCHANGE_URL = 'https://www.strava.com/oauth/token' 
-STRAVA_AUTHORIZE_URL = 'https://www.strava.com/oauth/authorize'
-STRAVA_GET_ACTIVITIES_URL = 'https://www.strava.com/api/v3/athlete/activities'
+from utils.strava_utils import STRAVA_AUTH_ERROR
+from utils.strava_utils import exchange_strava_code 
 
 def home_page(request):
     """Render Justletic home page"""
@@ -21,26 +18,17 @@ def home_page(request):
 def strava_token_exchange(request):
     """Receives Strava authorisation code and sends request for user token"""
     code = request.GET.get('code')
-    parameters = {
-        'client_id': STRAVA_CLIENT_ID,
-        'client_secret': os.environ['STRAVA_CLIENT_SECRET'], 
-        'code': code
-    }
 
-    response = requests.post(STRAVA_TOKEN_EXCHANGE_URL, parameters)
-    
-    data_received = response.json()
+    token,strava_id = exchange_strava_code(code)
 
-    if 'errors' in data_received:
+    if not token or not strava_id:
         return render(request, 'home.html', {'error': STRAVA_AUTH_ERROR})
 
-    token_received = data_received.get('access_token')
-    id_received = data_received.get('athlete').get('id')
     logged_in_user = request.user 
     new_key = Key(
         user=logged_in_user,
-        token=token_received,
-        strava_id=id_received
+        token=token,
+        strava_id=strava_id
     )
     new_key.save()
 

@@ -7,9 +7,11 @@ from django.contrib import auth
 import httpretty
 import os
 
-from ..views import STRAVA_AUTH_ERROR, STRAVA_TOKEN_EXCHANGE_URL, STRAVA_CLIENT_ID,STRAVA_GET_ACTIVITIES_URL
 from ..models import Key
 from accounts.factories import UserFactory as AccountsUserFactory
+
+from utils.strava_utils import STRAVA_AUTH_ERROR, STRAVA_CODE_EXCHANGE_URL
+from utils.strava_utils import STRAVA_GET_ACTIVITIES_URL, STRAVA_CLIENT_ID
 
 class HomePageTest(TestCase):
 
@@ -62,7 +64,7 @@ class StravaTokenExchangeView(TestCase):
         '''   
         httpretty.register_uri(
             httpretty.POST,
-            STRAVA_TOKEN_EXCHANGE_URL,
+            STRAVA_CODE_EXCHANGE_URL,
             body = mock_body
         )
     
@@ -151,7 +153,7 @@ class StravaTokenExchangeView(TestCase):
             httpretty.last_request().path
         sent_parameters = dict(parse_qsl(httpretty.last_request().body.decode()))
 
-        self.assertEqual(STRAVA_TOKEN_EXCHANGE_URL,requested_url) 
+        self.assertEqual(STRAVA_CODE_EXCHANGE_URL,requested_url) 
         self.assertEqual(
             sent_parameters,
             expected_parameters
