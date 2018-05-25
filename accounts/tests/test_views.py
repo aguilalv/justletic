@@ -1,6 +1,7 @@
 """Unit tests for accounts app views"""
 import os
 from urllib.parse import urlencode
+from unittest.mock import patch
 
 from django.test import TestCase
 from django.utils.html import escape
@@ -142,23 +143,27 @@ class CreateNewStravaUserTest(TestCase):
         self.assertTrue(user.is_authenticated)
         self.assertEqual(user.email, 'edith@mailinator.com')
 
-    def test_redirects_to_request_strava_code(self):
-        """ Test that create new strava user view redirects to the Strava url used to request a code for token exchange"""
+    @patch('accounts.views.strava_oauth_code_request_url')
+    def test_gets_url_to_request_code_from_strava_utils_module(self,mock):
+        """Test that create new strava user view calls the strava utils
+        helper module to get the url to request an oAuth code"""
+        mock.return_value = 'www.google.com'
         response = self.client.post(
             '/accounts/new/strava',
             data={'email':'edith@mailinator.com'}
         )
-    
-        parameters_dict = {
-            'client_id': STRAVA_CLIENT_ID,
-            'redirect_uri' : os.environ['STRAVA_REDIRECT_URI'], 
-            'response_type' : 'code',
-            'scope' : 'view_private'
-        }
-        parameters = urlencode(parameters_dict)
-        url = f'{STRAVA_AUTHORIZE_URL}?{parameters}'
-        
-        self.assertRedirects(response,url,fetch_redirect_response=False)
+        self.assertTrue(mock.called)
+
+    @patch('accounts.views.strava_oauth_code_request_url')
+    def test_redirects_to_url_returned_by_strava_utils_module(self,mock):
+        """Test that create new strava user view redirects to the url
+        returned by the strava utils helper module"""
+        mock.return_value = 'http://www.google.com'
+        response = self.client.post(
+            '/accounts/new/strava',
+            data={'email':'edith@mailinator.com'}
+        ) 
+        self.assertRedirects(response,'http://www.google.com',fetch_redirect_response=False)
 
 #    def test_xxx_if_email_is_empty(self):
 #        """ Test that create new strava user view does xxx if email is empty """
