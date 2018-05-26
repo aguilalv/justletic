@@ -1,9 +1,8 @@
-[ ] Refactor all Strava related functionality to helper module
-    [ ] Review Strava helper module to account for receiving an error at token excange
+[ ] Add test case to Strava Utils for case of receiving more than 1 activity and then for receiving 0 activities
+[ ] Review Strava helper module to account for receiving an error at token excange
 [ ] Add logging to Justletic code
 [ ] Design the error in Strava authorization ux flow and the page
 [ ] Change danger color in bootstrap template to a nicer one
-[ ] Refactor to group all httpretty setup helper functions in a separate file
 [ ] Understand if Strava always sends back metric units or depends on user configuration (if so code needs to be adapted)
 [ ] Support more than 1 service per user
     - There is one URL to authenticate for each service

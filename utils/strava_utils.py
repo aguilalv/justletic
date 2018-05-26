@@ -1,6 +1,7 @@
 import os
 import requests
 from urllib.parse import urlencode
+import json
 
 STRAVA_AUTH_ERROR = "Oops, something went wrong asking Strava about you ..."
 STRAVA_CLIENT_ID = '15873'
@@ -45,3 +46,22 @@ def exchange_strava_code(code):
         token_received = data_received.get('access_token')
         id_received = data_received.get('athlete').get('id')
         return (token_received, id_received)
+
+def get_strava_activities(token):
+    headers = {'Authorization': 'Bearer ' + token}
+    response = requests.get(STRAVA_GET_ACTIVITIES_URL, headers=headers)
+    received = json.loads(response.text)
+    activities = []
+    for item in received:
+        activity = {}
+        activity['platform'] = 'Strava'
+        activity['distance'] = item.get('distance')
+        activity['moving_time'] = item.get('moving_time')
+        activity['elevation_gain'] = item.get('total_elevation_gain')
+        activity['type'] = item.get('type')
+        activity['strava_id'] = item.get('id')
+        activity['start_date_local'] = item.get('start_date_local')
+        activity['average_heartrate'] = item.get('average_heartrate')
+        activity['average_cadence'] = item.get('average_cadence')
+        activities.append(activity)
+    return activities
