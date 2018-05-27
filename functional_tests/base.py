@@ -10,9 +10,16 @@ class FunctionalTest(StaticLiveServerTestCase):
 
     def setUp(self):
         self.browser = webdriver.Firefox()
+        self.browser.delete_all_cookies()
 
     def tearDown(self):
+        self.screen_shot()
         self.browser.quit()
+
+    def screen_shot(self):
+        for method, error in self._outcome.errors:
+            if error:
+                self.browser.get_screenshot_as_file("screenshot" + self.id() + ".png")
 
     def wait_for_row_in_keys_table(self,target_row_text):
         start_time = time.time()
