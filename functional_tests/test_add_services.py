@@ -137,25 +137,24 @@ class NewVisitorTest(FunctionalTest):
         authorize_button.click()
 
         # She is redirected to a Justletic page that congratulates her
-        time.sleep(3)
-        self.wait_for(lambda: self.assertEqual(
+        self.wait_for(lambda: self.assertIn(
+            'Justletic',
+            self.browser.title
+        ))
+        self.assertEqual(
             self.browser.find_element_by_tag_name('h3').text,
             'CONGRATULATIONS'
-        ))
+        )
 
         # Edith sees that Justletic can now tell her how many Km she run in her
         # last session
-        self.wait_for(lambda: self.assertEqual(
+        self.assertRegex(
             self.browser.find_element_by_tag_name('h4').text,
-            '7.97 Km'
-        ))
+            '.+7.97 Km.+'
+        )
         
 
         # Satisfied she goes to sleep
-
-    def test_can_authorise_multiple_services(self):
-        """Test that a user can authorise several services"""
-        pass 
 
     @skip('Email input not processed - Skip until functionality added')
     def test_cannot_use_empty_email(self):

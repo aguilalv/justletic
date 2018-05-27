@@ -9,7 +9,7 @@ from .models import Key
 from accounts.models import User
 
 from utils.strava_utils import STRAVA_AUTH_ERROR
-from utils.strava_utils import exchange_strava_code 
+from utils.strava_utils import exchange_strava_code, get_strava_activities 
 
 def home_page(request):
     """Render Justletic home page"""
@@ -32,4 +32,10 @@ def strava_token_exchange(request):
     )
     new_key.save()
 
-    return render(request, 'congratulations.html')
+    activities = get_strava_activities(token)
+
+    return render(
+        request,
+        'congratulations.html',
+        {'last_activity_distance':activities[0].get('distance')/1000}
+    )
