@@ -281,6 +281,20 @@ class GetStravaActivities(TestCase):
             body = mock_body
         )
 
+    def register_get_activities_url_in_httpretty_fault(self):
+        mock_body = ('{'
+            '"errors":"The set of errors associated with this fault",'
+            '"message":"This is the message of the fault"'
+        '}')
+        httpretty.register_uri(
+            httpretty.GET,
+            STRAVA_GET_ACTIVITIES_URL,
+            body = mock_body,
+            status = 401
+        )
+
+    
+                
     @httpretty.activate
     def test_sends_request_to_strava_for_activities(self):
         """ Test that GetAthleteActivities sends request for activities to Strava"""
@@ -334,3 +348,10 @@ class GetStravaActivities(TestCase):
         self.assertEqual(activity.get('start_date_local'),"2018-05-15T19:12:19Z")
         self.assertEqual(activity.get('average_heartrate'),151.1)
         self.assertEqual(activity.get('average_cadence'),79.1)
+
+    @httpretty.activate
+    def test_returns_none_on_error(self):
+        """Test that GetAthleteActivities returns None when receives a fault"""
+        self.register_get_activities_url_in_httpretty_fault()
+        activities = get_strava_activities(token="87a407fc475a61ef97265b4bf8867f3ecfc102af")
+        self.assertEqual(activities,None)

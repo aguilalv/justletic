@@ -192,3 +192,28 @@ class StravaTokenExchangeView(TestCase):
         ]
         response = self.client.get('/users/stravatokenexchange?state=&code=abc123')
         self.assertContains(response, expected_km_number)
+
+    @patch('keys.views.exchange_strava_code')
+    @patch('keys.views.get_strava_activities')
+    def test_renders_home_on_failure(
+        self,
+        mock_get_activities,
+        mock_exchange_code
+    ):
+        mock_exchange_code.return_value = ('Token','Id')
+        mock_get_activities.return_value = None
+        response = self.client.get('/users/stravatokenexchange?state=&code=abc123')
+        self.assertTemplateUsed(response, 'home.html')
+    
+    @patch('keys.views.exchange_strava_code')
+    @patch('keys.views.get_strava_activities')
+    def test_shows_message_on_failure(
+        self,
+        mock_get_activities,
+        mock_exchange_code
+    ):
+        mock_exchange_code.return_value = ('Token','Id')
+        mock_get_activities.return_value = None
+        expected_error = escape(STRAVA_AUTH_ERROR)
+        response = self.client.get('/users/stravatokenexchange?state=&code=abc123')
+        self.assertContains(response, expected_error)

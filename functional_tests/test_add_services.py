@@ -73,9 +73,10 @@ class NewVisitorTest(FunctionalTest):
                 actions.perform()
             except NoSuchElementException:
                 pass
-            login_button = self.wait_for(lambda:
-                self.browser.find_element_by_link_text('Log In')
-            )
+        
+        login_button = self.wait_for(lambda:
+            self.browser.find_element_by_link_text('Log In')
+        )
 
     def strava_revoke_access(self):
         """Checks if Justletic is authorised in Strava for the test user

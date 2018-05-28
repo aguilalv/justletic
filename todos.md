@@ -2,12 +2,10 @@
 FIXES
 =====
 
-[ ] Process exceptions in test_add_services helper functions (Strava login and logout)
-[ ] Process errors in utils.get_strava_activities
-[ ] Add test case to Strava Utils for case of receiving more than 1 activity and then for receiving 0 activities
 [ ] Review Strava helper module to account for receiving an error at token excange
+[ ] Add test case to Strava Utils for case of receiving more than 1 activity
+[ ] Add test case to Strava Utils for case of receiving 0 activities
 [ ] Design the error in Strava authorization ux flow and the page
-[ ] Understand if Strava always sends back metric units or depends on user configuration (if so code needs to be adapted)
 
 
 TECH ROADMAP

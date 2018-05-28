@@ -36,8 +36,12 @@ def strava_token_exchange(request):
 
     activities = get_strava_activities(token)
 
-    return render(
-        request,
-        'congratulations.html',
-        {'last_activity_distance':activities[0].get('distance')/1000}
-    )
+    if activities:
+        return render(
+            request,
+            'congratulations.html',
+            {'last_activity_distance':activities[0].get('distance')/1000}
+        )
+    else:
+        messages.add_message(request, messages.ERROR, STRAVA_AUTH_ERROR)
+        return render(request,'home.html')

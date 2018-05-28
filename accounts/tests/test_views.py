@@ -125,7 +125,6 @@ class CreateNewStravaUserTest(TestCase):
         self.assertEqual(User.objects.count(), 1)
         new_user = User.objects.first()
         self.assertEqual(new_user.email, 'edith@mailinator.com')
-
     
     def test_logs_user_in(self):
         """ Test that create new strava user view logs in the user with the requested email address  """
