@@ -179,7 +179,7 @@ class StravaTokenExchangeView(TestCase):
         expected_km_number = 3.14 
         mock_exchange_code.return_value = ('Token','Id')
         mock_get_activities.return_value = [
-            {'distance':expected_km_number,
+            {'distance':expected_km_number*1000,
              'moving_time':100,
              'elevation_gain':100,
              'type':'Run',

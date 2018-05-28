@@ -36,19 +36,14 @@ class LoginViewTest(TestCase):
         self.assertEqual(user.email, self.existing_user.email)
 
 #    def test_post_success_redirects_to_user_summary(self):
-#        response = self.client.post(
-#            '/accounts/login',
-#            data={'email': 'edith@mailinator.com','password': 'epwd'}
-#        )
-#        self.assertRedirects(response,f'/users/{self.existing_user.id}/')
-
-    def test_post_success_redirects_to_home_page(self):
-        """Test that a successful log in redirects the user to the home page"""
+    
+    def test_post_success_renders_home_page(self):
+        """Test that a successful login renders the home page"""
         response = self.client.post(
             '/accounts/login',
             data={'email': 'edith@mailinator.com', 'password': 'epwd'}
         )
-        self.assertRedirects(response, reverse('home'))
+        self.assertTemplateUsed(response, 'home.html')
 
     def test_post_wrong_password_renders_home_page(self):
         """Test that a post request with existing user and wrong password renders the home page"""

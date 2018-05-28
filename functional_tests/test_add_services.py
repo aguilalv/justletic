@@ -73,6 +73,9 @@ class NewVisitorTest(FunctionalTest):
                 actions.perform()
             except NoSuchElementException:
                 pass
+            login_button = self.wait_for(lambda:
+                self.browser.find_element_by_link_text('Log In')
+            )
 
     def strava_revoke_access(self):
         """Checks if Justletic is authorised in Strava for the test user
@@ -120,7 +123,10 @@ class NewVisitorTest(FunctionalTest):
         ))
 
         # Edith enters her email and her Strava password and hits ENTER
-        email_in = self.browser.find_element_by_id('email')
+        
+        email_in = self.wait_for(lambda:
+            self.browser.find_element_by_id('email')
+        )
         password_in = self.browser.find_element_by_id('password')
         email_in.send_keys('edith@mailinator.com')
         password_in.send_keys(os.environ['STRAVA_TEST_USER_PASSWORD'])

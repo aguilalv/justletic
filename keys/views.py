@@ -4,6 +4,7 @@ import os
 
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.contrib import messages
 
 from .models import Key
 from accounts.models import User
@@ -22,7 +23,8 @@ def strava_token_exchange(request):
     token,strava_id = exchange_strava_code(code)
 
     if not token or not strava_id:
-        return render(request, 'home.html', {'error': STRAVA_AUTH_ERROR})
+        messages.add_message(request, messages.ERROR, STRAVA_AUTH_ERROR)
+        return render(request, 'home.html')
 
     logged_in_user = request.user 
     new_key = Key(

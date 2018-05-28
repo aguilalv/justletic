@@ -1,6 +1,7 @@
 """ Views to manage Justletic user accounts """
 import os
 import django.contrib.auth
+from django.contrib import messages
 
 from django.shortcuts import render, redirect
 from django.urls import reverse
@@ -17,8 +18,9 @@ def login(request):
     user = authenticate(email=email, password=password)
     if user is not None:
         auth_login(request, user)
-        return redirect('home')
-    return render(request, 'home.html', {'error':LOGIN_ERROR})
+    else:
+        messages.add_message(request, messages.ERROR, LOGIN_ERROR)
+    return render(request,'home.html')
 
 def logout(request):
     """Log out user currently logged in"""
