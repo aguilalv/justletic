@@ -1,7 +1,9 @@
 import os
 import requests
-from urllib.parse import urlencode
 import json
+
+from urllib.parse import urlencode
+from operator import itemgetter
 
 STRAVA_AUTH_ERROR = "Oops, something went wrong asking Strava about you ..."
 STRAVA_CLIENT_ID = '15873'
@@ -67,4 +69,4 @@ def get_strava_activities(token):
             activity['average_heartrate'] = item.get('average_heartrate')
             activity['average_cadence'] = item.get('average_cadence')
             activities.append(activity)
-        return activities
+        return sorted(activities,key=itemgetter('start_date_local'))

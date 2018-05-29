@@ -30,8 +30,6 @@ class LoginTest(FunctionalTest):
             'edith@mailinator.com'
         ))
 
-        self.browser.get_screenshot_as_file("screenshot" + self.id() + ".png")
-
         # In the future may want to check that she has been redirected to her summary page
         ### TODO
 

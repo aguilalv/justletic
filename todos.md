@@ -2,8 +2,6 @@
 FIXES
 =====
 
-[ ] Add test case to Strava Utils for case of receiving more than 1 activity
-
 TECH ROADMAP
 ============
 

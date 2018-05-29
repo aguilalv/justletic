@@ -288,6 +288,211 @@ class GetStravaActivities(TestCase):
             STRAVA_GET_ACTIVITIES_URL,
             body = mock_body
         )
+    
+    def register_get_activities_url_in_httpretty_success_return_two(self):
+        mock_body = (
+            '[{'
+                '"resource_state":2,'
+                '"athlete":{'
+                    '"id":21400992,'
+                    '"resource_state":1'
+                '},'
+                '"name":"Evening Run 2",'
+                '"distance":10123.5,'
+                '"moving_time":3601,'
+                '"elapsed_time":3601,'
+                '"total_elevation_gain":0.0,'
+                '"type":"Run",'
+                '"workout_type":3,'
+                '"id":1234567890,'
+                '"external_id":"12344567.fit",'
+                '"upload_id":1234,'
+                '"start_date":"2018-05-18T18:12:19Z",'
+                '"start_date_local":"2018-05-18T19:12:19Z",'
+                '"timezone":"(GMT+00:00) Europe/London",'
+                '"utc_offset":3600.0,'
+                '"start_latlng":['
+                    '51.579065,'
+                    '-0.150119'
+                '],'
+                '"end_latlng":['
+                    '51.579198,'
+                    '-0.150102'
+                '],'
+                '"location_city":null,'
+                '"location_state":null,'
+                '"location_country":"Reino Unido",'
+                '"start_latitude":51.579065,'
+                '"start_longitude":-0.150119,'
+                '"achievement_count":0,'
+                '"kudos_count":0,'
+                '"comment_count":0,'
+                '"athlete_count":2,'
+                '"photo_count":0,'
+                '"map":{'
+                    '"id":"a1574689979",'
+                    '"summary_polyline":"c`yyHfi\\\\mAs@aFhDkCbJiFrCaMaHuF{YyBo@iBmUaFoHmNcJJqEcJcOkEcV~AwGgCgG{E_JgBKaC|W}AlAuB_FlCkH}AiFu@sPbEmKsDwPtXlXfDnHbBhOsDba@nG~PdApH]dEbNdI|FtIbB`TxAHxDjXzF`HnG~A`HuBnAeJlE{DfBf@",'
+                    '"resource_state":2'
+                '},'
+                '"trainer":false,'
+                '"commute":false,'
+                '"manual":false,'
+                '"private":false,'
+                '"flagged":false,'
+                '"gear_id":null,'
+                '"from_accepted_tag":false,'
+                '"average_speed":2.741,'
+                '"max_speed":11.0,'
+                '"average_cadence":82.1,'
+                '"average_temp":32.0,'
+                '"has_heartrate":true,'
+                '"average_heartrate":151.1,'
+                '"max_heartrate":161.0,'
+                '"elev_high":103.0,'
+                '"elev_low":38.2,'
+                '"pr_count":0,'
+                '"total_photo_count":0,'
+                '"has_kudoed":false'
+            '},'
+            '{'
+                '"resource_state":2,'
+                '"athlete":{'
+                    '"id":21400992,'
+                    '"resource_state":1'
+                '},'
+                '"name":"Evening Run",'
+                '"distance":7972.5,'
+                '"moving_time":2909,'
+                '"elapsed_time":2909,'
+                '"total_elevation_gain":110.0,'
+                '"type":"Run",'
+                '"workout_type":3,'
+                '"id":1574689979,'
+                '"external_id":"2701804443.fit",'
+                '"upload_id":1693199790,'
+                '"start_date":"2018-05-15T18:12:19Z",'
+                '"start_date_local":"2018-05-15T19:12:19Z",'
+                '"timezone":"(GMT+00:00) Europe/London",'
+                '"utc_offset":3600.0,'
+                '"start_latlng":['
+                    '51.579065,'
+                    '-0.150119'
+                '],'
+                '"end_latlng":['
+                    '51.579198,'
+                    '-0.150102'
+                '],'
+                '"location_city":null,'
+                '"location_state":null,'
+                '"location_country":"Reino Unido",'
+                '"start_latitude":51.579065,'
+                '"start_longitude":-0.150119,'
+                '"achievement_count":0,'
+                '"kudos_count":0,'
+                '"comment_count":0,'
+                '"athlete_count":2,'
+                '"photo_count":0,'
+                '"map":{'
+                    '"id":"a1574689979",'
+                    '"summary_polyline":"c`yyHfi\\\\mAs@aFhDkCbJiFrCaMaHuF{YyBo@iBmUaFoHmNcJJqEcJcOkEcV~AwGgCgG{E_JgBKaC|W}AlAuB_FlCkH}AiFu@sPbEmKsDwPtXlXfDnHbBhOsDba@nG~PdApH]dEbNdI|FtIbB`TxAHxDjXzF`HnG~A`HuBnAeJlE{DfBf@",'
+                    '"resource_state":2'
+                '},'
+                '"trainer":false,'
+                '"commute":false,'
+                '"manual":false,'
+                '"private":false,'
+                '"flagged":false,'
+                '"gear_id":null,'
+                '"from_accepted_tag":false,'
+                '"average_speed":2.741,'
+                '"max_speed":11.6,'
+                '"average_cadence":79.1,'
+                '"average_temp":22.0,'
+                '"has_heartrate":true,'
+                '"average_heartrate":151.1,'
+                '"max_heartrate":161.0,'
+                '"elev_high":103.0,'
+                '"elev_low":38.2,'
+                '"pr_count":0,'
+                '"total_photo_count":0,'
+                '"has_kudoed":false'
+            '}]'            
+        )
+        httpretty.register_uri(
+            httpretty.GET,
+            STRAVA_GET_ACTIVITIES_URL,
+            body = mock_body
+        )
+    
+    def register_get_activities_url_in_httpretty_success_many_unordered(self):
+        mock_body = (
+            '[{'
+                '"distance":1000,'
+                '"moving_time":1000,'
+                '"total_elevation_gain":1.0,'
+                '"type":"Run",'
+                '"id":1111111111,'
+                '"start_date_local":"2018-05-28T19:12:19Z",'
+                '"average_speed":1.000,'
+                '"average_cadence":10.0'
+            '},'
+            '{'
+                '"distance":2000,'
+                '"moving_time":2000,'
+                '"total_elevation_gain":2.0,'
+                '"type":"Run",'
+                '"id":2222222222,'
+                '"start_date_local":"2016-05-28T19:12:19Z",'
+                '"average_speed":2.000,'
+                '"average_cadence":20.0'
+            '},'
+            '{'
+                '"distance":3000,'
+                '"moving_time":3000,'
+                '"total_elevation_gain":3.0,'
+                '"type":"Run",'
+                '"id":3333333333,'
+                '"start_date_local":"2018-05-28T21:12:19Z",'
+                '"average_speed":3.000,'
+                '"average_cadence":30.0'
+            '},'
+            '{'
+                '"distance":4000,'
+                '"moving_time":4000,'
+                '"total_elevation_gain":4.0,'
+                '"type":"Run",'
+                '"id":4444444444,'
+                '"start_date_local":"2018-02-28T19:12:19Z",'
+                '"average_speed":4.000,'
+                '"average_cadence":40.0'
+            '},'
+            '{'
+                '"distance":5000,'
+                '"moving_time":5000,'
+                '"total_elevation_gain":5.0,'
+                '"type":"Run",'
+                '"id":555555555,'
+                '"start_date_local":"2018-05-15T19:12:19Z",'
+                '"average_speed":5.000,'
+                '"average_cadence":50.0'
+            '},'
+            '{'
+                '"distance":6000,'
+                '"moving_time":6000,'
+                '"total_elevation_gain":6.0,'
+                '"type":"Run",'
+                '"id":6666666666,'
+                '"start_date_local":"2018-05-28T19:09:19Z",'
+                '"average_speed":6.000,'
+                '"average_cadence":60.0'
+            '}]'            
+        )
+        httpretty.register_uri(
+            httpretty.GET,
+            STRAVA_GET_ACTIVITIES_URL,
+            body = mock_body
+        )
+    
     def register_get_activities_url_in_httpretty_fault(self):
         mock_body = ('{'
             '"errors":"The set of errors associated with this fault",'
@@ -328,7 +533,7 @@ class GetStravaActivities(TestCase):
         )
 
     @httpretty.activate
-    def test_returns_list_with_length_the_number_of_activities(self):
+    def test_returns_list_with_length_the_number_of_activities_one_activity(self):
         """ Test that GetAthleteActivities returns a list with activities"""
         self.register_get_activities_url_in_httpretty_success_return_one()
         activities = get_strava_activities(token="87a407fc475a61ef97265b4bf8867f3ecfc102af")
@@ -337,7 +542,16 @@ class GetStravaActivities(TestCase):
         self.assertEqual(len(activities),1)
 
     @httpretty.activate
-    def test_returns_dictionary_for_each_activity(self):
+    def test_returns_list_with_length_the_number_of_activities_two_activities(self):
+        """ Test that GetAthleteActivities returns a list with activities"""
+        self.register_get_activities_url_in_httpretty_success_return_two()
+        activities = get_strava_activities(token="87a407fc475a61ef97265b4bf8867f3ecfc102af")
+        
+        self.assertIs(type(activities),list)
+        self.assertEqual(len(activities),2)
+    
+    @httpretty.activate
+    def test_returns_dictionary_for_each_activity_one_activity(self):
         """ Test that GetAthleteActivities returns a list with activities"""
         self.register_get_activities_url_in_httpretty_success_return_one()
         activities = get_strava_activities(token="87a407fc475a61ef97265b4bf8867f3ecfc102af")
@@ -354,6 +568,53 @@ class GetStravaActivities(TestCase):
         self.assertEqual(activity.get('average_heartrate'),151.1)
         self.assertEqual(activity.get('average_cadence'),79.1)
     
+    @httpretty.activate
+    def test_returns_dictionary_for_each_activity_two_activities(self):
+        """ Test that GetAthleteActivities returns a list with activities"""
+        self.register_get_activities_url_in_httpretty_success_return_two()
+        activities = get_strava_activities(token="87a407fc475a61ef97265b4bf8867f3ecfc102af")
+        
+        activity = activities[1]
+        self.assertIs(type(activity),dict)
+        self.assertEqual(activity.get('distance'),10123.5)
+        self.assertEqual(activity.get('moving_time'),3601)
+        self.assertEqual(activity.get('elevation_gain'),0.0)
+        self.assertEqual(activity.get('type'),"Run")
+        self.assertEqual(activity.get('strava_id'),1234567890)
+        self.assertEqual(activity.get('platform'),"Strava")
+        self.assertEqual(activity.get('start_date_local'),"2018-05-18T19:12:19Z")
+        self.assertEqual(activity.get('average_heartrate'),151.1)
+        self.assertEqual(activity.get('average_cadence'),82.1)
+
+        activity = activities[0]
+        self.assertIs(type(activity),dict)
+        self.assertEqual(activity.get('distance'),7972.5)
+        self.assertEqual(activity.get('moving_time'),2909)
+        self.assertEqual(activity.get('elevation_gain'),110.0)
+        self.assertEqual(activity.get('type'),"Run")
+        self.assertEqual(activity.get('strava_id'),1574689979)
+        self.assertEqual(activity.get('platform'),"Strava")
+        self.assertEqual(activity.get('start_date_local'),"2018-05-15T19:12:19Z")
+        self.assertEqual(activity.get('average_heartrate'),151.1)
+        self.assertEqual(activity.get('average_cadence'),79.1)
+    
+    @httpretty.activate
+    def test_returned_activity_list_in_ascending_order_by_date(self):
+        """ Test that GetAthleteActivities returns a list with activities"""
+        self.register_get_activities_url_in_httpretty_success_many_unordered()
+        activities = get_strava_activities(token="87a407fc475a61ef97265b4bf8867f3ecfc102af")
+        for i in range(1,len(activities)):
+            self.assertLess(
+                activities[i-1].get('start_date_local'),
+                activities[i].get('start_date_local')
+            )
+#            print(f"{i-1} >> {activities[i-1].get('start_date_local')}")
+#            print(f"{i} >> {activities[i].get('start_date_local')}")
+#            print(f"{activities[i-1].get('start_date_local') > activities[i].get('start_date_local')}")
+#            print(f"-------------------------------------")
+#        self.fail('xxx')
+
+
     @httpretty.activate
     def test_returns_empty_list_when_no_activities(self):
         """ Test that GetAthleteActivities returns an empty list when there are no activities"""
