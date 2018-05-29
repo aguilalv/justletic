@@ -2,15 +2,14 @@
 FIXES
 =====
 
-[ ] Review Strava helper module to account for receiving an error at token excange
 [ ] Add test case to Strava Utils for case of receiving more than 1 activity
-[ ] Add test case to Strava Utils for case of receiving 0 activities
-[ ] Design the error in Strava authorization ux flow and the page
-
 
 TECH ROADMAP
 ============
 
+[ ] Change to standard authentication library ... or ...
+[ ] It might be worth having separate tests for the authentication backend. Build them - Then use mocks to patch authentication and avoid retesting it in views
+[ ] Add a created field in the user model and initialize with datetime.now() in the create_user method of the user manager
 [ ] Add logging to Justletic code
     - Use JSON logging
     - Try to write logs asynchronously with a buffer or queue so the app can keep running
@@ -22,15 +21,14 @@ TECH ROADMAP
         }
     - Use logger configuration to structure the info
 [ ] Think if I need to use request.user inside the 'view detail' view and check that a user is logged in and that it is the same user in the session that the user id to show
-[ ] It might be worth having separate tests for the authentication backend. Build them - Then use mocks to patch authentication and avoid retesting it in views
-[ ] Write functional tests for all links, buttons, actions ... in the webpage
 [ ] Research if it is worth using Django Forms instead of nothing
-[ ] Add a created field in the user model and initialize with datetime.now() in the create_user method of the user manager
+[ ] Write functional tests for all links, buttons, actions ... in the webpage
 
 PRODUCT ROADMAP
 ===============
 
 [ ] Change danger color in bootstrap template to a nicer one
+[ ] Design the error in Strava authorization ux flow and the page
 
 AT SOME POINT
 =============

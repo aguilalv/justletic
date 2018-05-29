@@ -209,7 +209,7 @@ class ExchangeStravaCode(TestCase):
 
 class GetStravaActivities(TestCase):
     
-    def register_get_activities_url_in_httpretty_success(self):
+    def register_get_activities_url_in_httpretty_success_return_one(self):
         mock_body = (
             '[{'
                 '"resource_state":2,'
@@ -281,6 +281,13 @@ class GetStravaActivities(TestCase):
             body = mock_body
         )
 
+    def register_get_activities_url_in_httpretty_success_return_zero(self):
+        mock_body = ('[]')            
+        httpretty.register_uri(
+            httpretty.GET,
+            STRAVA_GET_ACTIVITIES_URL,
+            body = mock_body
+        )
     def register_get_activities_url_in_httpretty_fault(self):
         mock_body = ('{'
             '"errors":"The set of errors associated with this fault",'
@@ -292,13 +299,11 @@ class GetStravaActivities(TestCase):
             body = mock_body,
             status = 401
         )
-
-    
                 
     @httpretty.activate
     def test_sends_request_to_strava_for_activities(self):
         """ Test that GetAthleteActivities sends request for activities to Strava"""
-        self.register_get_activities_url_in_httpretty_success()
+        self.register_get_activities_url_in_httpretty_success_return_one()
         activities = get_strava_activities(token="87a407fc475a61ef97265b4bf8867f3ecfc102af")
         
         self.assertNotIsInstance(
@@ -313,7 +318,7 @@ class GetStravaActivities(TestCase):
     @httpretty.activate
     def test_sends_token_in_authorization_header(self):
         """ Test that GetAthleteActivities includes token in Authorization header"""
-        self.register_get_activities_url_in_httpretty_success()
+        self.register_get_activities_url_in_httpretty_success_return_one()
         activities = get_strava_activities(token="87a407fc475a61ef97265b4bf8867f3ecfc102af")
         
         authorization_header_sent = httpretty.last_request().headers.get('Authorization')
@@ -325,7 +330,7 @@ class GetStravaActivities(TestCase):
     @httpretty.activate
     def test_returns_list_with_length_the_number_of_activities(self):
         """ Test that GetAthleteActivities returns a list with activities"""
-        self.register_get_activities_url_in_httpretty_success()
+        self.register_get_activities_url_in_httpretty_success_return_one()
         activities = get_strava_activities(token="87a407fc475a61ef97265b4bf8867f3ecfc102af")
         
         self.assertIs(type(activities),list)
@@ -334,7 +339,7 @@ class GetStravaActivities(TestCase):
     @httpretty.activate
     def test_returns_dictionary_for_each_activity(self):
         """ Test that GetAthleteActivities returns a list with activities"""
-        self.register_get_activities_url_in_httpretty_success()
+        self.register_get_activities_url_in_httpretty_success_return_one()
         activities = get_strava_activities(token="87a407fc475a61ef97265b4bf8867f3ecfc102af")
         
         activity = activities[0]
@@ -348,6 +353,13 @@ class GetStravaActivities(TestCase):
         self.assertEqual(activity.get('start_date_local'),"2018-05-15T19:12:19Z")
         self.assertEqual(activity.get('average_heartrate'),151.1)
         self.assertEqual(activity.get('average_cadence'),79.1)
+    
+    @httpretty.activate
+    def test_returns_empty_list_when_no_activities(self):
+        """ Test that GetAthleteActivities returns an empty list when there are no activities"""
+        self.register_get_activities_url_in_httpretty_success_return_zero()
+        activities = get_strava_activities(token="87a407fc475a61ef97265b4bf8867f3ecfc102af")
+        self.assertEqual(activities,[])
 
     @httpretty.activate
     def test_returns_none_on_error(self):
