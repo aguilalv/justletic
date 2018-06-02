@@ -8,7 +8,6 @@ from django.contrib import messages
 
 from .forms import HeroForm
 from .models import Key
-from accounts.models import User
 
 from utils.strava_utils import STRAVA_AUTH_ERROR
 from utils.strava_utils import exchange_strava_code, get_strava_activities 

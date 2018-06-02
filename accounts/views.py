@@ -17,7 +17,7 @@ def login(request):
     """Check email and password received form a POST request and log user in"""
     email = request.POST['email']
     password = request.POST['password']
-    user = authenticate(email=email, password=password)
+    user = authenticate(username=email, password=password)
     if user is not None:
         auth_login(request, user)
     else:
@@ -35,7 +35,7 @@ def create_new_strava_user(request):
     if form.is_valid():
         email = form.cleaned_data.get('email')
         user_model = django.contrib.auth.get_user_model()
-        user = user_model.objects.create_user(email=email)
+        user = user_model.objects.create_user(username=email,email=email)
         auth_login(request, user)
     else:
         return render(request,'home.html',{'form': form})

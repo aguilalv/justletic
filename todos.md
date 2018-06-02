@@ -7,9 +7,6 @@ FIXES
 TECH ROADMAP
 ============
 
-[ ] **Change to standard authentication library** ... or ...
-[ ] It might be worth having separate tests for the authentication backend. Build them - Then use mocks to patch authentication and avoid retesting it in views
-[ ] Add a created field in the user model and initialize with datetime.now() in the create_user method of the user manager
 [ ] Add logging to Justletic code
     - Use JSON logging
     - Try to write logs asynchronously with a buffer or queue so the app can keep running
@@ -48,7 +45,3 @@ nosetests -v --with-coverage --cover-erase --cover-html
 set -a; source .env; set +a
 
 grep -r -l -e TODO  . | grep -e py | grep -v -e cover
-
-url = "https://www.strava.com/api/v3/athlete/activities"
-headers = {'Authorization': 'Bearer 245756813830c8e24116ce778dfabf2c827a079e'}
-r = requests.get(url,headers=headers)

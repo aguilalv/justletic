@@ -1,8 +1,8 @@
 """Functional tests for logging in and logging out of Justletic"""
 from selenium.common.exceptions import WebDriverException
+from django.contrib import auth
 
 from accounts.views import LOGIN_ERROR
-from accounts.factories import UserFactory as AccountsUserFactory
 
 from .base import FunctionalTest
 
@@ -12,9 +12,11 @@ class LoginTest(FunctionalTest):
 
     def setUp(self):
         """Create a registered user as set-up for all tests"""
-        self.user = AccountsUserFactory.create(
-            email='edith@mailinator.com',
-            password='epwd'
+        user_model = auth.get_user_model()
+        self.existing_user = user_model.objects.create_user(
+            'edith@mailinator.com',
+            'edith@mailinator.com',
+            'epwd'
         )
         return super(LoginTest, self).setUp()
 

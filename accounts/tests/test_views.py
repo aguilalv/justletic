@@ -8,9 +8,7 @@ from django.utils.html import escape
 from django.contrib import auth
 from django.urls import reverse
 
-from ..models import User
 from ..views import LOGIN_ERROR
-from ..factories import UserFactory as AccountsUserFactory
 
 from utils.strava_utils import STRAVA_CLIENT_ID, STRAVA_AUTHORIZE_URL
 from keys.forms import HeroForm
@@ -21,10 +19,13 @@ class LoginViewTest(TestCase):
 
     def setUp(self):
         """Create a user in the database befor runinng each test"""
-        self.existing_user = AccountsUserFactory.create(
-            email='edith@mailinator.com',
-            password='epwd'
+        user_model = auth.get_user_model()
+        self.existing_user = user_model.objects.create_user(
+            'edith@mailinator.com',
+            'edith@mailinator.com',
+            'epwd'
         )
+
 
     def test_post_logs_user_in_if_password_correct(self):
         """Test that a POST request with existing user and correct password, logs the user in"""
@@ -85,15 +86,17 @@ class LogoutViewTest(TestCase):
     """Tests for accounts logout view"""
 
     def setUp(self):
-        self.existing_user = AccountsUserFactory.create(
-            email='edith@mailinator.com',
-            password='epwd'
+        user_model = auth.get_user_model()
+        self.existing_user = user_model.objects.create_user(
+            'edith@mailinator.com',
+            'edith@mailinator.com',
+            'epwd'
         )
         auth.authenticate(
-            email=self.existing_user.email,
+            username=self.existing_user.email,
             password=self.existing_user.password
         )
-        self.client.login(email='edith@mailinator.com', password='epwd')
+        self.client.login(username='edith@mailinator.com', password='epwd')
 
     def test_redirects_to_home_page(self):
         """Test that logout view redirects to the home page"""
@@ -116,15 +119,16 @@ class CreateNewStravaUserTest(TestCase):
 
     def test_creates_user_if_doesnt_exist(self):
         """ Test that create new strava user view creates a new user if one with the requested email address does not exist """
-        self.assertEqual(User.objects.count(), 0)
+        user_model = auth.get_user_model()
+        self.assertEqual(user_model.objects.count(), 0)
 
         self.client.post(
             '/accounts/new/strava',
             data={'email':'edith@mailinator.com'}
         ) 
         
-        self.assertEqual(User.objects.count(), 1)
-        new_user = User.objects.first()
+        self.assertEqual(user_model.objects.count(), 1)
+        new_user = user_model.objects.first()
         self.assertEqual(new_user.email, 'edith@mailinator.com')
     
     def test_logs_user_in(self):

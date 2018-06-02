@@ -1,10 +1,9 @@
 """Unit tests for Keys models"""
 from django.test import TestCase
+from django.contrib import auth
 
 from ..models import Key
 
-from accounts.models import User
-from accounts.factories import UserFactory as AccountsUserFactory
 
 class KeyModelTest(TestCase):
 
@@ -12,11 +11,12 @@ class KeyModelTest(TestCase):
 
     def test_saving_and_retrieving_keys(self):
         """Test that Key model can be saved and retrieved"""
-        existing_user = AccountsUserFactory.create(
+        user_model = auth.get_user_model() 
+        existing_user = user_model.objects.create_user(
+            username='edith@mailinator.com',
             email='edith@mailinator.com',
             password='epwd'
         )
-        
         key = Key(user=existing_user,token='abcd',strava_id='10')
         key.save()
 

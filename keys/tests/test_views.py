@@ -6,7 +6,6 @@ from django.utils.html import escape
 from django.contrib import auth
 
 from ..models import Key
-from accounts.factories import UserFactory as AccountsUserFactory
 
 from utils.strava_utils import STRAVA_AUTH_ERROR
 
@@ -25,15 +24,17 @@ class StravaTokenExchangeView(TestCase):
 
     def create_user_and_login(self,email,password):
         """Helper function to create a user and log it in"""
-        self.existing_user = AccountsUserFactory.create(
+        user_model = auth.get_user_model()
+        self.existing_user = user_model.objects.create_user(
+            username=email,
             email=email,
             password=password
         )
         auth.authenticate(
-            email=self.existing_user.email,
+            username=self.existing_user.email,
             password=self.existing_user.password
         )
-        self.client.login(email='edith@mailinator.com', password='epwd')
+        self.client.login(username='edith@mailinator.com', password='epwd')
 
     def setUp(self):
         """Create a user in the database and log it in before runinng each test"""
