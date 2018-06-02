@@ -13,6 +13,7 @@ from ..views import LOGIN_ERROR
 from ..factories import UserFactory as AccountsUserFactory
 
 from utils.strava_utils import STRAVA_CLIENT_ID, STRAVA_AUTHORIZE_URL
+from keys.forms import HeroForm
 
 class LoginViewTest(TestCase):
 
@@ -158,14 +159,49 @@ class CreateNewStravaUserTest(TestCase):
             data={'email':'edith@mailinator.com'}
         ) 
         self.assertRedirects(response,'http://www.google.com',fetch_redirect_response=False)
+    
+    def test_renders_home_if_empty_email(self):
+        """ Test that create new strava user view renders home
+        if it receives an empty email"""
+        response = self.client.post(
+            '/accounts/new/strava',
+            data={'email':''}
+        )
+        self.assertTemplateUsed(response, 'home.html')
 
-#    def test_xxx_if_email_is_empty(self):
-#        """ Test that create new strava user view does xxx if email is empty """
-#        self.fail()
+    def test_shows_message_if_empty_email(self):
+        """ Test that create new strava user view shows an error message
+        if it receives an empty email"""
+        expected_error = escape(HeroForm.EMAIL_FIELD_ERROR)
+        response = self.client.post(
+            '/accounts/new/strava',
+            data={'email':''}
+        )
+        self.assertContains(response, expected_error)
+
+    def test_renders_home_if_invalid_email_format(self):
+        """ Test that create new strava user view renders home
+        if it receives an empty email"""
+        response = self.client.post(
+            '/accounts/new/strava',
+            data={'email':'wrong_format_email'}
+        )
+        self.assertTemplateUsed(response, 'home.html')
+
+    def test_shows_message_if_empty_email(self):
+        """ Test that create new strava user view shows an error message
+        if it receives an empty email"""
+        expected_error = escape(HeroForm.EMAIL_FIELD_ERROR)
+        response = self.client.post(
+            '/accounts/new/strava',
+            data={'email':'wrong_format_email'}
+        )
+        self.assertContains(response, expected_error)
+
 
 #    def test_does_not_create_user_if_exists(self):
 #        """ Test that create new strava user does not create a new user if one with requested email already exists """
 #        self.fail()
 
-#    def test_redirects_to_login_page_if_exists(self):
+#    def test_redirects_to_login_page_if_user_exists(self):
         

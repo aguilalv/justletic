@@ -62,8 +62,6 @@ class StravaOAuthCodeRequestUrl(TestCase):
             parameters['scope'][0]
         )
 
-
-
 class RequestStravaOAuthCodeTest(TestCase):
     
     """Unit Tests for helper function that requests oAuth Code"""
@@ -153,7 +151,6 @@ class ExchangeStravaCode(TestCase):
             STRAVA_CODE_EXCHANGE_URL,
             body = mock_body
         )
-
 
     @httpretty.activate
     def test_sends_get_request_with_code_received(self):

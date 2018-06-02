@@ -7,6 +7,8 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth import authenticate
+
+from keys.forms import HeroForm
 from utils.strava_utils import strava_oauth_code_request_url
 
 LOGIN_ERROR = 'Ooops, wrong user or password'
@@ -28,9 +30,14 @@ def logout(request):
     return redirect(reverse('home'))
 
 def create_new_strava_user(request):
-    email = request.POST['email']
-    user_model = django.contrib.auth.get_user_model()
-    user = user_model.objects.create_user(email=email)
-    auth_login(request, user)
+#    email = request.POST['email']
+    form = HeroForm(request.POST)
+    if form.is_valid():
+        email = form.cleaned_data.get('email')
+        user_model = django.contrib.auth.get_user_model()
+        user = user_model.objects.create_user(email=email)
+        auth_login(request, user)
+    else:
+        return render(request,'home.html',{'form': form})
 
     return redirect(strava_oauth_code_request_url())

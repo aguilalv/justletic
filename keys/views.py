@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib import messages
 
+from .forms import HeroForm
 from .models import Key
 from accounts.models import User
 
@@ -14,7 +15,8 @@ from utils.strava_utils import exchange_strava_code, get_strava_activities
 
 def home_page(request):
     """Render Justletic home page"""
-    return render(request, 'home.html')
+    form = HeroForm()
+    return render(request, 'home.html', {'form': form})
 
 def strava_token_exchange(request):
     """Receives Strava authorisation code and sends request for user token"""

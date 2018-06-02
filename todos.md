@@ -2,10 +2,12 @@
 FIXES
 =====
 
+[ ] Correct UNIQUE validation error when entering an existing user in hero section
+
 TECH ROADMAP
 ============
 
-[ ] Change to standard authentication library ... or ...
+[ ] **Change to standard authentication library** ... or ...
 [ ] It might be worth having separate tests for the authentication backend. Build them - Then use mocks to patch authentication and avoid retesting it in views
 [ ] Add a created field in the user model and initialize with datetime.now() in the create_user method of the user manager
 [ ] Add logging to Justletic code
@@ -18,15 +20,16 @@ TECH ROADMAP
          "pageId" : "sign-up"
         }
     - Use logger configuration to structure the info
-[ ] Think if I need to use request.user inside the 'view detail' view and check that a user is logged in and that it is the same user in the session that the user id to show
-[ ] Research if it is worth using Django Forms instead of nothing
 [ ] Write functional tests for all links, buttons, actions ... in the webpage
 
 PRODUCT ROADMAP
 ===============
 
+[ ] 'Athlete detail view' (think if best to use request.user to use authenticated user)
 [ ] Change danger color in bootstrap template to a nicer one
 [ ] Design the error in Strava authorization ux flow and the page
+[ ] Design key journeys and pages
+[ ] Add sportstracks support
 
 AT SOME POINT
 =============
