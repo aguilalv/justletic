@@ -10,6 +10,8 @@
 ## Fixes ##
 
 - [ ] Correct UNIQUE validation error when entering an existing user in hero section
+- [ ] Change all Docstrings in tests to reflect the package.name of the class
+
 
 ## Tech roadmap ##
 
@@ -28,6 +30,7 @@
     - See [this] (https://lincolnloop.com/blog/disabling-error-emails-django/)
     - and [this] (https://sentry.io/features/) 
 - [ ] Write functional tests for all links, buttons, actions ... in the webpage
+- [ ] Write funcitonal tests to test logs work as expected
 
 ## Product roadmap ##
 

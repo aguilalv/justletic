@@ -1,6 +1,7 @@
 """ Views to manage Keys for Justletic external services """
 import requests
 import os
+import logging
 
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -12,10 +13,13 @@ from .models import Key
 from utils.strava_utils import STRAVA_AUTH_ERROR
 from utils.strava_utils import exchange_strava_code, get_strava_activities
 
+logger = logging.getLogger(__name__)
 
 def home_page(request):
     """Render Justletic home page"""
     form = HeroForm()
+    
+    logger.info("This is the message at the end of home view [TO CHANGE]")
     return render(request, "home.html", {"form": form})
 
 
@@ -27,6 +31,7 @@ def strava_token_exchange(request):
 
     if not token or not strava_id:
         messages.add_message(request, messages.ERROR, STRAVA_AUTH_ERROR)
+        logger.info("This is the message on error at StravaTokenExchange view [TO CHANGE]")
         return render(request, "home.html")
 
     logged_in_user = request.user
@@ -36,6 +41,7 @@ def strava_token_exchange(request):
     activities = get_strava_activities(token)
 
     if activities:
+        logger.info("This is the message at the end of StravaTokenExchange view [TO CHANGE]")
         return render(
             request,
             "congratulations.html",
@@ -43,4 +49,5 @@ def strava_token_exchange(request):
         )
     else:
         messages.add_message(request, messages.ERROR, STRAVA_AUTH_ERROR)
+        logger.info("This is the message on error at StravaTokenExchange view [TO CHANGE]")
         return render(request, "home.html")

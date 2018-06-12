@@ -1,5 +1,7 @@
 """ Views to manage Justletic user accounts """
 import os
+import logging
+
 import django.contrib.auth
 from django.contrib import messages
 
@@ -13,6 +15,7 @@ from utils.strava_utils import strava_oauth_code_request_url
 
 LOGIN_ERROR = "Ooops, wrong user or password"
 
+logger = logging.getLogger(__name__)
 
 def login(request):
     """Check email and password received form a POST request and log user in"""
@@ -23,12 +26,15 @@ def login(request):
         auth_login(request, user)
     else:
         messages.add_message(request, messages.ERROR, LOGIN_ERROR)
+
+    logger.info("This is the message at the end of login view [TO CHANGE]")
     return render(request, "home.html")
 
 
 def logout(request):
     """Log out user currently logged in"""
     auth_logout(request)
+    logger.info("This is the message at the end of logout view [TO CHANGE]")
     return redirect(reverse("home"))
 
 
@@ -42,4 +48,5 @@ def create_new_strava_user(request):
     else:
         return render(request, "home.html", {"form": form})
 
+    logger.info("This is the message at the end of create new strava user view [TO CHANGE]")
     return redirect(strava_oauth_code_request_url())
