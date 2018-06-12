@@ -14,7 +14,7 @@ class HomePageTest(TestCase):
         response = self.client.get("/")
         self.assertEqual(mock_logger.info.called,True)
         message_used = mock_logger.info.call_args
-        self.assertEqual(call("This is the message at the end of home view [TO CHANGE]"),message_used)
+        self.assertEqual(call("keys.views.home - end"),message_used)
 
 
 class StravaTokenExchangeView(TestCase):
@@ -46,7 +46,7 @@ class StravaTokenExchangeView(TestCase):
         response = self.client.get("/users/stravatokenexchange?state=&code=abc123")
         self.assertEqual(mock_logger.info.called,True)
         message_used = mock_logger.info.call_args
-        self.assertEqual(call("This is the message at the end of StravaTokenExchange view [TO CHANGE]"),message_used)
+        self.assertEqual(call("keys.views.stravatokenexchange - end"),message_used)
 
     @patch("keys.views.logger")
     @patch("keys.views.exchange_strava_code")
@@ -58,7 +58,7 @@ class StravaTokenExchangeView(TestCase):
         response = self.client.get("/users/stravatokenexchange?state=&code=abc123")
         self.assertEqual(mock_logger.info.called,True)
         message_used = mock_logger.info.call_args
-        self.assertEqual(call("This is the message on error at StravaTokenExchange view [TO CHANGE]"),message_used)
+        self.assertEqual(call("keys.views.stravatokenexchange - error"),message_used)
 
     @patch("keys.views.logger")
     @patch("keys.views.exchange_strava_code")
@@ -70,7 +70,7 @@ class StravaTokenExchangeView(TestCase):
         response = self.client.get("/users/stravatokenexchange?state=&code=abc123")
         self.assertEqual(mock_logger.info.called,True)
         message_used = mock_logger.info.call_args
-        self.assertEqual(call("This is the message on error at StravaTokenExchange view [TO CHANGE]"),message_used)
+        self.assertEqual(call("keys.views.stravatokenexchange - error"),message_used)
 
     @patch("keys.views.logger")
     @patch("keys.views.exchange_strava_code")
@@ -96,7 +96,7 @@ class StravaTokenExchangeView(TestCase):
         response = self.client.get("/users/stravatokenexchange?state=&code=abc123")
         self.assertEqual(mock_logger.info.called,True)
         message_used = mock_logger.info.call_args
-        self.assertEqual(call("This is the message at the end of StravaTokenExchange view [TO CHANGE]"),message_used)
+        self.assertEqual(call("keys.views.stravatokenexchange - end"),message_used)
 
     @patch("keys.views.logger")
     @patch("keys.views.exchange_strava_code")
@@ -109,22 +109,4 @@ class StravaTokenExchangeView(TestCase):
         response = self.client.get("/users/stravatokenexchange?state=&code=abc123")
         self.assertEqual(mock_logger.info.called,True)
         message_used = mock_logger.info.call_args
-        self.assertEqual(call("This is the message on error at StravaTokenExchange view [TO CHANGE]"),message_used)
-
-#
-#    @patch("keys.views.exchange_strava_code")
-#    @patch("keys.views.get_strava_activities")
-#    def test_renders_home_on_failure(self, mock_get_activities, mock_exchange_code):
-#        mock_exchange_code.return_value = ("Token", "Id")
-#        mock_get_activities.return_value = None
-#        response = self.client.get("/users/stravatokenexchange?state=&code=abc123")
-#        self.assertTemplateUsed(response, "home.html")
-#
-#    @patch("keys.views.exchange_strava_code")
-#    @patch("keys.views.get_strava_activities")
-#    def test_shows_message_on_failure(self, mock_get_activities, mock_exchange_code):
-#        mock_exchange_code.return_value = ("Token", "Id")
-#        mock_get_activities.return_value = None
-#        expected_error = escape(STRAVA_AUTH_ERROR)
-#        response = self.client.get("/users/stravatokenexchange?state=&code=abc123")
-#        self.assertContains(response, expected_error)
+        self.assertEqual(call("keys.views.stravatokenexchange - error"),message_used)

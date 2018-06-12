@@ -19,7 +19,7 @@ def home_page(request):
     """Render Justletic home page"""
     form = HeroForm()
     
-    logger.info("This is the message at the end of home view [TO CHANGE]")
+    logger.info("keys.views.home - end")
     return render(request, "home.html", {"form": form})
 
 
@@ -31,7 +31,7 @@ def strava_token_exchange(request):
 
     if not token or not strava_id:
         messages.add_message(request, messages.ERROR, STRAVA_AUTH_ERROR)
-        logger.info("This is the message on error at StravaTokenExchange view [TO CHANGE]")
+        logger.info("keys.views.stravatokenexchange - error")
         return render(request, "home.html")
 
     logged_in_user = request.user
@@ -41,7 +41,7 @@ def strava_token_exchange(request):
     activities = get_strava_activities(token)
 
     if activities:
-        logger.info("This is the message at the end of StravaTokenExchange view [TO CHANGE]")
+        logger.info("keys.views.stravatokenexchange - end")
         return render(
             request,
             "congratulations.html",
@@ -49,5 +49,5 @@ def strava_token_exchange(request):
         )
     else:
         messages.add_message(request, messages.ERROR, STRAVA_AUTH_ERROR)
-        logger.info("This is the message on error at StravaTokenExchange view [TO CHANGE]")
+        logger.info("keys.views.stravatokenexchange - error")
         return render(request, "home.html")

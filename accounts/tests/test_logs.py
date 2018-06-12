@@ -26,7 +26,7 @@ class LoginViewTest(TestCase):
 #        user = auth.get_user(self.client)
         self.assertEqual(mock_logger.info.called,True)
         message_used = mock_logger.info.call_args
-        self.assertEqual(call("This is the message at the end of login view [TO CHANGE]"),message_used)
+        self.assertEqual(call("accounts.views.login - end"),message_used)
 
 #    def test_wrong_password_XXX(self):
 #
@@ -52,7 +52,7 @@ class LogoutViewTest(TestCase):
         self.client.post("/accounts/logout")
         self.assertEqual(mock_logger.info.called,True)
         message_used = mock_logger.info.call_args
-        self.assertEqual(call("This is the message at the end of logout view [TO CHANGE]"),message_used)
+        self.assertEqual(call("accounts.views.logout - end"),message_used)
 
 class CreateNewStravaUserTest(TestCase):
 
@@ -65,7 +65,7 @@ class CreateNewStravaUserTest(TestCase):
         )
         self.assertEqual(mock_logger.info.called,True)
         message_used = mock_logger.info.call_args
-        self.assertEqual(call("This is the message at the end of create new strava user view [TO CHANGE]"),message_used)
+        self.assertEqual(call("accounts.views.createnewstravauser - end"),message_used)
 
 #    def test_does_not_create_user_if_exists(self):
 #        """ Test that create new strava user does not create a new user if one with requested email already exists """

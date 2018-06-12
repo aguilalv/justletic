@@ -27,14 +27,14 @@ def login(request):
     else:
         messages.add_message(request, messages.ERROR, LOGIN_ERROR)
 
-    logger.info("This is the message at the end of login view [TO CHANGE]")
+    logger.info("accounts.views.login - end")
     return render(request, "home.html")
 
 
 def logout(request):
     """Log out user currently logged in"""
     auth_logout(request)
-    logger.info("This is the message at the end of logout view [TO CHANGE]")
+    logger.info("accounts.views.logout - end")
     return redirect(reverse("home"))
 
 
@@ -48,5 +48,5 @@ def create_new_strava_user(request):
     else:
         return render(request, "home.html", {"form": form})
 
-    logger.info("This is the message at the end of create new strava user view [TO CHANGE]")
+    logger.info("accounts.views.createnewstravauser - end")
     return redirect(strava_oauth_code_request_url())
