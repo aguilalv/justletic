@@ -25,12 +25,14 @@
          "pageId" : "sign-up"
         }
     - Use logger configuration to structure the info
-    - Application should output to the console. Where to store logs is a deployment concern, not an application concern
+    - [x] Application should output to the console. Where to store logs is a deployment concern, not an application concern
+- [ ] Reorganise template architecture to follow best practices
 - [ ] Research and try to set-up sentry as an error reporting service
     - See [this] (https://lincolnloop.com/blog/disabling-error-emails-django/)
     - and [this] (https://sentry.io/features/) 
 - [ ] Write functional tests for all links, buttons, actions ... in the webpage
 - [ ] Write funcitonal tests to test logs work as expected
+- [ ] Write functional tests for logs in all important scenarios
 
 ## Product roadmap ##
 
