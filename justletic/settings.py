@@ -13,6 +13,10 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import sys
 import os
 
+import structlog
+import structlog.processors
+import structlog.stdlib
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -106,13 +110,13 @@ AUTHENTICATION_BACKENDS = [
 
 # Test runner
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+#TEST_RUNNER = 'utils.test_runner.DisableLoggingNoseTestSuiteRunner'
 NOSE_ARGS = [
     '--with-coverage',
     '--cover-package=accounts,keys, utils',
     '--cover-html',
     '--cover-erase',
     "--logging-filter='selenium'",
-#    '--nologcapture',
 ]
 
 # Internationalization
@@ -143,7 +147,6 @@ LOGGING = {
         'console': {
             'class': 'logging.StreamHandler',
             'level': 'INFO',
-#            'stream': 'ext://sys.stdout',
             'stream': sys.stdout,
         },
     },
@@ -151,8 +154,22 @@ LOGGING = {
         '': {
             'handlers': ['console'],
             'level': 'INFO',
-            'propagate': True,
+            'propagate': False,
         },
     },
 }
 
+structlog.configure(
+    processors = [
+        structlog.stdlib.add_logger_name,
+        structlog.stdlib.add_log_level,
+        structlog.processors.TimeStamper(fmt="iso", utc=True),
+        structlog.processors.format_exc_info,
+        structlog.processors.JSONRenderer(indent=1, sort_keys=True),
+    ],
+    wrapper_class = structlog.stdlib.BoundLogger
+)
+#    processors=[
+#       structlog.stdlib.PositionalArgumentsFormatter(),
+#        structlog.processors.StackInfoRenderer(),
+#    ],

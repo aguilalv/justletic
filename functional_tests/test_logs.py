@@ -32,8 +32,17 @@ class LogsTest(FunctionalTest):
             self.login_helper('edith@mailinator.com', 'epwd')
 
         # An systems admin that was casually looking at the console sees 2 messages with the expected format
+    
+        print(f'>>> {captured_logs.records}')
+
         self.assertEqual(captured_logs.records[0].msg,"keys.views.home - end")
-        self.assertEqual(captured_logs.records[1].msg,"accounts.views.login - end")
+        logged_message = captured_logs.records[1].msg 
+        self.assertIn("{", logged_message)
+        self.assertIn('"event": "Successful login"', logged_message)
+        self.assertIn('"logger": "accounts.views"', logged_message)
+        self.assertIn('"timestamp":', logged_message)
+        self.assertIn('"user": "edith@mailinator.com"', logged_message)
+        self.assertIn("}", logged_message)
         
         #Satisfied she goes to sleep (and the admin too)
 
@@ -46,8 +55,18 @@ class LogsTest(FunctionalTest):
             self.login_helper('edith@mailinator.com', 'wrongpwd')
 
         # An systems admin that was casually looking at the console sees 2 messages with the expected format
+        
+        print(f'>>> {captured_logs.records}')
+        
         self.assertEqual(captured_logs.records[0].msg,"keys.views.home - end")
-        self.assertEqual(captured_logs.records[1].msg,"accounts.views.login - end")
+        logged_message = captured_logs.records[1].msg 
+        self.assertIn("{", logged_message)
+        self.assertIn('"email": "edith@mailinator.com"', logged_message)
+        self.assertIn('"event": "Failed login attempt"', logged_message) 
+        self.assertIn('"logger": "accounts.views"', logged_message)
+        self.assertIn('"password": "wrongpwd"', logged_message)
+        self.assertIn('"timestamp":', logged_message)
+        self.assertIn('}', logged_message)
 
 #        # An error message is logged in the server console
 #        # The format of the messages is xxx
