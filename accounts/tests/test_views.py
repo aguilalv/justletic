@@ -26,7 +26,7 @@ class LoginViewTest(TestCase):
         )
 
     def test_post_logs_user_in_if_password_correct(self):
-        """Test that a POST request with existing user and correct password, logs the user in"""
+        """Test accounts.views.login logs the user in when receives existing user and correct password"""
         self.client.post(
             "/accounts/login",
             data={"email": "edith@mailinator.com", "password": "epwd"},
@@ -38,7 +38,7 @@ class LoginViewTest(TestCase):
     #    def test_post_success_redirects_to_user_summary(self):
 
     def test_post_success_renders_home_page(self):
-        """Test that a successful login renders the home page"""
+        """Test accounts.views.login renders the home page after successful login"""
         response = self.client.post(
             "/accounts/login",
             data={"email": "edith@mailinator.com", "password": "epwd"},
@@ -46,7 +46,7 @@ class LoginViewTest(TestCase):
         self.assertTemplateUsed(response, "home.html")
 
     def test_post_wrong_password_renders_home_page(self):
-        """Test that a post request with existing user and wrong password renders the home page"""
+        """Test accounts.views.loging renders the home page when receives existing user and wrong password"""
         response = self.client.post(
             "/accounts/login",
             data={"email": "edith@mailinator.com", "password": "wrongpwd"},
@@ -54,7 +54,7 @@ class LoginViewTest(TestCase):
         self.assertTemplateUsed(response, "home.html")
 
     def test_post_wrong_password_shows_error(self):
-        """Test that a post request with existing user and wrong password displays an error"""
+        """Test accounts.views.login renders expectec error when receives existing user and wrong password"""
         response = self.client.post(
             "/accounts/login",
             data={"email": "edith@mailinator.com", "password": "wrongpwd"},
@@ -63,7 +63,7 @@ class LoginViewTest(TestCase):
         self.assertContains(response, expected_error)
 
     def test_post_non_existing_user_renders_home_page(self):
-        """Test that a post request with non existing user renders the home page"""
+        """Test accounts.views.login renders home page when receives non-existing user"""
         response = self.client.post(
             "/accounts/login",
             data={"email": "non_existent@non.com", "password": "wrongpwd"},
@@ -71,7 +71,7 @@ class LoginViewTest(TestCase):
         self.assertTemplateUsed(response, "home.html")
 
     def test_post_non_existing_user_shows_error(self):
-        """Test that a post request with non existing user shows an error message"""
+        """Test accounts.views.login shows expected message when receives non-existing user"""
         response = self.client.post(
             "/accounts/login",
             data={"email": "non_existent@non.com", "password": "wrongpwd"},
@@ -85,6 +85,7 @@ class LogoutViewTest(TestCase):
     """Tests for accounts logout view"""
 
     def setUp(self):
+        """Create a user in the database befor runinng each test"""
         user_model = auth.get_user_model()
         self.existing_user = user_model.objects.create_user(
             "edith@mailinator.com", "edith@mailinator.com", "epwd"
@@ -95,12 +96,12 @@ class LogoutViewTest(TestCase):
         self.client.login(username="edith@mailinator.com", password="epwd")
 
     def test_redirects_to_home_page(self):
-        """Test that logout view redirects to the home page"""
+        """Test accounts.views.logout redirects to home page"""
         response = self.client.post("/accounts/logout")
         self.assertRedirects(response, reverse("home"))
 
     def test_logs_user_out(self):
-        """Test that logout view logs the current user out"""
+        """Test accounts.views.logout logs current user out"""
         self.client.post("/accounts/logout")
         user = auth.get_user(self.client)
         self.assertFalse(user.is_authenticated)
@@ -111,7 +112,7 @@ class CreateNewStravaUserTest(TestCase):
     """ Tests for accounts create_new_strava_user view """
 
     def test_creates_user_if_doesnt_exist(self):
-        """ Test that create new strava user view creates a new user if one with the requested email address does not exist """
+        """ Test accounts.views.create_new_strava_user creates new user if one with the requested email address does not exist """
         user_model = auth.get_user_model()
         self.assertEqual(user_model.objects.count(), 0)
 
@@ -122,7 +123,7 @@ class CreateNewStravaUserTest(TestCase):
         self.assertEqual(new_user.email, "edith@mailinator.com")
 
     def test_logs_user_in(self):
-        """ Test that create new strava user view logs in the user with the requested email address  """
+        """ Test accounts.views.create_new_strava_user logs in user with requested email address"""
         self.client.post("/accounts/new/strava", data={"email": "edith@mailinator.com"})
 
         user = auth.get_user(self.client)
@@ -131,8 +132,7 @@ class CreateNewStravaUserTest(TestCase):
 
     @patch("accounts.views.strava_oauth_code_request_url")
     def test_gets_url_to_request_code_from_strava_utils_module(self, mock):
-        """Test that create new strava user view calls the strava utils
-        helper module to get the url to request an oAuth code"""
+        """Test accounts.views.create_new_strava_user calls strava utils helper module to get url to request oAuth code"""
         mock.return_value = "www.google.com"
         response = self.client.post(
             "/accounts/new/strava", data={"email": "edith@mailinator.com"}
@@ -141,8 +141,7 @@ class CreateNewStravaUserTest(TestCase):
 
     @patch("accounts.views.strava_oauth_code_request_url")
     def test_redirects_to_url_returned_by_strava_utils_module(self, mock):
-        """Test that create new strava user view redirects to the url
-        returned by the strava utils helper module"""
+        """Test accounts.views.create_new_strava_user redirects to url returned by strava utils helper module"""
         mock.return_value = "http://www.google.com"
         response = self.client.post(
             "/accounts/new/strava", data={"email": "edith@mailinator.com"}
@@ -152,29 +151,25 @@ class CreateNewStravaUserTest(TestCase):
         )
 
     def test_renders_home_if_empty_email(self):
-        """ Test that create new strava user view renders home
-        if it receives an empty email"""
+        """Test accounts.views.create_new_strava_user renders home if receives empty email"""
         response = self.client.post("/accounts/new/strava", data={"email": ""})
         self.assertTemplateUsed(response, "home.html")
 
     def test_shows_message_if_empty_email(self):
-        """ Test that create new strava user view shows an error message
-        if it receives an empty email"""
+        """Test accounts.views.create_new_strava_user shows error message if receives empty email"""
         expected_error = escape(HeroForm.EMAIL_FIELD_ERROR)
         response = self.client.post("/accounts/new/strava", data={"email": ""})
         self.assertContains(response, expected_error)
 
     def test_renders_home_if_invalid_email_format(self):
-        """ Test that create new strava user view renders home
-        if it receives an empty email"""
+        """ Test accounts.views.create_new_strava_user renders home if receives empty email"""
         response = self.client.post(
             "/accounts/new/strava", data={"email": "wrong_format_email"}
         )
         self.assertTemplateUsed(response, "home.html")
 
     def test_shows_message_if_empty_email(self):
-        """ Test that create new strava user view shows an error message
-        if it receives an empty email"""
+        """ Test accounts.views.create_new_strava_user shows error message if receives empty email"""
         expected_error = escape(HeroForm.EMAIL_FIELD_ERROR)
         response = self.client.post(
             "/accounts/new/strava", data={"email": "wrong_format_email"}

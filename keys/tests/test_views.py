@@ -15,7 +15,7 @@ class HomePageTest(TestCase):
     """Unit Tests for the Home Page view"""
 
     def test_uses_home_template(self):
-        """Test that home page view renders the right template"""
+        """Test keys.views.home renders right template"""
         response = self.client.get("/")
         self.assertTemplateUsed(response, "home.html")
 
@@ -44,7 +44,7 @@ class StravaTokenExchangeView(TestCase):
     def test_calls_exchange_strava_code_helper_function(
         self, mock_get_activities, mock_exchange_code
     ):
-        """Test that it calls the exchange strava code helper function"""
+        """Test keys.views.strava_token_exchange calls exchange strava code helper function"""
         mock_exchange_code.return_value = ("Token", "Strava_id")
         response = self.client.get("/users/stravatokenexchange?state=&code=abc123")
         self.assertTrue(mock_exchange_code.called)
@@ -54,7 +54,7 @@ class StravaTokenExchangeView(TestCase):
     def test_exchange_strava_code_receives_code_from_request(
         self, mock_get_activities, mock_exchange_code
     ):
-        """Test that it calls the exchange strava code helper function"""
+        """Test keys.views.strava_token_exchange sends code received to exchange strava code helper function"""
         mock_exchange_code.return_value = ("Token", "Strava_id")
         response = self.client.get("/users/stravatokenexchange?state=&code=abc123")
         used_args = mock_exchange_code.call_args
@@ -65,7 +65,7 @@ class StravaTokenExchangeView(TestCase):
     def test_shows_error_message_when_receives_none_as_token(
         self, mock_get_activities, mock_exchange_code
     ):
-        """Test that when view receives None as token it displasys an error"""
+        """Test keys.views.strava_token_exchange displays error when receives None as token"""
         mock_exchange_code.return_value = (None, "2")
         expected_error = escape(STRAVA_AUTH_ERROR)
         response = self.client.get("/users/stravatokenexchange?state=&code=abc123")
@@ -76,7 +76,7 @@ class StravaTokenExchangeView(TestCase):
     def test_shows_error_message_when_receives_none_as_strava_id(
         self, mock_get_activities, mock_exchange_code
     ):
-        """Test that when view receives None as strava_id it displasys an error"""
+        """Test keys.views.strava_token_exchange displays error when receives None as strava_id"""
         mock_exchange_code.return_value = ("2", None)
         expected_error = escape(STRAVA_AUTH_ERROR)
         response = self.client.get("/users/stravatokenexchange?state=&code=abc123")
@@ -87,8 +87,7 @@ class StravaTokenExchangeView(TestCase):
     def test_stores_token_and_strava_id_in_database(
         self, mock_get_activities, mock_exchange_code
     ):
-        """Test that Strava Token Exchange view stores the new token and the 
-        users strava id in the database"""
+        """Test keys.views.strava_token_exchange stores token and strava id received"""
         mock_exchange_code.return_value = ("Token", "Strava_id")
 
         self.assertEqual(Key.objects.count(), 0)
@@ -103,8 +102,7 @@ class StravaTokenExchangeView(TestCase):
     def test_links_token_and_stravaid_to_logged_in_user(
         self, mock_get_activities, mock_exchange_code
     ):
-        """Test that Strava Token Exchange view links in the database
-        the token and strava id  with the user that is logged in"""
+        """Test keys.views.strava_token_exchange linkss token and id to user logged in"""
         mock_exchange_code.return_value = ("Token", "Strava_id")
 
         response = self.client.get("/users/stravatokenexchange?state=&code=abc123")
@@ -118,8 +116,7 @@ class StravaTokenExchangeView(TestCase):
     def test_uses_congratulations_template_on_success(
         self, mock_get_activities, mock_exchange_code
     ):
-        """Test that the view uses congratulations template
-        after a successful exchange"""
+        """Test keys.views.strava_token_exchange renders right template"""
         mock_exchange_code.return_value = ("Token", "Strava_id")
 
         response = self.client.get("/users/stravatokenexchange?state=&code=abc123")
@@ -130,8 +127,7 @@ class StravaTokenExchangeView(TestCase):
     def test_calls_get_strava_activities_on_success(
         self, mock_get_activities, mock_exchange_code
     ):
-        """Test that the view calls get strava activities helper function
-        after a successful exchange"""
+        """Test keys.views.strava_token_exchange calls get strava activities helper after succesful exchange"""
         mock_exchange_code.return_value = ("Token", "Strava_id")
 
         response = self.client.get("/users/stravatokenexchange?state=&code=abc123")
@@ -142,8 +138,7 @@ class StravaTokenExchangeView(TestCase):
     def test_calls_get_strava_activities_with_token_argument(
         self, mock_get_activities, mock_exchange_code
     ):
-        """Test that the view sends token as argument to  get strava activities
-        after a successful exchange"""
+        """Test keys.views.strava_token_exchange sends token received to get strava activities helper after succesful exchange"""
         mock_exchange_code.return_value = ("Token", "Strava_id")
 
         response = self.client.get("/users/stravatokenexchange?state=&code=abc123")
@@ -155,7 +150,7 @@ class StravaTokenExchangeView(TestCase):
     def test_shows_km_from_last_activity_on_success(
         self, mock_get_activities, mock_exchange_code
     ):
-        """Test that the view displays the distance from the last run"""
+        """Test keys.views.strava_token_exchange renders distance from last run"""
         expected_km_number = 3.14
         mock_exchange_code.return_value = ("Token", "Id")
         mock_get_activities.return_value = [
@@ -177,6 +172,7 @@ class StravaTokenExchangeView(TestCase):
     @patch("keys.views.exchange_strava_code")
     @patch("keys.views.get_strava_activities")
     def test_renders_home_on_failure(self, mock_get_activities, mock_exchange_code):
+        """Test keys.views.strava_token_exchange renders home if receives error activity summary"""
         mock_exchange_code.return_value = ("Token", "Id")
         mock_get_activities.return_value = None
         response = self.client.get("/users/stravatokenexchange?state=&code=abc123")
@@ -185,6 +181,7 @@ class StravaTokenExchangeView(TestCase):
     @patch("keys.views.exchange_strava_code")
     @patch("keys.views.get_strava_activities")
     def test_shows_message_on_failure(self, mock_get_activities, mock_exchange_code):
+        """Test keys.views.strava_token_exchange displays error if receives error activity summary"""
         mock_exchange_code.return_value = ("Token", "Id")
         mock_get_activities.return_value = None
         expected_error = escape(STRAVA_AUTH_ERROR)

@@ -10,32 +10,21 @@
 ## Fixes ##
 
 - [ ] Correct UNIQUE validation error when entering an existing user in hero section
-- [ ] Change all Docstrings in tests to reflect the package.name of the class
-
 
 ## Tech roadmap ##
 
-- [ ] Add logging to Justletic code
-    - Use JSON logging
-    - Try to write logs asynchronously with a buffer or queue so the app can keep running
-    - Log useful information encoded (e.g.
-        {"message" : "User clicked on a button",
-         "userId" : "1234",
-         "buttonId": "save",
-         "pageId" : "sign-up"
-        }
-    - Use logger configuration to structure the info
-    - [x] Application should output to the console. Where to store logs is a deployment concern, not an application concern
 - [ ] Reorganise template architecture to follow best practices
+- [ ] Review that logs generated for all scenarios make sense
 - [ ] Research and try to set-up sentry as an error reporting service
     - See [this] (https://lincolnloop.com/blog/disabling-error-emails-django/)
     - and [this] (https://sentry.io/features/) 
 - [ ] Write functional tests for all links, buttons, actions ... in the webpage
-- [ ] Write funcitonal tests to test logs work as expected
+- [ ] Write functonal tests to test logs work as expected
 - [ ] Write functional tests for logs in all important scenarios
 
 ## Product roadmap ##
 
+- [ ] Add evaluation across 3 key dimensions on congratulations page and add next step in the journey to ask 'what´s your goal'
 - [ ] 'Athlete detail view' (think if best to use request.user to use authenticated user)
 - [ ] Change danger color in bootstrap template to a nicer one
 - [ ] Design the error in Strava authorization ux flow and the page
@@ -45,7 +34,6 @@
 ## At some point ... ##
 
 - [ ] Review layout and styling functional test to make sure it is still adequate andtests the right things 
-
 
 ## Notes ##
 

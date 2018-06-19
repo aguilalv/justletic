@@ -10,7 +10,7 @@ class LoginViewTest(TestCase):
     """Tests for logs in Login view"""
 
     def setUp(self):
-        """Create a user in the database befor runinng each test"""
+        """Create a user in the database before runinng each test"""
         user_model = auth.get_user_model()
         self.existing_user = user_model.objects.create_user(
             "edith@mailinator.com", "edith@mailinator.com", "epwd"
@@ -18,7 +18,7 @@ class LoginViewTest(TestCase):
 
     @patch("accounts.views.logger.bind")
     def test_correct_password_calls_logger(self,mock_logger_bind):
-        """Test login view calls logger when receives correct password"""
+        """Test accounts.views.login calls logger info when receives correct password"""
         bound_logger = Mock()
         mock_logger_bind.return_value=bound_logger
         self.client.post(
@@ -30,8 +30,8 @@ class LoginViewTest(TestCase):
         self.assertEqual(call("Successful login"),message_used)
 
     @patch("accounts.views.logger.bind")
-    def test_correct_password_logs_user_name(self,mock_logger_bind):
-        """Test login view logs username when receives correct password"""
+    def test_correct_password_binds_user_name(self,mock_logger_bind):
+        """Test accounts.views.login binds username when receives correct password"""
         self.client.post(
             "/accounts/login",
             data={"email": "edith@mailinator.com", "password": "epwd"},
@@ -50,6 +50,7 @@ class LogoutViewTest(TestCase):
     """Tests for logs in logout view"""
 
     def setUp(self):
+        """Create a user in the database before runinng each test"""
         user_model = auth.get_user_model()
         self.existing_user = user_model.objects.create_user(
             "edith@mailinator.com", "edith@mailinator.com", "epwd"
@@ -61,7 +62,7 @@ class LogoutViewTest(TestCase):
 
     @patch("accounts.views.logger")
     def test_calls_logger(self,mock_logger):
-        """Test logout view calls logger"""
+        """Test accounts.views.logout calls logger info"""
         self.client.post("/accounts/logout")
         self.assertEqual(mock_logger.info.called,True)
         message_used = mock_logger.info.call_args
@@ -72,7 +73,7 @@ class CreateNewStravaUserTest(TestCase):
     """Tests for logs in Create New Strava User view"""
     @patch("accounts.views.logger.bind")
     def test_user_does_not_exist_calls_logger(self,mock_logger_bind):
-        """Test CreateNewStravaUser view calls logger when called for user that does not exist"""
+        """Test accounts.views.CreateNewStravaUser calls logger when called for user that does not exist"""
         bound_logger = Mock()
         mock_logger_bind.return_value=bound_logger
         response = self.client.post(
@@ -88,9 +89,4 @@ class CreateNewStravaUserTest(TestCase):
             bound_logger.info.mock_calls[1]
         )
             
-
-#    def test_does_not_create_user_if_exists(self):
-#        """ Test that create new strava user does not create a new user if one with requested email already exists """
-#        self.fail()
-
 #    def test_redirects_to_login_page_if_user_exists(self):

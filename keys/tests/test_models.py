@@ -10,7 +10,7 @@ class KeyModelTest(TestCase):
     """Unit tests for keys Key model"""
 
     def test_saving_and_retrieving_keys(self):
-        """Test that Key model can be saved and retrieved"""
+        """Test keys.models.Key is saved and retrieved"""
         user_model = auth.get_user_model()
         existing_user = user_model.objects.create_user(
             username="edith@mailinator.com",
