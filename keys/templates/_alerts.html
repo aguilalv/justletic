@@ -1,0 +1,11 @@
+<!-- ALERTS -->
+{% if messages %}
+    <div class="alert alert-danger mb-0" role="alert">
+        <ul>
+            {% for message in messages %}
+                <li> {{ message }} </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+

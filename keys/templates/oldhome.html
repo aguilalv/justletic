@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+        
+<!-- HERO SECTION -->
+{% block hero_section %}
+        <header>
+            <div class="container">
+                <div class="slider-container">
+                    <div class="intro-text">
+                        <div class="intro-heading">Achieve your goals</div>
+                        <div class="intro-lead-in">Connect your Strava account and start today</div>
+                        <!--                        <form method="POST" action='{% url 'create_new_strava_user' %}'>
+                            <div class="form-row">
+                                <div class="col-2 col-md-3 col-lg-4"></div>
+                                <div class="col-8 col-md-6 col-lg-4">
+                                    <div class="input-group">
+                                        <input name="email" type="email" class="form-control" id="id_email_in" aria-describedby="emailHelp" placeholder="Enter your email">
+                                        <button type="submit" class="btn btn-primary ">Get me started</button>
+                                    </div>
+                                </div> 
+                                <div class="col-2 col-md-3 col-lg-4"></div>
+                            </div>
+                            {#{% csrf_token %}#}
+                            </form> --!>
+
+
+                        <form method="POST" action='{% url 'create_new_strava_user' %}' novalidate>
+                            {% csrf_token %}
+                            {{ form }}
+                            <button type="submit" class="btn btn-primary ">Get me started</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </header> 
+{% endblock %}
+
+
+{% block product_highlights %}
+        <!-- PRODUCT HIGHLIGHTS SECTION -->
+        <section id="about" class="light-bg">
+            <div class="container">
+                <div class="row">
+                        <div class="col-lg-12 text-center">
+                                <div class="section-title">
+                                    <h2>ABOUT</h2>
+                                    <p>Justletic is an artifical intelligence personal coach based on your unique goals and progression. Wheter you want to get healthier or to run your best marathon, Justletic is a personal coach in your pocket.</p>
+                                </div>
+                        </div>
+                </div>
+                <div class="row">
+                    <!-- about module -->
+                    <div class="col-md-4 text-center">
+                        <div class="mz-module-about">
+                            <i class="fa fa-calendar ot-circle"></i>
+                                <h3>The right session everytime</h3>
+                                <p>Your intelligent personal coach adapts the plan to your personal goals and progress</p>
+                        </div>
+                    </div>
+
+                    <!-- about module -->
+                    <div class="col-md-4 text-center">
+                        <div class="mz-module-about">
+                            <i class="fa fa-line-chart ot-circle"></i>
+                                <h3>See your progress</h3>
+                                <p>Simple visual presentation of your form to keep you motivated</p>
+                        </div>
+                    </div>
+                
+                    <!-- about module -->
+                    <div class="col-md-4 text-center">
+                        <div class="mz-module-about">
+                            <i class="fa fa-headphones ot-circle"></i>
+                                <h3>Make the most of each session</h3>
+                                <p>Real time coaching in your headphones to push yourself just the right amount</p>
+                        </div>
+                    </div> 
+                </div>
+            </div> <!-- /.container -->
+        </section>
+{% endblock %}
+
+
+{% block key_figures %}
+        <!-- KEY FIGURES SECTION -->
+        <section class="dark-bg short-section">
+            <div class="container text-center">
+                <div class="row">
+                    <div class="col-md-4 mb-sm-30">
+                        <div class="counter-item">
+                            <h2 data-count="1251">1,251</h2>
+                            <h6>Hours of exercise to learn from</h6>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-sm-30">
+                        <div class="counter-item">
+                            <h2 data-count="56">56</h2>
+                            <h6>Athletes</h6>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-sm-30">
+                        <div class="counter-item">
+                            <h2 data-count="10">10</h2>
+                            <h6>Goals achieved</h6>
+                        </div>
+                    </div>
+                </div> <!-- .row -->
+            </div> <!-- .container -->
+        </section> <!-- KEY FIGURES SECTION -->
+{% endblock %}

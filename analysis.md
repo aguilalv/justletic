@@ -2,3 +2,7 @@
 - [ ] 02.06.18 was returning after some 10 days of nt doing much
         - How much back in time do you go (in performance)
         - Do you the get it back faster than you gained it 8does it take less to get back to where you where?)
+- [ ] Try to understand if there is structure in a workout
+        - Flat and long at low effort
+        - Hard rest hard rest
+        - Low / Tempo / Low for intermediate

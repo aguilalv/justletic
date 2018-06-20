@@ -1,0 +1,44 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% block meta_tags %}
+            <meta charset="utf-8">
+            <meta http-equiv="x-ua-compatible" content="ie=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <meta name="description" content="">
+            <meta name="author" content="">
+        {% endblock %}
+        <title>
+            {% block title %}Justletic - Achieve your goals{% endblock %}
+        </title>
+        {% block stylesheets %}
+            <link rel="icon" href="{% static 'assets/favicon.ico' %}">
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:400,800">
+            <link rel='stylesheet' href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+            <link rel="stylesheet" href="/static/css/bootstrap.css">
+            <link rel="stylesheet" href="/static/css/styles.css">
+        {% endblock %}
+    </head>
+
+    <body id="page-top">
+        {% include "_navigation.html" %}
+        {% include "_alerts.html" %}
+
+        <div id="main" role="main">
+            {% block content %}
+            {% endblock %}
+        </div>
+
+        {% include "_footer.html" %}
+
+        {% block javascript %}
+            <!-- BOOTSTRAP REQUIRED SCRIPTS -->
+            <script src="/static/js/jquery.min.js"></script>
+            <script src="/static/js/popper.min.js"></script>
+            <script src="/static/js/bootstrap.min.js"></script>
+            <!-- PAGE SPECIFIC SCRIPTS -->
+            <script>window.addEventListener("hashchange", function() { scrollBy(0, -90) })</script>
+        {% endblock %}
+    </body>
+</html>
