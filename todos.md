@@ -6,6 +6,9 @@
 
 - [ ] Correct UNIQUE validation error when entering an existing user in hero section
 - [ ] Add logging tests and code to accounts.change_password view
+- [ ] A successful login after an unsuccessful one logs the old password used in the unsuccessful attemp (Code a test for this when fixing it)
+- [ ] Change password view logs user out (make test when fixing)
+
 
 ## Tech roadmap: High Priority ##
 

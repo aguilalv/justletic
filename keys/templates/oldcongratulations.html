@@ -1,6 +1,6 @@
-{% extends '__base.html' %}
+{% extends 'base.html' %}
 <!-- CONGRATULATIONS SECTION -->
-{% block content %}
+{% block congratulations %}
     <section id="congratulations" class="light-bg">
         <div class="col-lg-12 text-center">
             <div class="section-title">
@@ -27,7 +27,6 @@
                 <div class="modal-body">
                     <form method="POST" action="{% url 'change-password' %}">
                         {% csrf_token %}
-                        <input id="id_modal_hidden" name="next" type="hidden" value="home">
                         <input id="id_modal_password_in" name="password" type="password" class="form-control" placeholder="Password">
                         <button type="submit" class="btn btn-primary" id="id_modal_button">Set password</button>
                     </form>
@@ -36,13 +35,4 @@
         </div> <!-- .modal-dialog -->
     </div> <!-- .modal -->
     
-{% endblock %}
-
-{% block javascript %}
-    {{ block.super }}
-    <script type="text/javascript">
-        $(window).on('load',function(){
-            $('#testModal').modal('show');
-        });
-    </script>
 {% endblock %}
