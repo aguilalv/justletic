@@ -40,7 +40,6 @@ class LoginViewTest(TestCase):
         data_added = mock_logger_bind.call_args
         self.assertEqual(call(user="edith@mailinator.com"),data_added)
 
-
 #    def test_wrong_password_XXX(self):
 #
 #    def test_non_existing_user_XXX(self):
@@ -90,3 +89,41 @@ class CreateNewStravaUserTest(TestCase):
         )
             
 #    def test_redirects_to_login_page_if_user_exists(self):
+
+
+class ChangePasswordViewTest(TestCase):
+
+    """Tests for logs in accounts change_password view"""
+
+    def setUp(self):
+        """Create a user in the database before runinng each test"""
+        user_model = auth.get_user_model()
+        self.existing_user = user_model.objects.create_user(
+            "edith@mailinator.com", "edith@mailinator.com", "epwd"
+        )
+
+    @patch("accounts.views.logger.bind")
+    def test_post_calls_logger_if_user_logged_in(self,mock_logger_bind):
+        """Test accounts.views.change_password calls logger.info (usr logged in)"""
+        bound_logger = Mock()
+        mock_logger_bind.return_value=bound_logger
+        self.client.login(username=self.existing_user.email, password="epwd")
+        response = self.client.post(
+            "/accounts/change-password",
+            data={"password": "newpwd","next": "home"},
+        )
+        self.assertEqual(bound_logger.info.called,True)
+        message_used = bound_logger.info.call_args
+        self.assertEqual(call("Password changed"),message_used)
+
+    @patch("accounts.views.logger.bind")
+    def test_post_binds_username(self,mock_logger_bind):
+        """Test accounts.views.change_password binds username (user logged in)"""
+        self.client.login(username=self.existing_user.email, password="epwd")
+        response = self.client.post(
+            "/accounts/change-password",
+            data={"password": "newpwd","next": "home"},
+        )
+        self.assertEqual(mock_logger_bind.called,True)
+        data_added = mock_logger_bind.call_args
+        self.assertEqual(call(user="edith@mailinator.com"),data_added)

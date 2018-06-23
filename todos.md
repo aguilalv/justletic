@@ -5,7 +5,6 @@
 ## Fixes ##
 
 - [ ] Correct UNIQUE validation error when entering an existing user in hero section
-- [ ] Add logging tests and code to accounts.change_password view
 - [ ] A successful login after an unsuccessful one logs the old password used in the unsuccessful attemp (Code a test for this when fixing it)
 
 ## Tech roadmap: High Priority ##
@@ -19,6 +18,8 @@
 - [ ] Change danger color in bootstrap template to a nicer one
 - [ ] Design the error in Strava authorization ux flow and the page
 - [ ] Add sportstracks support
+
+- [ ] Option to commit money that will go to charity if you don't follow the plan (Option for justletic to double that money for charity if you follow the plan but don't achieve your goals)
 
 ## Research ##
 
