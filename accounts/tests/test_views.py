@@ -200,7 +200,7 @@ class ChangePasswordViewTest(TestCase):
         auth.authenticate(
             username=self.existing_user.email, password=self.existing_user.password
         )
-        self.client.login(username="edith@mailinator.com", password="epwd")
+        self.client.login(username=self.existing_user.email, password="epwd")
         response = self.client.post(
             "/accounts/change-password",
             data={"password": "newpwd","next": "home"},
@@ -215,12 +215,25 @@ class ChangePasswordViewTest(TestCase):
         auth.authenticate(
             username=self.existing_user.email, password=self.existing_user.password
         )
-        self.client.login(username="edith@mailinator.com", password="epwd")
+        self.client.login(username=self.existing_user.email, password="epwd")
         response = self.client.post(
             "/accounts/change-password",
             data={"password": "newpwd","next": expected_redirect},
         )
         self.assertRedirects(response, reverse(expected_redirect))
+
+    def test_same_user_is_logged_in_after_call(self):
+        """Test accounts.views.change_password maintains the same user logged in in the session after being called"""
+        auth.authenticate(
+            username=self.existing_user.email, password=self.existing_user.password
+        )
+        self.client.login(username=self.existing_user.email, password="epwd")
+        response = self.client.post(
+            "/accounts/change-password",
+            data={"password": "newpwd","next": "home"},
+        )
+        logged_in_user = auth.get_user(self.client)
+        self.assertEqual(logged_in_user,self.existing_user)
 
 #   def test_xxx_when_no_user_logged_in(self):
 

@@ -10,7 +10,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib.auth import login as auth_login, logout as auth_logout
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, update_session_auth_hash
 
 from keys.forms import HeroForm
 from utils.strava_utils import strava_oauth_code_request_url
@@ -70,5 +70,6 @@ def change_password(request):
     logged_in_user = request.user
     logged_in_user.set_password(password) 
     logged_in_user.save()
+    update_session_auth_hash(request, logged_in_user) 
     return redirect(next_page)
 
