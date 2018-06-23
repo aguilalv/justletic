@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-        
 <!-- CONGRATULATIONS SECTION -->
 {% block congratulations %}
     <section id="congratulations" class="light-bg">
@@ -16,6 +15,24 @@
         <div class="container text-center">
             <h2>Show off a little bit of how much Justletic knows even at this point</h2>
             <h4>You ran {{ last_activity_distance|floatformat:2 }} Km. in your last run</h4>
+                    <a class="btn btn-outline-primary btn-sm" id="id_login_button" data-toggle="modal" data-target="#testModal">Login</a>
         </div> <!-- .container -->
     </section> <!-- KEY FIGURES SECTION -->
+
+    <!-- Modal -->
+    <div class="modal fade" id="testModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form method="POST" action="{% url 'change-password' %}">
+                        {% csrf_token %}
+                        <input id="id_modal_password_in" name="password" type="password" class="form-control" placeholder="Password">
+                        <button type="submit" class="btn btn-primary" id="id_modal_button">Set password</button>
+                    </form>
+                </div> <!-- modal-body -->
+            </div> <!-- .modal-content -->
+        </div> <!-- .modal-dialog -->
+    </div> <!-- .modal -->
+    
 {% endblock %}

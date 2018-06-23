@@ -5,6 +5,7 @@
 ## Fixes ##
 
 - [ ] Correct UNIQUE validation error when entering an existing user in hero section
+- [ ] Add logging tests and code to accounts.change_password view
 
 ## Tech roadmap: High Priority ##
 

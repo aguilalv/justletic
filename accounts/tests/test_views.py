@@ -162,14 +162,14 @@ class CreateNewStravaUserTest(TestCase):
         self.assertContains(response, expected_error)
 
     def test_renders_home_if_invalid_email_format(self):
-        """ Test accounts.views.create_new_strava_user renders home if receives empty email"""
+        """ Test accounts.views.create_new_strava_user renders home if receives email in an invalid format"""
         response = self.client.post(
             "/accounts/new/strava", data={"email": "wrong_format_email"}
         )
         self.assertTemplateUsed(response, "home.html")
 
-    def test_shows_message_if_empty_email(self):
-        """ Test accounts.views.create_new_strava_user shows error message if receives empty email"""
+    def test_shows_message_if_invalid_email_format(self):
+        """ Test accounts.views.create_new_strava_user shows error message if receives email in an invalid format"""
         expected_error = escape(HeroForm.EMAIL_FIELD_ERROR)
         response = self.client.post(
             "/accounts/new/strava", data={"email": "wrong_format_email"}
@@ -182,3 +182,45 @@ class CreateNewStravaUserTest(TestCase):
 #        self.fail()
 
 #    def test_redirects_to_login_page_if_user_exists(self):
+
+
+class ChangePasswordViewTest(TestCase):
+
+    """Tests for accounts change_password view"""
+
+    def setUp(self):
+        """Create a user in the database befor runinng each test"""
+        user_model = auth.get_user_model()
+        self.existing_user = user_model.objects.create_user(
+            "edith@mailinator.com", "edith@mailinator.com", "epwd"
+        )
+
+    def test_post_sets_password_to_received(self):
+        """Test accounts.views.change_password set received password for logged in user"""
+        auth.authenticate(
+            username=self.existing_user.email, password=self.existing_user.password
+        )
+        self.client.login(username="edith@mailinator.com", password="epwd")
+        response = self.client.post(
+            "/accounts/change-password",
+            data={"password": "newpwd","next": "home"},
+        )
+        user_model = auth.get_user_model()
+        user_affected = user_model.objects.filter(email=self.existing_user.email)[0]
+        self.assertTrue(user_affected.check_password("newpwd"))
+
+    def test_redirects_to_next(self):
+        """Test accounts.views.change_password redirects to url received as next"""
+        expected_redirect = "home"
+        auth.authenticate(
+            username=self.existing_user.email, password=self.existing_user.password
+        )
+        self.client.login(username="edith@mailinator.com", password="epwd")
+        response = self.client.post(
+            "/accounts/change-password",
+            data={"password": "newpwd","next": expected_redirect},
+        )
+        self.assertRedirects(response, reverse(expected_redirect))
+
+#   def test_xxx_when_no_user_logged_in(self):
+

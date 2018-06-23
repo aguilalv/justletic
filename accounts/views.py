@@ -62,3 +62,13 @@ def create_new_strava_user(request):
         return render(request, "home.html", {"form": form})
 
     return redirect(strava_oauth_code_request_url())
+
+def change_password(request):
+    """Change password for logged in user"""
+    next_page = request.POST["next"]
+    password = request.POST["password"]
+    logged_in_user = request.user
+    logged_in_user.set_password(password) 
+    logged_in_user.save()
+    return redirect(next_page)
+
