@@ -1,0 +1,10 @@
+{% extends '__hero_page.html' %}
+
+{% block hero_section %}
+
+    <form method="POST" action="{% url 'login' %}" novalidate>
+        {% csrf_token %}
+        {{ login_form }}
+        <button type="submit" class="btn btn-primary" id="id_modal_button">Login</button>
+    </form>
+{% endblock %}

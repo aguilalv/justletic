@@ -1,14 +1,20 @@
 
+2. SHOW THE FORM AND THE LOGIN PAGE IF THE VIEW RECEIVES A GET REQUEST AND LOG-IN IF THE VIEW RECEIVES A POST REQUEST
+3. IN THE HERO FORM REDIRECT TO THE LOGIN VIEW WITH THE EMAIL ALREADY FILLED IN IN THE FORM IF THE USER EXISTS
+
 # Project to-dos #
 
 
 ## Fixes ##
 
 - [ ] Correct UNIQUE validation error when entering an existing user in hero section
+- [ ] Decide if failed login should clear the form to avoid pre-populating fields
+- [ ] Password widget in accounts.forms.LoginForm needs to not show text
 
 ## Tech roadmap: High Priority ##
 
 - [ ] Reorganise template architecture to follow best practices
+- [ ] Use a form in the change password template and view
 
 ## Product roadmap ##
 
@@ -28,6 +34,7 @@
 
 ## Tech roadmap: Backlog ##
 
+- [ ] Fix issue with logs functional tests only working when called alone
 - [ ] Review that logs generated for all scenarios make sense
 - [ ] Research and try to set-up sentry as an error reporting service
     - See [this] (https://lincolnloop.com/blog/disabling-error-emails-django/)

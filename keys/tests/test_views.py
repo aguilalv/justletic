@@ -6,9 +6,10 @@ from django.utils.html import escape
 from django.contrib import auth
 
 from ..models import Key
+from ..forms import HeroForm
 
 from utils.strava_utils import STRAVA_AUTH_ERROR
-
+from accounts.forms import LoginForm
 
 class HomePageTest(TestCase):
 
@@ -19,6 +20,17 @@ class HomePageTest(TestCase):
         response = self.client.get("/")
         self.assertTemplateUsed(response, "home.html")
 
+    def test_uses_hero_form(self):
+        """Test keys.views.home uses the hero form"""
+        response = self.client.get("/")
+        hero_form = response.context['hero_form']
+        self.assertIsInstance(hero_form, HeroForm)
+    
+    def test_uses_login_form(self):
+        """Test keys.views.home uses the login form"""
+        response = self.client.get("/")
+        hero_form = response.context['login_form']
+        self.assertIsInstance(hero_form, LoginForm)
 
 class StravaTokenExchangeView(TestCase):
 

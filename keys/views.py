@@ -13,14 +13,17 @@ from .models import Key
 
 from utils.strava_utils import STRAVA_AUTH_ERROR
 from utils.strava_utils import exchange_strava_code, get_strava_activities
+from accounts.forms import LoginForm
+
 
 log = logging.getLogger(__name__)
 logger = wrap_logger(log)
 
 def home_page(request):
     """Render Justletic home page"""
-    form = HeroForm()
-    return render(request, "home.html", {"form": form})
+    hero_form = HeroForm()
+    login_form = LoginForm()
+    return render(request, "home.html", {"hero_form": hero_form, "login_form": login_form})
 
 def strava_token_exchange(request):
     """Receives Strava authorisation code and sends request for user token"""
