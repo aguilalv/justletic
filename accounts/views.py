@@ -23,11 +23,11 @@ logger = wrap_logger(log)
 def login(request):
     """Check email and password received form a POST request and log user in"""
     global logger 
-    #logger = logger.new()
     email = request.POST["email"]
     password = request.POST["password"]
     user = authenticate(username=email, password=password)
     if user is not None:
+        logger = logger.new()
         logger = logger.bind(user=user.email)
         logger.info("Successful login")
         auth_login(request, user)

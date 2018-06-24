@@ -5,7 +5,6 @@
 ## Fixes ##
 
 - [ ] Correct UNIQUE validation error when entering an existing user in hero section
-- [ ] A successful login after an unsuccessful one logs the old password used in the unsuccessful attemp (Code a test for this when fixing it)
 
 ## Tech roadmap: High Priority ##
 

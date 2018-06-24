@@ -16,11 +16,13 @@ class LoginViewTest(TestCase):
             "edith@mailinator.com", "edith@mailinator.com", "epwd"
         )
 
-    @patch("accounts.views.logger.bind")
-    def test_correct_password_calls_logger(self,mock_logger_bind):
+    @patch("accounts.views.logger.new")
+    def test_correct_password_calls_logger(self,mock_logger_new):
         """Test accounts.views.login calls logger info when receives correct password"""
+        new_logger = Mock()
         bound_logger = Mock()
-        mock_logger_bind.return_value=bound_logger
+        new_logger.bind.return_value=bound_logger
+        mock_logger_new.return_value=new_logger
         self.client.post(
             "/accounts/login",
             data={"email": "edith@mailinator.com", "password": "epwd"},
@@ -29,19 +31,31 @@ class LoginViewTest(TestCase):
         message_used = bound_logger.info.call_args
         self.assertEqual(call("Successful login"),message_used)
 
-    @patch("accounts.views.logger.bind")
-    def test_correct_password_binds_user_name(self,mock_logger_bind):
+    @patch("accounts.views.logger.new")
+    def test_correct_password_binds_user_name(self,mock_logger_new):
         """Test accounts.views.login binds username when receives correct password"""
+        new_logger = Mock()
+        mock_logger_new.return_value=new_logger
         self.client.post(
             "/accounts/login",
             data={"email": "edith@mailinator.com", "password": "epwd"},
         )
-        self.assertEqual(mock_logger_bind.called,True)
-        data_added = mock_logger_bind.call_args
+        self.assertEqual(new_logger.bind.called,True)
+        data_added = new_logger.bind.call_args
         self.assertEqual(call(user="edith@mailinator.com"),data_added)
 
+    @patch("accounts.views.logger.new")
+    def test_correct_password_creates_a_new_logger(self,mock_logger_new):
+        """Test accounts.views.login creates a new logger when receives correct password"""
+        self.client.post(
+            "/accounts/login",
+            data={"email": "edith@mailinator.com", "password": "epwd"},
+        )
+        self.assertEqual(mock_logger_new.called,True)
+
 #    def test_wrong_password_XXX(self):
-#
+
+
 #    def test_non_existing_user_XXX(self):
 
 class LogoutViewTest(TestCase):
