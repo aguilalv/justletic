@@ -23,14 +23,14 @@ class HomePageTest(TestCase):
     def test_uses_hero_form(self):
         """Test keys.views.home uses the hero form"""
         response = self.client.get("/")
-        hero_form = response.context['hero_form']
-        self.assertIsInstance(hero_form, HeroForm)
+        form_used = response.context['hero_form']
+        self.assertIsInstance(form_used, HeroForm)
     
     def test_uses_login_form(self):
         """Test keys.views.home uses the login form"""
         response = self.client.get("/")
-        hero_form = response.context['login_form']
-        self.assertIsInstance(hero_form, LoginForm)
+        form_used = response.context['login_form']
+        self.assertIsInstance(form_used, LoginForm)
 
 class StravaTokenExchangeView(TestCase):
 

@@ -9,6 +9,7 @@ from django.contrib import auth
 from django.urls import reverse
 
 from ..views import LOGIN_ERROR
+from ..forms import LoginForm
 
 from utils.strava_utils import STRAVA_CLIENT_ID, STRAVA_AUTHORIZE_URL
 from keys.forms import HeroForm
@@ -25,6 +26,17 @@ class LoginViewTest(TestCase):
             "edith@mailinator.com", "edith@mailinator.com", "epwd"
         )
 
+    def test_get_renders_login_template(self):
+        """Test accounts.views.login renders login template"""
+        response = self.client.get("/accounts/login")
+        self.assertTemplateUsed(response, "login.html")
+
+    def test_get_uses_login_form(self):
+        """Test accounts.views.login uses login form"""
+        response = self.client.get("/accounts/login")
+        form_used = response.context['login_form']
+        self.assertIsInstance(form_used, LoginForm)
+        
     def test_post_logs_user_in_if_password_correct(self):
         """Test accounts.views.login logs the user in when receives existing user and correct password"""
         self.client.post(

@@ -24,6 +24,13 @@ logger = wrap_logger(log)
 
 def login(request):
     """Check email and password received form a POST request and log user in"""
+    if request.method == "GET":
+        login_form = LoginForm()
+        return render(request, 
+            "login.html",
+            {"login_form": login_form},
+        )
+    
     global logger
     login_form = LoginForm(request.POST)
     if login_form.is_valid():
