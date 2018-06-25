@@ -3,7 +3,7 @@ import os
 from urllib.parse import urlencode
 from unittest.mock import patch
 
-from django.test import TestCase
+from django.test import TestCase, TransactionTestCase
 from django.utils.html import escape
 from django.contrib import auth
 from django.urls import reverse
@@ -119,7 +119,7 @@ class LogoutViewTest(TestCase):
         self.assertFalse(user.is_authenticated)
 
 
-class CreateNewStravaUserTest(TestCase):
+class CreateNewStravaUserTest(TransactionTestCase):
 
     """ Tests for accounts create_new_strava_user view """
 
@@ -167,6 +167,18 @@ class CreateNewStravaUserTest(TestCase):
         response = self.client.post("/accounts/new/strava", data={"email": ""})
         self.assertTemplateUsed(response, "home.html")
 
+    def test_uses_login_form_if_empty_email(self):
+        """Test accounts.views.create_new_strava_user sends login form in the context when receives empty email"""
+        response = self.client.post("/accounts/new/strava", data={"email": ""})
+        form_used = response.context['login_form']
+        self.assertIsInstance(form_used, LoginForm)
+    
+    def test_uses_hero_form_if_empty_email(self):
+        """Test accounts.views.create_new_strava_user sends hero form in the context when receives empty email"""
+        response = self.client.post("/accounts/new/strava", data={"email": ""})
+        form_used = response.context['hero_form']
+        self.assertIsInstance(form_used, HeroForm)
+    
     def test_shows_message_if_empty_email(self):
         """Test accounts.views.create_new_strava_user shows error message if receives empty email"""
         expected_error = escape(HeroForm.EMAIL_FIELD_ERROR)
@@ -180,6 +192,22 @@ class CreateNewStravaUserTest(TestCase):
         )
         self.assertTemplateUsed(response, "home.html")
 
+    def test_uses_login_form_if_invalid_email_format(self):
+        """Test accounts.views.create_new_strava_user sends login form in the context when receives email in an invalid format"""
+        response = self.client.post(
+            "/accounts/new/strava", data={"email": " wrong_format_email"}
+        )
+        form_used = response.context['login_form']
+        self.assertIsInstance(form_used, LoginForm)
+    
+    def test_uses_hero_form_if_invalid_email_format(self):
+        """Test accounts.views.create_new_strava_user sends hero form in the context when receives email in an invalid format"""
+        response = self.client.post(
+            "/accounts/new/strava", data={"email": " wrong_format_email"}
+        )
+        form_used = response.context['hero_form']
+        self.assertIsInstance(form_used, HeroForm)
+    
     def test_shows_message_if_invalid_email_format(self):
         """ Test accounts.views.create_new_strava_user shows error message if receives email in an invalid format"""
         expected_error = escape(HeroForm.EMAIL_FIELD_ERROR)
@@ -188,13 +216,53 @@ class CreateNewStravaUserTest(TestCase):
         )
         self.assertContains(response, expected_error)
 
+    def test_does_not_create_user_if_exists(self):
+        """ Test accounts.view.create_new_strava_user does not create a new user if one with requested email already exists """
+        user_model = auth.get_user_model()
+        existing_user = user_model.objects.create_user(
+            "edith@mailinator.com", "edith@mailinator.com", "epwd"
+        )
+        response = self.client.post(
+            "/accounts/new/strava", data={"email": existing_user.email}
+        )
+        self.assertEqual(len(user_model.objects.all()),1)
 
-#    def test_does_not_create_user_if_exists(self):
-#        """ Test that create new strava user does not create a new user if one with requested email already exists """
-#        self.fail()
+    def test_redirects_to_login_page_if_user_exists(self):
+        """ Test accounts.view.create_new_strava_user redirects to login page if a user with requested email already exists"""
+        user_model = auth.get_user_model()
+        existing_user = user_model.objects.create_user(
+            "edith@mailinator.com", "edith@mailinator.com", "epwd"
+        )
+        response = self.client.post(
+            "/accounts/new/strava", data={"email": existing_user.email}
+        )
+        self.assertTemplateUsed(response, "login.html")
 
-#    def test_redirects_to_login_page_if_user_exists(self):
-
+    def test_uses_login_form_if_user_exists(self):
+        """ Test accounts.view.create_new_strava_user sends login form in the context if a user with requested email already exists"""
+        user_model = auth.get_user_model()
+        existing_user = user_model.objects.create_user(
+            "edith@mailinator.com", "edith@mailinator.com", "epwd"
+        )
+        response = self.client.post(
+            "/accounts/new/strava", data={"email": existing_user.email}
+        )
+        form_used = response.context['login_form']
+        self.assertIsInstance(form_used, LoginForm)
+    
+    def test_login_form_prefilled_with_email_if_user_exists(self):
+        """ Test accounts.view.create_new_strava_user XXX"""
+        user_model = auth.get_user_model()
+        existing_user = user_model.objects.create_user(
+            "edith@mailinator.com", "edith@mailinator.com", "epwd"
+        )
+        response = self.client.post(
+            "/accounts/new/strava", data={"email": existing_user.email}
+        )
+        form_used = response.context['login_form']
+        form_used.is_valid()
+        pre_filled_email = form_used["email"].value()
+        self.assertEqual(pre_filled_email,existing_user.email)
 
 class ChangePasswordViewTest(TestCase):
 

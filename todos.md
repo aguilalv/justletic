@@ -1,15 +1,11 @@
 
-2. SHOW THE FORM AND THE LOGIN PAGE IF THE VIEW RECEIVES A GET REQUEST AND LOG-IN IF THE VIEW RECEIVES A POST REQUEST
-3. IN THE HERO FORM REDIRECT TO THE LOGIN VIEW WITH THE EMAIL ALREADY FILLED IN IN THE FORM IF THE USER EXISTS
-
 # Project to-dos #
-
 
 ## Fixes ##
 
-- [ ] Correct UNIQUE validation error when entering an existing user in hero section
 - [ ] Decide if failed login should clear the form to avoid pre-populating fields
 - [ ] Password widget in accounts.forms.LoginForm needs to not show text
+- [ ] Add tests required to get to 100% coverage in accounts app
 
 ## Tech roadmap: High Priority ##
 
@@ -20,6 +16,7 @@
 
 - [ ] Add evaluation across 3 key dimensions on congratulations page and add next step in the journey to ask 'what´s your goal'
 - [ ] 'Athlete detail view' (think if best to use request.user to use authenticated user)
+- [ ] When input an existing user in Hero Section, check if the user has authorised Strava already and redirect to log-in. If the user has not authorised Strava redirect to Strava authorisation flow
 - [ ] Change danger color in bootstrap template to a nicer one
 - [ ] Design the error in Strava authorization ux flow and the page
 - [ ] Add sportstracks support

@@ -67,10 +67,18 @@ def create_new_strava_user(request):
     if hero_form.is_valid():
         email = hero_form.cleaned_data.get("email")
         user_model = django.contrib.auth.get_user_model()
-        user = user_model.objects.create_user(username=email, email=email)
-        logger = logger.bind(user=user.email)
-        logger.info("User created")
-        
+        try:
+            user = user_model.objects.create_user(username=email, email=email)
+            logger = logger.bind(user=user.email)
+            logger.info("User created")
+        except Exception:
+            #user = user_model.objects.filter(username=email)[0]
+            login_form = LoginForm(initial={'email':email})
+            return render(
+                request,
+                "login.html", 
+                {"login_form": login_form}
+            )
         auth_login(request, user)
         logger.info("Successful login")
     else:
