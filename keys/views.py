@@ -13,7 +13,7 @@ from .models import Key
 
 from utils.strava_utils import STRAVA_AUTH_ERROR
 from utils.strava_utils import exchange_strava_code, get_strava_activities
-from accounts.forms import LoginForm
+from accounts.forms import LoginForm, ChangePasswordForm
 
 
 log = logging.getLogger(__name__)
@@ -46,10 +46,13 @@ def strava_token_exchange(request):
     activities = get_strava_activities(token)
     if activities:
         logger.info("Strava activity summary received") 
+        change_password_form = ChangePasswordForm() 
         return render(
             request,
             "congratulations.html",
-            {"last_activity_distance": activities[0].get("distance") / 1000},
+            {"last_activity_distance": activities[0].get("distance") / 1000,
+            "change_password_form": change_password_form,
+            },
         )
     else:
         messages.add_message(request, messages.ERROR, STRAVA_AUTH_ERROR)

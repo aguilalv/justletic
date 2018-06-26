@@ -27,8 +27,8 @@
                 <div class="modal-body">
                     <form method="POST" action="{% url 'change-password' %}">
                         {% csrf_token %}
-                        <input id="id_modal_hidden" name="next" type="hidden" value="home">
-                        <input id="id_modal_password_in" name="password" type="password" class="form-control" placeholder="Password">
+                        {{ change_password_form }}
+                        <input name="next" type="hidden" value="home">
                         <button type="submit" class="btn btn-primary" id="id_modal_button">Set password</button>
                     </form>
                 </div> <!-- modal-body -->

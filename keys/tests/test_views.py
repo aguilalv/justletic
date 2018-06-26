@@ -9,7 +9,7 @@ from ..models import Key
 from ..forms import HeroForm
 
 from utils.strava_utils import STRAVA_AUTH_ERROR
-from accounts.forms import LoginForm
+from accounts.forms import LoginForm, ChangePasswordForm
 
 class HomePageTest(TestCase):
 
@@ -134,6 +134,17 @@ class StravaTokenExchangeView(TestCase):
         response = self.client.get("/users/stravatokenexchange?state=&code=abc123")
         self.assertTemplateUsed(response, "congratulations.html")
 
+    @patch("keys.views.exchange_strava_code")
+    @patch("keys.views.get_strava_activities")
+    def test_includes_change_password_form_on_succes(
+        self, mock_get_activities, mock_exchange_code
+    ):
+        """ Test keys.view.strava_token_exchange includes change_password form in the context on success"""
+        mock_exchange_code.return_value = ("Token", "Strava_id")
+        response = self.client.get("/users/stravatokenexchange?state=&code=abc123")
+        form_used = response.context['change_password_form']
+        self.assertIsInstance(form_used, ChangePasswordForm)
+    
     @patch("keys.views.exchange_strava_code")
     @patch("keys.views.get_strava_activities")
     def test_calls_get_strava_activities_on_success(

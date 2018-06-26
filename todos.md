@@ -8,7 +8,6 @@
 ## Tech roadmap: High Priority ##
 
 - [ ] Reorganise template architecture to follow best practices
-- [ ] Use a form in the change password template and view
 
 ## Product roadmap ##
 
@@ -24,8 +23,8 @@
 ## Research ##
 
 - [ ] Relational vs non-relational databases to choose one
-- [ ] Using django models from python script
-- [ ] Run periodically python scripts using the webserver (nginx, gunicorn)
+    - [ ] Consider if it would be better to use relational for core app and non-relational for exercise data, and data analysis
+- [ ] How to run periodically python scripts using the webserver (nginx, gunicorn)
 
 ## Tech roadmap: Backlog ##
 

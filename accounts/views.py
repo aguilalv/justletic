@@ -12,7 +12,7 @@ from django.urls import reverse
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth import authenticate, update_session_auth_hash
 
-from .forms import LoginForm
+from .forms import LoginForm, ChangePasswordForm
 
 from keys.forms import HeroForm
 from utils.strava_utils import strava_oauth_code_request_url
@@ -94,13 +94,16 @@ def create_new_strava_user(request):
 def change_password(request):
     """Change password for logged in user"""
     global logger
-    next_page = request.POST["next"]
-    password = request.POST["password"]
     logged_in_user = request.user
     logger = logger.bind(user=logged_in_user.email)
-    logged_in_user.set_password(password) 
-    logged_in_user.save()
-    update_session_auth_hash(request, logged_in_user) 
-    logger.info("Password changed") 
-    return redirect(next_page)
+    change_password_form = ChangePasswordForm(request.POST)
+    if change_password_form.is_valid():
+        password = change_password_form.cleaned_data.get("password")
+        logged_in_user.set_password(password) 
+        logged_in_user.save()
+        update_session_auth_hash(request, logged_in_user) 
+        logger.info("Password changed") 
+        next_page = request.POST["next"]
+        return redirect(next_page)
+    return render(request,"congratulations.html")
 

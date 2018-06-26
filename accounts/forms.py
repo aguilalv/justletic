@@ -1,6 +1,5 @@
 from django import forms
 
-
 class LoginForm(forms.Form):
     
     EMAIL_FIELD_ERROR = "Please enter a valid email"
@@ -29,3 +28,9 @@ class LoginForm(forms.Form):
             "placeholder": "Enter your password",
         }
     )
+
+class ChangePasswordForm(forms.Form):
+
+    PASSWORD_FIELD_ERROR = "You have to enter a password"
+    
+    password = forms.CharField(label="")

@@ -410,5 +410,19 @@ class ChangePasswordViewTest(TestCase):
         logged_in_user = auth.get_user(self.client)
         self.assertEqual(logged_in_user,self.existing_user)
 
+#   def test_renders_congratulations_page_when_receives_empty_password(self):
+        """Test accounts.views.change_password redirects to congratulations page when it receives empty password"""
+        auth.authenticate(
+            username=self.existing_user.email, password=self.existing_user.password
+        )
+        self.client.login(username=self.existing_user.email, password="epwd")
+        response = self.client.post(
+            "/accounts/change-password",
+            data={"password": "","next": "home"},
+        )
+        self.assertTemplateUsed(response, "congratulations.html")
+
+        
+
 #   def test_xxx_when_no_user_logged_in(self):
 

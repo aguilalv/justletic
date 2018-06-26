@@ -2,7 +2,7 @@
 from django.test import TestCase
 
 from ..forms import LoginForm
-
+from ..forms import ChangePasswordForm
 
 class LoginFormTest(TestCase):
 
@@ -29,5 +29,21 @@ class LoginFormTest(TestCase):
     def test_wrong_format_email_fails_validation(self):
         """Test accounts.forms.login_form validation with wrong email fails"""
         form_data = {"email": "aaa", "password": "epwd"}
+        form = LoginForm(data=form_data)
+        self.assertEqual(form.is_valid(), False)
+
+class ChangePasswordFormTest(TestCase):
+
+    """Unit tests for accounts ChangePasswordForm form"""
+    
+    def test_correct_inputs_pass_validation(self):
+        """Test accounts.forms.change_password_form validation with correct inputs passes"""
+        form_data = {"password": "epwd"}
+        form = ChangePasswordForm(data=form_data)
+        self.assertEqual(form.is_valid(), True)
+    
+    def test_empty_password_fails_validation(self):
+        """Test accounts.forms.change_password_form validation with empty password fails"""
+        form_data = {"password": ""}
         form = LoginForm(data=form_data)
         self.assertEqual(form.is_valid(), False)
