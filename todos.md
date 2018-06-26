@@ -4,8 +4,7 @@
 ## Fixes ##
 
 - [ ] Decide if failed login should clear the form to avoid pre-populating fields
-- [ ] Password widget in accounts.forms.LoginForm needs to not show text
-- [ ] Add tests required to get to 100% coverage in accounts app
+- [ ] Password widget in accounts.forms.LoginForm needs to hide text
 
 ## Tech roadmap: High Priority ##
 

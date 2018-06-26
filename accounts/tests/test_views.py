@@ -47,7 +47,7 @@ class LoginViewTest(TestCase):
         self.assertTrue(user.is_authenticated)
         self.assertEqual(user.email, self.existing_user.email)
 
-    #    def test_post_success_redirects_to_user_summary(self):
+#    def test_post_success_redirects_to_user_summary(self):
 
     def test_post_success_renders_home_page(self):
         """Test accounts.views.login renders the home page after successful login"""
@@ -65,6 +65,15 @@ class LoginViewTest(TestCase):
         )
         self.assertTemplateUsed(response, "home.html")
 
+    def test_post_wrong_password_uses_login_form(self):
+        """Test accounts.views.loging adds login form to context when receives existing user and wrong password"""
+        response = self.client.post(
+            "/accounts/login",
+            data={"email": "edith@mailinator.com", "password": "wrongpwd"},
+        )
+        form_used = response.context['login_form']
+        self.assertIsInstance(form_used, LoginForm)
+    
     def test_post_wrong_password_shows_error(self):
         """Test accounts.views.login renders expectec error when receives existing user and wrong password"""
         response = self.client.post(
@@ -82,6 +91,15 @@ class LoginViewTest(TestCase):
         )
         self.assertTemplateUsed(response, "home.html")
 
+    def test_post_non_existing_user_uses_login_form(self):
+        """Test accounts.views.loging adds login form to context when receives non-existing user"""
+        response = self.client.post(
+            "/accounts/login",
+            data={"email": "non_existent@non.com", "password": "wrongpwd"},
+        )
+        form_used = response.context['login_form']
+        self.assertIsInstance(form_used, LoginForm)
+    
     def test_post_non_existing_user_shows_error(self):
         """Test accounts.views.login shows expected message when receives non-existing user"""
         response = self.client.post(
@@ -91,6 +109,83 @@ class LoginViewTest(TestCase):
         expected_error = escape(LOGIN_ERROR)
         self.assertContains(response, expected_error)
 
+    def test_post_empty_email_renders_home_page(self):
+        """Test accounts.views.login renders home page when receives an empty email"""
+        response = self.client.post(
+            "/accounts/login",
+            data={"email": "", "password": "wrongpwd"},
+        )
+        self.assertTemplateUsed(response, "home.html")
+
+    def test_post_empty_email_uses_login_form(self):
+        """Test accounts.views.loging adds login form to context when receives an empty email"""
+        response = self.client.post(
+            "/accounts/login",
+            data={"email": "", "password": "wrongpwd"},
+        )
+        form_used = response.context['login_form']
+        self.assertIsInstance(form_used, LoginForm)
+    
+    def test_post_empty_email_shows_message(self):
+        """Test accounts.views.login renders shows an error message when receives an empty email"""
+        response = self.client.post(
+            "/accounts/login",
+            data={"email": "", "password": "wrongpwd"},
+        )
+        expected_error = escape(LoginForm.EMAIL_FIELD_ERROR)
+        self.assertContains(response, expected_error)
+
+    def test_post_invalid_email_renders_home_page(self):
+        """Test accounts.views.login renders home page when receives an invalid email"""
+        response = self.client.post(
+            "/accounts/login",
+            data={"email": "invalidemail", "password": "wrongpwd"},
+        )
+        self.assertTemplateUsed(response, "home.html")
+
+    def test_post_invalid_email_uses_login_form(self):
+        """Test accounts.views.loging adds login form to context when receives an invalid email"""
+        response = self.client.post(
+            "/accounts/login",
+            data={"email": "invalidemail", "password": "wrongpwd"},
+        )
+        form_used = response.context['login_form']
+        self.assertIsInstance(form_used, LoginForm)
+    
+    def test_post_invalid_email_shows_message(self):
+        """Test accounts.views.login renders shows an error message when receives an invalid email"""
+        response = self.client.post(
+            "/accounts/login",
+            data={"email": "invalidemail", "password": "wrongpwd"},
+        )
+        expected_error = escape(LoginForm.EMAIL_FIELD_ERROR)
+        self.assertContains(response, expected_error)
+
+    def test_post_empty_password_renders_home_page(self):
+        """Test accounts.views.login renders home page when receives an empty password"""
+        response = self.client.post(
+            "/accounts/login",
+            data={"email": "edith@mailinator.com", "password": ""},
+        )
+        self.assertTemplateUsed(response, "home.html")
+
+    def test_post_empty_password_uses_login_form(self):
+        """Test accounts.views.loging adds login form to context when receives an empty password"""
+        response = self.client.post(
+            "/accounts/login",
+            data={"email": "edith@mailinator.com", "password": ""},
+        )
+        form_used = response.context['login_form']
+        self.assertIsInstance(form_used, LoginForm)
+    
+    def test_post_empty_password_shows_message(self):
+        """Test accounts.views.login shows an error message when receives an empty password"""
+        response = self.client.post(
+            "/accounts/login",
+            data={"email": "edith@mailinator.com", "password": ""},
+        )
+        expected_error = escape(LoginForm.PASSWORD_FIELD_ERROR)
+        self.assertContains(response, expected_error)
 
 class LogoutViewTest(TestCase):
 
