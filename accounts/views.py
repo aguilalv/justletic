@@ -42,13 +42,14 @@ def login(request):
             logger = logger.bind(user=user.email)
             logger.info("Successful login")
             auth_login(request, user)
+            return render(request, "home.html")
         else:
             logger = logger.bind(email=email)
             logger = logger.bind(password=password)
             logger.info("Failed login attempt")
             messages.add_message(request, messages.ERROR, LOGIN_ERROR)
     return render(request, 
-        "home.html",
+        "login.html",
         {"login_form": login_form},
     )
 
