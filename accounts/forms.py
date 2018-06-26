@@ -19,7 +19,7 @@ class LoginForm(forms.Form):
             "placeholder": "Enter your email",
         }
     )
-    password = forms.CharField(label="")
+    password = forms.CharField(label="",widget=forms.PasswordInput)
     password.widget.attrs.update(
         {
             "type": "password",

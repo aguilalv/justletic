@@ -3,8 +3,6 @@
 
 ## Fixes ##
 
-- [ ] Password widget in accounts.forms.LoginForm needs to hide text
-
 ## Tech roadmap: High Priority ##
 
 - [ ] Reorganise template architecture to follow best practices
