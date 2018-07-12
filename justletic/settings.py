@@ -42,9 +42,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_nose',
     'behave_django',
+    'rest_framework',
+    'rest_framework.authtoken',
     'keys',
     'accounts',
-    'rest_framework',
     'API',
 ]
 
@@ -175,3 +176,14 @@ structlog.configure(
 #       structlog.stdlib.PositionalArgumentsFormatter(),
 #        structlog.processors.StackInfoRenderer(),
 #    ],
+
+# Django Rest Framework configuration
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    )
+}
