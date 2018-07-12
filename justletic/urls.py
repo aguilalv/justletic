@@ -19,10 +19,12 @@ from django.contrib import admin
 from keys import views as keys_views
 from keys import urls as keys_urls
 from accounts import urls as accounts_urls
+from API import urls as API_urls
 
 urlpatterns = [
 #    url(r'^admin/', admin.site.urls),
     url(r'^$', keys_views.home_page, name='home'),
     url(r'^users/', include(keys_urls)),
     url(r'^accounts/', include(accounts_urls)),
+    url(r'^API/', include(API_urls)),
 ]

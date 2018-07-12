@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'behave_django',
     'keys',
     'accounts',
+    'rest_framework',
+    'API',
 ]
 
 MIDDLEWARE = [
@@ -113,7 +115,7 @@ TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 #TEST_RUNNER = 'utils.test_runner.DisableLoggingNoseTestSuiteRunner'
 NOSE_ARGS = [
     '--with-coverage',
-    '--cover-package=accounts,keys, utils',
+    '--cover-package=accounts,keys, utils, API',
     '--cover-html',
     '--cover-erase',
     "--logging-filter='selenium'",

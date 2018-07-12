@@ -3,6 +3,8 @@
 
 ## Fixes ##
 
+- [ ] Eliminate duplication of create_user_and_login in tests for keys views and API
+
 ## Tech roadmap: High Priority ##
 
 - [ ] Reorganise template architecture to follow best practices
