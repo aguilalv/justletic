@@ -3,11 +3,12 @@
 
 ## Fixes ##
 
-- [ ] Eliminate duplication of create_user_and_login in tests for keys views and API
+- [ ] Use signals to automatically create Token when a new user has been created
 
 ## Tech roadmap: High Priority ##
 
 - [ ] Reorganise template architecture to follow best practices
+- [ ] Eliminate duplication of create_user_and_login in tests for keys views and API
 
 ## Product roadmap ##
 
