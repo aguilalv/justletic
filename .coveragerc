@@ -3,6 +3,8 @@ omit =
     *__init__*
     *model*
     *migration*
+    *signals.py*
+    *apps.py*
 branch = True
 
 [report]
@@ -10,3 +12,5 @@ omit =
     *__init__*
     *model*
     *migration*
+    *signals.py*
+    *apps.py*
