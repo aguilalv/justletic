@@ -9,6 +9,7 @@
 
 - [ ] Eliminate duplication of create_user in tests for keys views and API (both aPI and serializers)
 - [ ] Reorganise template architecture to follow best practices
+- [ ] Add logging to API
 
 ## Product roadmap ##
 

@@ -15,7 +15,6 @@ from utils.strava_utils import STRAVA_AUTH_ERROR
 from utils.strava_utils import exchange_strava_code, get_strava_activities
 from accounts.forms import LoginForm, ChangePasswordForm
 
-
 log = logging.getLogger(__name__)
 logger = wrap_logger(log)
 
