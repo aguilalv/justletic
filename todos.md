@@ -3,16 +3,16 @@
 
 ## Fixes ##
 
-- [ ] Use signals to automatically create Token when a new user has been created
-
 ## Tech roadmap: High Priority ##
 
-- [ ] Eliminate duplication of create user helper and user return
+- [ ] Add get token API endpoint for client to acquire its API token (admin and username password to be stored in variables and created at deploy)
+- [ ] Eliminate duplication of create user helper and return user
 - [ ] Reorganise template architecture to follow best practices
 - [ ] Add logging to API (If needed)
 
 ## Product roadmap ##
 
+- [ ] Add integration with Runtastic
 - [ ] Add evaluation across 3 key dimensions on congratulations page and add next step in the journey to ask 'what´s your goal'
 - [ ] 'Athlete detail view' (think if best to use request.user to use authenticated user)
 - [ ] When input an existing user in Hero Section, check if the user has authorised Strava already and redirect to log-in. If the user has not authorised Strava redirect to Strava authorisation flow

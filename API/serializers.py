@@ -7,3 +7,7 @@ class KeySerializer(serializers.Serializer):
 class UserSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     username = serializers.CharField(max_length=150)
+
+class TokenSerializer(serializers.Serializer):
+    user_id = serializers.IntegerField()
+    key = serializers.CharField(max_length=40)
