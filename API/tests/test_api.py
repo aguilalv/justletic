@@ -45,14 +45,9 @@ class KeyDetailTest(TestCase):
     def test_GET_returns_key_for_right_token(self):
         """Test API.views.KeyDetail returns Key associated to authenticated athlete"""
         response = self.client.get("/API/key/", HTTP_AUTHORIZATION = f'Token {self.existing_user_token}')
-        converted = response.content.decode("utf-8")
-        self.assertEqual(
-            converted,
-            '{'
-                '"strava_id":"expected_strava_id",'
-                '"token":"expected_token"'
-            '}' 
-        )
+        received = response.content.decode("utf-8")
+        self.assertIn('"token":"expected_token"',received)
+        self.assertIn('"strava_id":"expected_strava_id"',received)
     
     def test_GET_returns_error_when_no_token(self):
         """Test API.views.KeyDetail error when no token received"""

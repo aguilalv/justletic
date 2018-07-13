@@ -7,8 +7,8 @@
 
 ## Tech roadmap: High Priority ##
 
+- [ ] Eliminate duplication of create_user in tests for keys views and API (both aPI and serializers)
 - [ ] Reorganise template architecture to follow best practices
-- [ ] Eliminate duplication of create_user_and_login in tests for keys views and API
 
 ## Product roadmap ##
 
