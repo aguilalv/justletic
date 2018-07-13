@@ -1,4 +1,4 @@
-"""Unit tests for API app serializers"""
+"""Unit tests for API app views"""
 from django.test import TestCase
 from django.contrib import auth
 from rest_framework.authtoken.models import Token
