@@ -39,6 +39,7 @@
 - [ ] Write functonal tests to test logs work as expected
 - [ ] Write functional tests for logs in all important scenarios
 - [ ] Consider using warning logging level for failed login and try to include IP address info
+- [ ] Add throttling controls to the API 
 
 ## At some point ... ##
 
