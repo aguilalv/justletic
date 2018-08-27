@@ -3,8 +3,11 @@
 
 ## Fixes ##
 
+- [ ] User list and token list API requests need to return a dictionary and not a list (e.g. {"users" : [...]})
+
 ## Tech roadmap: High Priority ##
 
+- [ ] Update to Python 3.7 and check if there is a newer version of Django
 - [ ] Add get token API endpoint for client to acquire its API token (admin and username password to be stored in variables and created at deploy)
 - [ ] Eliminate duplication of create user helper and return user
 - [ ] Reorganise template architecture to follow best practices
@@ -12,6 +15,7 @@
 
 ## Product roadmap ##
 
+- [ ] Add integration with spotify
 - [ ] Add integration with Runtastic
 - [ ] Add evaluation across 3 key dimensions on congratulations page and add next step in the journey to ask 'what´s your goal'
 - [ ] 'Athlete detail view' (think if best to use request.user to use authenticated user)
@@ -46,6 +50,8 @@
 
 ## Notes ##
 
+https://www.youtube.com/watch?v=CZ3wIuvmHeM - Microservices
+
 coverage run --source=myapp,anotherapp ---omit=*/migrations/* ./manage.py test
 coverage run --source='.' manage.py test
 coverage report
@@ -55,3 +61,5 @@ nosetests -v --with-coverage --cover-erase --cover-html
 set -a; source .env; set +a
 
 grep -r -l -e TODO  . | grep -e py | grep -v -e cover
+
+ngrok lets you open your localhost server to the internet (good for oauth testing)
