@@ -34,6 +34,7 @@
 
 ## Tech roadmap: Backlog ##
 
+- [ ] Use state parameter in Strava and Spotify oAuth requests to avoid security problems
 - [ ] Fix issue with logs functional tests only working when called alone
 - [ ] Review that logs generated for all scenarios make sense
 - [ ] Research and try to set-up sentry as an error reporting service
@@ -64,3 +65,5 @@ set -a; source .env; set +a
 grep -r -l -e TODO  . | grep -e py | grep -v -e cover
 
 ngrok lets you open your localhost server to the internet (good for oauth testing)
+
+python manage.py test
