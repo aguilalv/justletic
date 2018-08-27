@@ -16,6 +16,8 @@ from .forms import LoginForm, ChangePasswordForm
 
 from keys.forms import HeroForm
 from utils.strava_utils import strava_oauth_code_request_url
+from utils.spotify_utils import spotify_oauth_code_request_url
+
 
 LOGIN_ERROR = "Ooops, wrong user or password"
 
@@ -107,3 +109,9 @@ def change_password(request):
         return redirect(next_page)
     return render(request,"congratulations.html")
 
+def summary(request):
+    """Show user summary page"""
+    return render(request,"user_summary.html")
+
+def link_spotify(request):
+    return redirect(spotify_oauth_code_request_url())

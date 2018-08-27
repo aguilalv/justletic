@@ -16,6 +16,9 @@
             </li>
             <li class="nav-item">
                 {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/accounts/summary">User summary</a>
+                    </li>
                     <span id='id_logged_in_email'>{{ user.email }}</span>
                     <a class="nav-link" id="id_logout_button" href="{% url 'logout' %}">Logout</a> 
                 {% else %}
