@@ -5,8 +5,18 @@ from django.contrib import auth
 
 
 class Key(models.Model):
+    STRAVA = 'ST'
+    SERVICE_CHOICES = (
+        (STRAVA, 'Strava'),
+    )
+    
     user_model = auth.get_user_model()
 
     user = models.ForeignKey(user_model, on_delete=models.CASCADE)
     token = models.CharField(max_length=50, default=None)
     strava_id = models.CharField(max_length=50, default=None)
+    service = models.CharField(
+        max_length=2,
+        choices=SERVICE_CHOICES,
+        default=None,
+    )

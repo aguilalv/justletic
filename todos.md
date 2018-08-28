@@ -3,6 +3,7 @@
 
 ## Fixes ##
 
+- [ ] Finalise integration with Spotify: Create view to exchange code for token and storing token and refresh token associated with user 
 - [ ] User list and token list API requests need to return a dictionary and not a list (e.g. {"users" : [...]})
 
 ## Tech roadmap: High Priority ##
@@ -15,7 +16,6 @@
 
 ## Product roadmap ##
 
-- [ ] Add integration with spotify
 - [ ] Add integration with Runtastic
 - [ ] Add evaluation across 3 key dimensions on congratulations page and add next step in the journey to ask 'what´s your goal'
 - [ ] 'Athlete detail view' (think if best to use request.user to use authenticated user)

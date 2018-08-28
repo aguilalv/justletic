@@ -38,7 +38,12 @@ def strava_token_exchange(request):
         logger.info("Received Strava error in token exchange")
         return render(request, "home.html")
 
-    new_key = Key(user=logged_in_user, token=token, strava_id=strava_id)
+    new_key = Key(
+        user=logged_in_user,
+        token=token,
+        strava_id=strava_id,
+        service=Key.STRAVA
+    )
     new_key.save()
     logger.info("Access to Strava authorised")
 
