@@ -41,6 +41,7 @@ def strava_token_exchange(request):
     new_key = Key(
         user=logged_in_user,
         token=token,
+        refresh_token="",
         strava_id=strava_id,
         service=Key.STRAVA
     )
