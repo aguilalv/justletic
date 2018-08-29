@@ -9,6 +9,7 @@ from ..models import Key
 from ..forms import HeroForm
 
 from utils.strava_utils import STRAVA_AUTH_ERROR
+from utils.spotify_utils import SPOTIFY_AUTH_ERROR
 from accounts.forms import LoginForm, ChangePasswordForm
 
 class HomePageTest(TestCase):
@@ -210,3 +211,98 @@ class StravaTokenExchangeView(TestCase):
         expected_error = escape(STRAVA_AUTH_ERROR)
         response = self.client.get("/users/stravatokenexchange?state=&code=abc123")
         self.assertContains(response, expected_error)
+
+class SpotifyTokenExchangeView(TestCase):
+
+    """Unit test for Keys.SpotifyTokenExchange view"""
+
+    def create_user_and_login(self, email, password):
+        """Helper function to create a user and log it in"""
+        user_model = auth.get_user_model()
+        self.existing_user = user_model.objects.create_user(
+            username=email, email=email, password=password
+        )
+        auth.authenticate(
+            username=self.existing_user.email, password=self.existing_user.password
+        )
+        self.client.login(username="edith@mailinator.com", password="epwd")
+
+    def setUp(self):
+        """Create a user in the database and log it in before runinng each test"""
+        self.create_user_and_login("edith@mailinator.com", "epwd")
+
+    @patch("keys.views.exchange_spotify_code")
+    def test_calls_exchange_spotify_code_helper_function(
+        self, mock_exchange_code
+    ):
+        """Test keys.views.spotify_token_exchange calls exchange spotify code helper function"""
+        mock_exchange_code.return_value = ("token", "refresh_token")
+        response = self.client.get("/users/spotifytokenexchange?state=&code=abc123")
+        self.assertTrue(mock_exchange_code.called)
+
+    @patch("keys.views.exchange_spotify_code")
+    def test_exchange_spotify_code_receives_code_from_request(
+        self, mock_exchange_code
+    ):
+        """Test keys.views.spotify_token_exchange sends code received to exchange strava code helper function"""
+        mock_exchange_code.return_value = ("Token", "Refresh_token")
+        response = self.client.get("/users/spotifytokenexchange?state=&code=abc123")
+        used_args = mock_exchange_code.call_args
+        self.assertEqual(used_args, call("abc123"))
+
+    @patch("keys.views.exchange_spotify_code")
+    def test_shows_error_message_when_receives_none_as_token(
+        self, mock_exchange_code
+    ):
+        """Test keys.views.spotify_token_exchange displays error when receives None as token"""
+        mock_exchange_code.return_value = (None, "2")
+        expected_error = escape(SPOTIFY_AUTH_ERROR)
+        response = self.client.get("/users/spotifytokenexchange?state=&code=abc123")
+        self.assertContains(response, expected_error)
+
+    @patch("keys.views.exchange_spotify_code")
+    def test_shows_error_message_when_receives_none_as_refresh_token(
+        self, mock_exchange_code
+    ):
+        """Test keys.views.spotify_token_exchange displays error when receives None as refresh_token"""
+        mock_exchange_code.return_value = ("2", None)
+        expected_error = escape(SPOTIFY_AUTH_ERROR)
+        response = self.client.get("/users/spotifytokenexchange?state=&code=abc123")
+        self.assertContains(response, expected_error)
+
+    @patch("keys.views.exchange_spotify_code")
+    def test_stores_token_and_refresh_token_in_database(
+        self, mock_exchange_code
+    ):
+        """Test keys.views.spotify_token_exchange stores token and refresh_token received"""
+        mock_exchange_code.return_value = ("Token", "Refresh token")
+
+        self.assertEqual(Key.objects.count(), 0)
+
+        response = self.client.get("/users/spotifytokenexchange?state=&code=abc123")
+        self.assertEqual(Key.objects.count(), 1)
+        self.assertEqual(Key.objects.all()[0].token, "Token")
+        self.assertEqual(Key.objects.all()[0].refresh_token, "Refresh token")
+
+    @patch("keys.views.exchange_spotify_code")
+    def test_links_token_and_refresh_token_to_logged_in_user(
+        self, mock_exchange_code
+    ):
+        """Test keys.views.spotify_token_exchange linkss token and refresh_token to user logged in"""
+        mock_exchange_code.return_value = ("Token", "Refresh token")
+
+        response = self.client.get("/users/spotifytokenexchange?state=&code=abc123")
+        stored_key = Key.objects.all()[0]
+        self.assertEqual(stored_key.user.email, "edith@mailinator.com")
+        self.assertEqual(stored_key.token, "Token")
+        self.assertEqual(stored_key.refresh_token, "Refresh token")
+
+    @patch("keys.views.exchange_spotify_code")
+    def test_uses_user_summary_template_on_success(
+        self, mock_exchange_code
+    ):
+        """Test keys.views.spotify_token_exchange renders right template"""
+        mock_exchange_code.return_value = ("Token", "Refresh token")
+
+        response = self.client.get("/users/spotifytokenexchange?state=&code=abc123")
+        self.assertTemplateUsed(response, "user_summary.html")

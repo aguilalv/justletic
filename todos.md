@@ -4,10 +4,13 @@
 ## Fixes ##
 
 - [ ] Finalise integration with Spotify: Create view to exchange code for token and storing token and refresh token associated with user 
+- [ ] Change first part of keys urls from "users" to "keys"
 - [ ] User list and token list API requests need to return a dictionary and not a list (e.g. {"users" : [...]})
 
 ## Tech roadmap: High Priority ##
 
+- [ ] Add logging to exchange spotify code for token view
+- [ ] Separate Keys.Views.Exchange_Strava_code into exchanging the code and directing to another view that gets and presents the latest activities
 - [ ] Update to Python 3.7 and check if there is a newer version of Django
 - [ ] Add get token API endpoint for client to acquire its API token (admin and username password to be stored in variables and created at deploy)
 - [ ] Eliminate duplication of create user helper and return user
