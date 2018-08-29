@@ -237,7 +237,7 @@ class SpotifyTokenExchangeView(TestCase):
     ):
         """Test keys.views.spotify_token_exchange calls exchange spotify code helper function"""
         mock_exchange_code.return_value = ("token", "refresh_token")
-        response = self.client.get("/users/spotifytokenexchange?state=&code=abc123")
+        response = self.client.get("/users/spotifytokenexchange/?state=&code=abc123")
         self.assertTrue(mock_exchange_code.called)
 
     @patch("keys.views.exchange_spotify_code")
@@ -246,7 +246,7 @@ class SpotifyTokenExchangeView(TestCase):
     ):
         """Test keys.views.spotify_token_exchange sends code received to exchange strava code helper function"""
         mock_exchange_code.return_value = ("Token", "Refresh_token")
-        response = self.client.get("/users/spotifytokenexchange?state=&code=abc123")
+        response = self.client.get("/users/spotifytokenexchange/?state=&code=abc123")
         used_args = mock_exchange_code.call_args
         self.assertEqual(used_args, call("abc123"))
 
@@ -257,7 +257,7 @@ class SpotifyTokenExchangeView(TestCase):
         """Test keys.views.spotify_token_exchange displays error when receives None as token"""
         mock_exchange_code.return_value = (None, "2")
         expected_error = escape(SPOTIFY_AUTH_ERROR)
-        response = self.client.get("/users/spotifytokenexchange?state=&code=abc123")
+        response = self.client.get("/users/spotifytokenexchange/?state=&code=abc123")
         self.assertContains(response, expected_error)
 
     @patch("keys.views.exchange_spotify_code")
@@ -267,7 +267,7 @@ class SpotifyTokenExchangeView(TestCase):
         """Test keys.views.spotify_token_exchange displays error when receives None as refresh_token"""
         mock_exchange_code.return_value = ("2", None)
         expected_error = escape(SPOTIFY_AUTH_ERROR)
-        response = self.client.get("/users/spotifytokenexchange?state=&code=abc123")
+        response = self.client.get("/users/spotifytokenexchange/?state=&code=abc123")
         self.assertContains(response, expected_error)
 
     @patch("keys.views.exchange_spotify_code")
@@ -279,7 +279,7 @@ class SpotifyTokenExchangeView(TestCase):
 
         self.assertEqual(Key.objects.count(), 0)
 
-        response = self.client.get("/users/spotifytokenexchange?state=&code=abc123")
+        response = self.client.get("/users/spotifytokenexchange/?state=&code=abc123")
         self.assertEqual(Key.objects.count(), 1)
         self.assertEqual(Key.objects.all()[0].token, "Token")
         self.assertEqual(Key.objects.all()[0].refresh_token, "Refresh token")
@@ -291,7 +291,7 @@ class SpotifyTokenExchangeView(TestCase):
         """Test keys.views.spotify_token_exchange linkss token and refresh_token to user logged in"""
         mock_exchange_code.return_value = ("Token", "Refresh token")
 
-        response = self.client.get("/users/spotifytokenexchange?state=&code=abc123")
+        response = self.client.get("/users/spotifytokenexchange/?state=&code=abc123")
         stored_key = Key.objects.all()[0]
         self.assertEqual(stored_key.user.email, "edith@mailinator.com")
         self.assertEqual(stored_key.token, "Token")
@@ -304,5 +304,5 @@ class SpotifyTokenExchangeView(TestCase):
         """Test keys.views.spotify_token_exchange renders right template"""
         mock_exchange_code.return_value = ("Token", "Refresh token")
 
-        response = self.client.get("/users/spotifytokenexchange?state=&code=abc123")
+        response = self.client.get("/users/spotifytokenexchange/?state=&code=abc123")
         self.assertTemplateUsed(response, "user_summary.html")
