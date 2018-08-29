@@ -67,11 +67,14 @@ def strava_token_exchange(request):
 
 def spotify_token_exchange(request):
     """Receives Spotify authorisation code and sends request for user token"""
+    global logger
     logged_in_user = request.user
+    logger = logger.bind(user=logged_in_user.email) 
     code = request.GET.get("code")
     token, refresh_token = exchange_spotify_code(code)
     if not token or not refresh_token:
         messages.add_message(request, messages.ERROR, SPOTIFY_AUTH_ERROR)
+        logger.info("Received Spotify error in token exchange")
         return render(request, "home.html")
     
     new_key = Key(
@@ -82,5 +85,6 @@ def spotify_token_exchange(request):
         service=Key.SPOTIFY
     )
     new_key.save()
+    logger.info("Access to Spotify authorised")
 
     return render(request,"user_summary.html")

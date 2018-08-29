@@ -8,7 +8,6 @@
 
 ## Tech roadmap: High Priority ##
 
-- [ ] Add logging to exchange spotify code for token view
 - [ ] Separate Keys.Views.Exchange_Strava_code into exchanging the code and directing to another view that gets and presents the latest activities
 - [ ] Update to Python 3.7 and check if there is a newer version of Django
 - [ ] Add get token API endpoint for client to acquire its API token (admin and username password to be stored in variables and created at deploy)
