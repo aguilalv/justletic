@@ -19,5 +19,5 @@ from . import views
 
 urlpatterns = [
     url(r'^stravatokenexchange$', views.strava_token_exchange, name='strava_token_exchange'),
-    url(r'^spotifytokenexchange$', views.spotify_token_exchange, name='spotify_token_exchange'),
+    url(r'^spotifytokenexchange/$', views.spotify_token_exchange, name='spotify_token_exchange'),
 ]
