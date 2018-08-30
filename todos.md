@@ -7,7 +7,6 @@
 
 ## Tech roadmap: High Priority ##
 
-- [ ] Update to Python 3.7 and check if there is a newer version of Django
 - [ ] Add get token API endpoint for client to acquire its API token (admin and username password to be stored in variables and created at deploy)
 - [ ] Eliminate duplication of create user helper and return user
 - [ ] Reorganise template architecture to follow best practices
