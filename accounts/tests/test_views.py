@@ -422,7 +422,59 @@ class ChangePasswordViewTest(TestCase):
         )
         self.assertTemplateUsed(response, "congratulations.html")
 
-        
-
 #   def test_xxx_when_no_user_logged_in(self):
+
+class UserSummaryViewTest(TestCase):
+
+    """Tests for accounts user_summary view"""
+
+    def setUp(self):
+        """Create a user in the database and log it in before runinng each test"""
+        user_model = auth.get_user_model()
+        self.existing_user = user_model.objects.create_user(
+            "edith@mailinator.com", "edith@mailinator.com", "epwd"
+        )
+        auth.authenticate(
+            username=self.existing_user.email, password=self.existing_user.password
+        )
+        self.client.login(username="edith@mailinator.com", password="epwd")
+
+    def test_renders_user_summary_template(self):
+        """Test accounts.views.user_summary renders summary template"""
+        response = self.client.post("/accounts/summary")
+        self.assertTemplateUsed(response, 'user_summary.html')
+
+class LinkSpotifyViewTest(TestCase):
+
+    """Tests for accounts link_spotify view"""
+
+    def setUp(self):
+        """Create a user in the database and log it in before runinng each test"""
+        user_model = auth.get_user_model()
+        self.existing_user = user_model.objects.create_user(
+            "edith@mailinator.com", "edith@mailinator.com", "epwd"
+        )
+        auth.authenticate(
+            username=self.existing_user.email, password=self.existing_user.password
+        )
+        self.client.login(username="edith@mailinator.com", password="epwd")
+
+    @patch("accounts.views.spotify_oauth_code_request_url")
+    def test_gets_url_to_request_code_from_spotify_utils_module(self, mock):
+        """Test accounts.views.link_spotify calls strava utils helper module to get url to request oAuth code"""
+        mock.return_value = "www.google.com"
+        response = self.client.post("/accounts/link/spotify")
+        self.assertTrue(mock.called)
+
+    @patch("accounts.views.spotify_oauth_code_request_url")
+    def test_redirects_to_url_returned_by_spotify_utils_module(self, mock):
+        """Test accounts.views.link_spotify redirects to url returned by spotify utils helper module"""
+        mock.return_value = "http://www.google.com"
+        response = self.client.post("/accounts/link/spotify")
+        
+        self.assertRedirects(
+            response, "http://www.google.com", fetch_redirect_response=False
+        )
+
+## def test_does_something_if_user_not_logged_in
 

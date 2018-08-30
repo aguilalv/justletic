@@ -7,6 +7,7 @@
 
 ## Tech roadmap: High Priority ##
 
+- [ ] Separate Keys.Views.Exchange_Strava_code into exchanging the code and directing to another view that gets and presents the latest activities
 - [ ] Add get token API endpoint for client to acquire its API token (admin and username password to be stored in variables and created at deploy)
 - [ ] Eliminate duplication of create user helper and return user
 - [ ] Reorganise template architecture to follow best practices
@@ -14,14 +15,13 @@
 
 ## Product roadmap ##
 
-- [ ] Add integration with spotify
 - [ ] Add integration with Runtastic
+- [ ] Add sportstracks support
 - [ ] Add evaluation across 3 key dimensions on congratulations page and add next step in the journey to ask 'what´s your goal'
 - [ ] 'Athlete detail view' (think if best to use request.user to use authenticated user)
 - [ ] When input an existing user in Hero Section, check if the user has authorised Strava already and redirect to log-in. If the user has not authorised Strava redirect to Strava authorisation flow
 - [ ] Change danger color in bootstrap template to a nicer one
 - [ ] Design the error in Strava authorization ux flow and the page
-- [ ] Add sportstracks support
 
 - [ ] Option to commit money that will go to charity if you don't follow the plan (Option for justletic to double that money for charity if you follow the plan but don't achieve your goals)
 
@@ -33,6 +33,7 @@
 
 ## Tech roadmap: Backlog ##
 
+- [ ] Use state parameter in Strava and Spotify oAuth requests to avoid security problems
 - [ ] Fix issue with logs functional tests only working when called alone
 - [ ] Review that logs generated for all scenarios make sense
 - [ ] Research and try to set-up sentry as an error reporting service
@@ -63,3 +64,5 @@ set -a; source .env; set +a
 grep -r -l -e TODO  . | grep -e py | grep -v -e cover
 
 ngrok lets you open your localhost server to the internet (good for oauth testing)
+
+python manage.py test

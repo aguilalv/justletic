@@ -34,7 +34,7 @@ class StravaTokenExchangeView(TestCase):
         mock_logger_bind.return_value = bound_logger
 
         mock_exchange_code.return_value = ("Token", "Strava_id")
-        response = self.client.get("/users/stravatokenexchange?state=&code=abc123")
+        response = self.client.get("/keys/stravatokenexchange?state=&code=abc123")
         info_calls = bound_logger.mock_calls
         self.assertEqual(len(info_calls),2)
         self.assertEqual(call("Access to Strava authorised"),info_calls[0])
@@ -48,7 +48,7 @@ class StravaTokenExchangeView(TestCase):
     ):
         """Test keys.views.StravaTokenExchanges binds logged in user to logger"""
         mock_exchange_code.return_value = ("Token", "Strava_id")
-        response = self.client.get("/users/stravatokenexchange?state=&code=abc123")
+        response = self.client.get("/keys/stravatokenexchange?state=&code=abc123")
         self.assertTrue(mock_logger.bind.called)
         user_bound = mock_logger.bind.call_args
         self.assertEqual(call(user='edith@mailinator.com'),user_bound)
@@ -64,7 +64,7 @@ class StravaTokenExchangeView(TestCase):
         mock_logger_bind.return_value = bound_logger
 
         mock_exchange_code.return_value = (None, "2")
-        response = self.client.get("/users/stravatokenexchange?state=&code=abc123")
+        response = self.client.get("/keys/stravatokenexchange?state=&code=abc123")
         self.assertTrue(bound_logger.info.called)
         message_used = bound_logger.info.call_args
         self.assertEqual(call("Received Strava error in token exchange"),message_used)
@@ -80,7 +80,7 @@ class StravaTokenExchangeView(TestCase):
         mock_logger_bind.return_value = bound_logger
 
         mock_exchange_code.return_value = ("2",None)
-        response = self.client.get("/users/stravatokenexchange?state=&code=abc123")
+        response = self.client.get("/keys/stravatokenexchange?state=&code=abc123")
         self.assertTrue(bound_logger.info.called)
         message_used = bound_logger.info.call_args
         self.assertEqual(call("Received Strava error in token exchange"),message_used)
@@ -96,7 +96,7 @@ class StravaTokenExchangeView(TestCase):
         mock_logger_bind.return_value = bound_logger
         mock_exchange_code.return_value = ("Token", "Id")
         mock_get_activities.return_value = None
-        response = self.client.get("/users/stravatokenexchange?state=&code=abc123")
+        response = self.client.get("/keys/stravatokenexchange?state=&code=abc123")
         info_calls = bound_logger.mock_calls
         self.assertEqual(len(info_calls),2)
         self.assertEqual(call("Access to Strava authorised"),info_calls[0])

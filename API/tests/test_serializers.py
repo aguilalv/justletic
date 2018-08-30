@@ -24,7 +24,9 @@ class KeySerializerTest(TestCase):
         self.existing_key = Key(
             user = self.existing_user,
             token = 'expected_token',
-            strava_id = 'expected_strava_id'
+            refresh_token = 'expected_refresh_token',
+            strava_id = 'expected_strava_id',
+            service = Key.STRAVA
         )
         self.existing_key.save()
     
@@ -32,7 +34,12 @@ class KeySerializerTest(TestCase):
         """Test API.serializers.KeySerializer converts a 'Key' object to a dictionary correctly"""
         serializer = KeySerializer(self.existing_key)
         self.assertEqual(
-            {'token':self.existing_key.token,'strava_id':self.existing_key.strava_id},
+            {
+                'token':self.existing_key.token,
+                'refresh_token':self.existing_key.refresh_token,
+                'strava_id':self.existing_key.strava_id,
+                'service':self.existing_key.service,
+            },
             serializer.data
         )
     

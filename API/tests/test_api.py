@@ -25,7 +25,9 @@ class KeyDetailTest(TestCase):
         self.existing_key = Key(
             user = self.existing_user,
             token = 'expected_token',
-            strava_id = 'expected_strava_id'
+            refresh_token = 'expected_refresh_token',
+            strava_id = 'expected_strava_id',
+            service = Key.STRAVA
         )
         self.existing_key.save()
     
