@@ -3,7 +3,6 @@
 
 ## Fixes ##
 
-- [ ] Change first part of keys urls from "users" to "keys"
 - [ ] User list and token list API requests need to return a dictionary and not a list (e.g. {"users" : [...]})
 
 ## Tech roadmap: High Priority ##

@@ -59,7 +59,7 @@ class StravaTokenExchangeView(TestCase):
     ):
         """Test keys.views.strava_token_exchange calls exchange strava code helper function"""
         mock_exchange_code.return_value = ("Token", "Strava_id")
-        response = self.client.get("/users/stravatokenexchange?state=&code=abc123")
+        response = self.client.get("/keys/stravatokenexchange?state=&code=abc123")
         self.assertTrue(mock_exchange_code.called)
 
     @patch("keys.views.exchange_strava_code")
@@ -69,7 +69,7 @@ class StravaTokenExchangeView(TestCase):
     ):
         """Test keys.views.strava_token_exchange sends code received to exchange strava code helper function"""
         mock_exchange_code.return_value = ("Token", "Strava_id")
-        response = self.client.get("/users/stravatokenexchange?state=&code=abc123")
+        response = self.client.get("/keys/stravatokenexchange?state=&code=abc123")
         used_args = mock_exchange_code.call_args
         self.assertEqual(used_args, call("abc123"))
 
@@ -81,7 +81,7 @@ class StravaTokenExchangeView(TestCase):
         """Test keys.views.strava_token_exchange displays error when receives None as token"""
         mock_exchange_code.return_value = (None, "2")
         expected_error = escape(STRAVA_AUTH_ERROR)
-        response = self.client.get("/users/stravatokenexchange?state=&code=abc123")
+        response = self.client.get("/keys/stravatokenexchange?state=&code=abc123")
         self.assertContains(response, expected_error)
 
     @patch("keys.views.exchange_strava_code")
@@ -92,7 +92,7 @@ class StravaTokenExchangeView(TestCase):
         """Test keys.views.strava_token_exchange displays error when receives None as strava_id"""
         mock_exchange_code.return_value = ("2", None)
         expected_error = escape(STRAVA_AUTH_ERROR)
-        response = self.client.get("/users/stravatokenexchange?state=&code=abc123")
+        response = self.client.get("/keys/stravatokenexchange?state=&code=abc123")
         self.assertContains(response, expected_error)
 
     @patch("keys.views.exchange_strava_code")
@@ -105,7 +105,7 @@ class StravaTokenExchangeView(TestCase):
 
         self.assertEqual(Key.objects.count(), 0)
 
-        response = self.client.get("/users/stravatokenexchange?state=&code=abc123")
+        response = self.client.get("/keys/stravatokenexchange?state=&code=abc123")
         self.assertEqual(Key.objects.count(), 1)
         self.assertEqual(Key.objects.all()[0].token, "Token")
         self.assertEqual(Key.objects.all()[0].strava_id, "Strava_id")
@@ -118,7 +118,7 @@ class StravaTokenExchangeView(TestCase):
         """Test keys.views.strava_token_exchange linkss token and id to user logged in"""
         mock_exchange_code.return_value = ("Token", "Strava_id")
 
-        response = self.client.get("/users/stravatokenexchange?state=&code=abc123")
+        response = self.client.get("/keys/stravatokenexchange?state=&code=abc123")
         stored_key = Key.objects.all()[0]
         self.assertEqual(stored_key.user.email, "edith@mailinator.com")
         self.assertEqual(stored_key.token, "Token")
@@ -132,7 +132,7 @@ class StravaTokenExchangeView(TestCase):
         """Test keys.views.strava_token_exchange renders right template"""
         mock_exchange_code.return_value = ("Token", "Strava_id")
 
-        response = self.client.get("/users/stravatokenexchange?state=&code=abc123")
+        response = self.client.get("/keys/stravatokenexchange?state=&code=abc123")
         self.assertTemplateUsed(response, "congratulations.html")
 
     @patch("keys.views.exchange_strava_code")
@@ -142,7 +142,7 @@ class StravaTokenExchangeView(TestCase):
     ):
         """ Test keys.view.strava_token_exchange includes change_password form in the context on success"""
         mock_exchange_code.return_value = ("Token", "Strava_id")
-        response = self.client.get("/users/stravatokenexchange?state=&code=abc123")
+        response = self.client.get("/keys/stravatokenexchange?state=&code=abc123")
         form_used = response.context['change_password_form']
         self.assertIsInstance(form_used, ChangePasswordForm)
     
@@ -154,7 +154,7 @@ class StravaTokenExchangeView(TestCase):
         """Test keys.views.strava_token_exchange calls get strava activities helper after succesful exchange"""
         mock_exchange_code.return_value = ("Token", "Strava_id")
 
-        response = self.client.get("/users/stravatokenexchange?state=&code=abc123")
+        response = self.client.get("/keys/stravatokenexchange?state=&code=abc123")
         self.assertTrue(mock_get_activities.called)
 
     @patch("keys.views.exchange_strava_code")
@@ -165,7 +165,7 @@ class StravaTokenExchangeView(TestCase):
         """Test keys.views.strava_token_exchange sends token received to get strava activities helper after succesful exchange"""
         mock_exchange_code.return_value = ("Token", "Strava_id")
 
-        response = self.client.get("/users/stravatokenexchange?state=&code=abc123")
+        response = self.client.get("/keys/stravatokenexchange?state=&code=abc123")
         used_args = mock_get_activities.call_args
         self.assertEqual(used_args, call("Token"))
 
@@ -190,7 +190,7 @@ class StravaTokenExchangeView(TestCase):
                 "average_cadence": 79.1,
             }
         ]
-        response = self.client.get("/users/stravatokenexchange?state=&code=abc123")
+        response = self.client.get("/keys/stravatokenexchange?state=&code=abc123")
         self.assertContains(response, expected_km_number)
 
     @patch("keys.views.exchange_strava_code")
@@ -199,7 +199,7 @@ class StravaTokenExchangeView(TestCase):
         """Test keys.views.strava_token_exchange renders home if receives error activity summary"""
         mock_exchange_code.return_value = ("Token", "Id")
         mock_get_activities.return_value = None
-        response = self.client.get("/users/stravatokenexchange?state=&code=abc123")
+        response = self.client.get("/keys/stravatokenexchange?state=&code=abc123")
         self.assertTemplateUsed(response, "home.html")
 
     @patch("keys.views.exchange_strava_code")
@@ -209,7 +209,7 @@ class StravaTokenExchangeView(TestCase):
         mock_exchange_code.return_value = ("Token", "Id")
         mock_get_activities.return_value = None
         expected_error = escape(STRAVA_AUTH_ERROR)
-        response = self.client.get("/users/stravatokenexchange?state=&code=abc123")
+        response = self.client.get("/keys/stravatokenexchange?state=&code=abc123")
         self.assertContains(response, expected_error)
 
 class SpotifyTokenExchangeView(TestCase):
@@ -237,7 +237,7 @@ class SpotifyTokenExchangeView(TestCase):
     ):
         """Test keys.views.spotify_token_exchange calls exchange spotify code helper function"""
         mock_exchange_code.return_value = ("token", "refresh_token")
-        response = self.client.get("/users/spotifytokenexchange/?state=&code=abc123")
+        response = self.client.get("/keys/spotifytokenexchange/?state=&code=abc123")
         self.assertTrue(mock_exchange_code.called)
 
     @patch("keys.views.exchange_spotify_code")
@@ -246,7 +246,7 @@ class SpotifyTokenExchangeView(TestCase):
     ):
         """Test keys.views.spotify_token_exchange sends code received to exchange strava code helper function"""
         mock_exchange_code.return_value = ("Token", "Refresh_token")
-        response = self.client.get("/users/spotifytokenexchange/?state=&code=abc123")
+        response = self.client.get("/keys/spotifytokenexchange/?state=&code=abc123")
         used_args = mock_exchange_code.call_args
         self.assertEqual(used_args, call("abc123"))
 
@@ -257,7 +257,7 @@ class SpotifyTokenExchangeView(TestCase):
         """Test keys.views.spotify_token_exchange displays error when receives None as token"""
         mock_exchange_code.return_value = (None, "2")
         expected_error = escape(SPOTIFY_AUTH_ERROR)
-        response = self.client.get("/users/spotifytokenexchange/?state=&code=abc123")
+        response = self.client.get("/keys/spotifytokenexchange/?state=&code=abc123")
         self.assertContains(response, expected_error)
 
     @patch("keys.views.exchange_spotify_code")
@@ -267,7 +267,7 @@ class SpotifyTokenExchangeView(TestCase):
         """Test keys.views.spotify_token_exchange displays error when receives None as refresh_token"""
         mock_exchange_code.return_value = ("2", None)
         expected_error = escape(SPOTIFY_AUTH_ERROR)
-        response = self.client.get("/users/spotifytokenexchange/?state=&code=abc123")
+        response = self.client.get("/keys/spotifytokenexchange/?state=&code=abc123")
         self.assertContains(response, expected_error)
 
     @patch("keys.views.exchange_spotify_code")
@@ -279,7 +279,7 @@ class SpotifyTokenExchangeView(TestCase):
 
         self.assertEqual(Key.objects.count(), 0)
 
-        response = self.client.get("/users/spotifytokenexchange/?state=&code=abc123")
+        response = self.client.get("/keys/spotifytokenexchange/?state=&code=abc123")
         self.assertEqual(Key.objects.count(), 1)
         self.assertEqual(Key.objects.all()[0].token, "Token")
         self.assertEqual(Key.objects.all()[0].refresh_token, "Refresh token")
@@ -291,7 +291,7 @@ class SpotifyTokenExchangeView(TestCase):
         """Test keys.views.spotify_token_exchange linkss token and refresh_token to user logged in"""
         mock_exchange_code.return_value = ("Token", "Refresh token")
 
-        response = self.client.get("/users/spotifytokenexchange/?state=&code=abc123")
+        response = self.client.get("/keys/spotifytokenexchange/?state=&code=abc123")
         stored_key = Key.objects.all()[0]
         self.assertEqual(stored_key.user.email, "edith@mailinator.com")
         self.assertEqual(stored_key.token, "Token")
@@ -304,5 +304,5 @@ class SpotifyTokenExchangeView(TestCase):
         """Test keys.views.spotify_token_exchange renders right template"""
         mock_exchange_code.return_value = ("Token", "Refresh token")
 
-        response = self.client.get("/users/spotifytokenexchange/?state=&code=abc123")
+        response = self.client.get("/keys/spotifytokenexchange/?state=&code=abc123")
         self.assertTemplateUsed(response, "user_summary.html")
