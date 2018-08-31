@@ -19,39 +19,32 @@ class KeyDetailTest(TestCase):
         )
 
     def setUp(self):
-        """Create a 'Key' resource in the database"""
-        self.existing_user = self.create_user("edith@mailinator.com", "epwd")
-        self.existing_user_token, created = Token.objects.get_or_create(user=self.existing_user)
-        self.first_existing_key = Key(
-            user = self.existing_user,
-            token = 'first_expected_token',
-            refresh_token = 'first_expected_refresh_token',
-            strava_id = 'first_expected_strava_id',
-            service = Key.STRAVA
-        )
-        self.first_existing_key.save()
-        self.second_existing_key = Key(
-            user = self.existing_user,
-            token = 'second_expected_token',
-            refresh_token = 'second_expected_refresh_token',
-            strava_id = 'secong_expected_strava_id',
-            service = Key.SPOTIFY
-        )
-        self.second_existing_key.save()
-        self.other_user = self.create_user("other@mailinator.com", "opwd")
-        self.other_user_token, created = Token.objects.get_or_create(user=self.other_user)
-        self.other_key = Key(
-            user = self.other_user,
-            token = 'other_token',
-            refresh_token = 'other_refresh_token',
-            strava_id = 'other_strava_id',
-            service = Key.STRAVA
-        )
-        self.other_key.save()
-    
+        """Create 2 users with 2 keys each in the database"""
+        self.existing_users = []
+        self.existing_user_tokens = []
+        self.keys = {}
+        for i in range(2):
+            self.existing_users.append(
+                self.create_user(f"{i}@mailinator.com", f"{i}pwd")
+            )
+            token, created = Token.objects.get_or_create(user=self.existing_users[i])
+            self.existing_user_tokens.append(token)
+            keys = []
+            for j in range(2):
+                key = Key(
+                    user = self.existing_users[i],
+                    token = f'token_{i}_{j}',
+                    refresh_token = f'refresh_token_{i}_{j}',
+                    strava_id = f'strava_id_{i}_{j}',
+                    service = Key.STRAVA
+                )
+                key.save()
+                keys.append(key)
+            self.keys[i] = keys
+
     def test_GET_returns_status_200_for_right_token(self):
         """Test API.views.KeyDetail returns status 200 when receives correct token"""
-        response = self.client.get("/API/key/", HTTP_AUTHORIZATION = f'Token {self.existing_user_token}')
+        response = self.client.get("/API/key/", HTTP_AUTHORIZATION = f'Token {self.existing_user_tokens[0]}')
         self.assertEqual(response.status_code, 200)
 
     def test_GET_returns_status_401_when_no_token(self):
@@ -66,32 +59,28 @@ class KeyDetailTest(TestCase):
     
     def test_GET_returns_right_number_of_keys(self):
         """Test API.views.KeyDetail returns the right number of keys"""
-        response = self.client.get("/API/key/", HTTP_AUTHORIZATION = f'Token {self.existing_user_token}')
-        received = response.content.decode("utf-8")
-        received_list = json.loads(received)
-        assert len(received_list) == 2
+        response = self.client.get("/API/key/", HTTP_AUTHORIZATION = f'Token {self.existing_user_tokens[0]}')
+        received = json.loads(response.content.decode("utf-8"))
+        assert len(received) == len(self.keys[0]) 
 
     def test_GET_returns_keys_for_right_token(self):
         """Test API.views.KeyDetail returns the keys associated to authenticated athlete"""
-        response = self.client.get("/API/key/", HTTP_AUTHORIZATION = f'Token {self.existing_user_token}')
-        received = response.content.decode("utf-8")
-        assert f'"token":"{self.first_existing_key.token}"' in received
-        assert f'"refresh_token":"{self.first_existing_key.refresh_token}"' in received
-        assert f'"strava_id":"{self.first_existing_key.strava_id}"' in received
-        assert f'"service":"{self.first_existing_key.service}"' in received
-    
-        assert f'"token":"{self.second_existing_key.token}"' in received
-        assert f'"refresh_token":"{self.second_existing_key.refresh_token}"' in received
-        assert f'"strava_id":"{self.second_existing_key.strava_id}"' in received
-        assert f'"service":"{self.second_existing_key.service}"' in received
-   
+        response = self.client.get("/API/key/", HTTP_AUTHORIZATION = f'Token {self.existing_user_tokens[0]}')
+        received = json.loads(response.content.decode("utf-8"))
+        for i,received_key in enumerate(received):
+            assert received_key["token"] == self.keys[0][i].token
+            assert received_key["refresh_token"] == self.keys[0][i].refresh_token
+            assert received_key["strava_id"] == self.keys[0][i].strava_id
+            assert received_key["service"] == self.keys[0][i].service
+        
     def test_GET_does_not_return_keys_for_other_users(self):
         """Test API.views.KeyDetail does not return keys associated to a different athlete"""
-        response = self.client.get("/API/key/", HTTP_AUTHORIZATION = f'Token {self.existing_user_token}')
-        received = response.content.decode("utf-8")
-        assert f'"token":"{self.other_key.token}"' not in received
-        assert f'"refresh_token":"{self.other_key.refresh_token}"' not in received
-        assert f'"strava_id":"{self.other_key.strava_id}"' not in received
+        response = self.client.get("/API/key/", HTTP_AUTHORIZATION = f'Token {self.existing_user_tokens[0]}')
+        received = json.loads(response.content.decode("utf-8"))
+        for i,received_key in enumerate(received):
+            assert received_key["token"] != self.keys[1][i].token
+            assert received_key["refresh_token"] != self.keys[1][i].refresh_token
+            assert received_key["strava_id"] != self.keys[1][i].strava_id
 
     def test_GET_returns_error_when_no_token(self):
         """Test API.views.KeyDetail error when no token received"""
