@@ -3,6 +3,7 @@
 
 ## Fixes ##
 
+- [ ] API endpoint responds with only one key instead of list of all keys for that user
 
 ## Tech roadmap: High Priority ##
 
