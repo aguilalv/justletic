@@ -11,8 +11,8 @@ class KeyDetail(APIView):
     """Retrieve a Key instance"""
 
     def get(self,request):
-        key = Key.objects.filter(user__pk=request.user.pk).first()
-        serializer = KeySerializer(key)
+        keys = Key.objects.filter(user__pk=request.user.pk)
+        serializer = KeySerializer(keys,many=True)
         return Response(serializer.data)
 
 class UserList(APIView):
