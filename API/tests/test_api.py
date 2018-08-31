@@ -117,7 +117,10 @@ class UserListTest(TestCase):
         """Test API.views.KeyDetail returns list of users when correct token received"""
         response = self.client.get("/API/user/", HTTP_AUTHORIZATION = f'Token {self.root_user_token}')
         received = response.content.decode("utf-8")
-        list_received = json.loads(received)
+        data_received = json.loads(received)
+        assert len(data_received.keys()) == 1
+        assert 'users' in data_received.keys()
+        list_received = data_received['users']
         # Total users will be list of regular users and the root user
         self.assertEqual(len(list_received),len(self.existing_users)+1)
         for i, user in enumerate(self.existing_users):
@@ -173,30 +176,33 @@ class TokenListTest(TestCase):
         self.root_user_token, created = Token.objects.get_or_create(user=self.root_user)
 
     def test_GET_returns_status_200_for_right_token(self):
-        """Test API.views.KeyDetail returns status 200 when receives correct token"""
+        """Test API.views.TokenList returns status 200 when receives correct token"""
         response = self.client.get("/API/token/", HTTP_AUTHORIZATION = f'Token {self.root_user_token}')
         self.assertEqual(response.status_code, 200)
 
     def test_GET_returns_status_401_when_no_token(self):
-        """Test API.views.KeyDetail returns status 401 when no token received"""
+        """Test API.views.TokenList returns status 401 when no token received"""
         response = self.client.get("/API/token/")
         self.assertEqual(response.status_code, 401)
 
     def test_GET_returns_status_401_for_wrong_token(self):
-        """Test API.views.KeyDetail returns status 401 when incorrect token received"""
+        """Test API.views.TokenList returns status 401 when incorrect token received"""
         response = self.client.get("/API/token/", HTTP_AUTHORIZATION = f'Token wrongtoken1234')
         self.assertEqual(response.status_code, 401)
 
     def test_GET_returns_status_403_for_non_root_token(self):
-        """Test API.views.KeyDetail returns status 403 when token with no root permissions received"""
+        """Test API.views.TokenList returns status 403 when token with no root permissions received"""
         response = self.client.get("/API/token/", HTTP_AUTHORIZATION = f'Token {self.existing_users_tokens[0]}')
         self.assertEqual(response.status_code, 403)
     
-    def test_GET_returns_user_list_for_right_token(self):
-        """Test API.views.KeyDetail returns list of users when correct token received"""
+    def test_GET_returns_token_list_for_right_token(self):
+        """Test API.views.TokenList returns list of tokens when correct token received"""
         response = self.client.get("/API/token/", HTTP_AUTHORIZATION = f'Token {self.root_user_token}')
         received = response.content.decode("utf-8")
-        list_received = json.loads(received)
+        data_received = json.loads(received)
+        assert len(data_received.keys()) == 1
+        assert 'tokens' in data_received.keys()
+        list_received = data_received['tokens']
         # Total users will be list of regular users and the root user
         self.assertEqual(len(list_received),len(self.existing_users_tokens)+1)
         for i, user in enumerate(self.existing_users):
@@ -207,13 +213,13 @@ class TokenListTest(TestCase):
             )
     
     def test_GET_returns_error_when_wrong_token(self):
-        """Test API.views.UserList returns error for wrong token"""
+        """Test API.views.TokenList returns error for wrong token"""
         response = self.client.get("/API/token/", HTTP_AUTHORIZATION = f'Token wrongtoken1234')
         converted = response.content.decode("utf-8")
         self.assertEqual(converted,'{"detail":"Invalid token."}')
 
     def test_GET_returns_error_when_no_token(self):
-        """Test API.views.UserList returns error for wrong token"""
+        """Test API.views.TokenList returns error for wrong token"""
         response = self.client.get("/API/token/")
         converted = response.content.decode("utf-8")
         self.assertEqual(
@@ -222,7 +228,7 @@ class TokenListTest(TestCase):
         )
 
     def test_GET_returns_error_when_non_admin_token(self):
-        """Test API.views.UserList returns error for wrong token"""
+        """Test API.views.TokenList returns error for wrong token"""
         response = self.client.get("/API/token/", HTTP_AUTHORIZATION = f'Token {self.existing_users_tokens[0]}')
         converted = response.content.decode("utf-8")
         self.assertEqual(converted,'{"detail":"You do not have permission to perform this action."}')

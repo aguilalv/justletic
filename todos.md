@@ -3,7 +3,6 @@
 
 ## Fixes ##
 
-- [ ] User list and token list API requests need to return a dictionary and not a list (e.g. {"users" : [...]})
 
 ## Tech roadmap: High Priority ##
 

@@ -24,7 +24,7 @@ class UserList(APIView):
         user_model = auth.get_user_model()
         users = user_model.objects.all()
         serializer = UserSerializer(users,many=True)
-        return Response(serializer.data)
+        return Response({"users": serializer.data})
 
 class TokenList(APIView):
     """Retrieve the list of API tokens"""
@@ -34,4 +34,4 @@ class TokenList(APIView):
     def get(self, request):
         tokens = Token.objects.all()
         serializer = TokenSerializer(tokens,many=True)
-        return Response(serializer.data)
+        return Response({"tokens": serializer.data})
