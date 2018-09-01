@@ -3,8 +3,6 @@
 
 ## Fixes ##
 
-- [ ] API endpoint responds with only one key instead of list of all keys for that user
-
 ## Tech roadmap: High Priority ##
 
 - [ ] Separate Keys.Views.Exchange_Strava_code into exchanging the code and directing to another view that gets and presents the latest activities
