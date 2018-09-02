@@ -53,9 +53,8 @@ class StravaTokenExchangeView(TestCase):
         self.create_user_and_login("edith@mailinator.com", "epwd")
 
     @patch("keys.views.exchange_strava_code")
-    @patch("keys.views.get_strava_activities")
     def test_calls_exchange_strava_code_helper_function(
-        self, mock_get_activities, mock_exchange_code
+        self, mock_exchange_code
     ):
         """Test keys.views.strava_token_exchange calls exchange strava code helper function"""
         mock_exchange_code.return_value = ("Token", "Strava_id")
@@ -63,9 +62,8 @@ class StravaTokenExchangeView(TestCase):
         self.assertTrue(mock_exchange_code.called)
 
     @patch("keys.views.exchange_strava_code")
-    @patch("keys.views.get_strava_activities")
     def test_exchange_strava_code_receives_code_from_request(
-        self, mock_get_activities, mock_exchange_code
+        self, mock_exchange_code
     ):
         """Test keys.views.strava_token_exchange sends code received to exchange strava code helper function"""
         mock_exchange_code.return_value = ("Token", "Strava_id")
@@ -74,9 +72,8 @@ class StravaTokenExchangeView(TestCase):
         self.assertEqual(used_args, call("abc123"))
 
     @patch("keys.views.exchange_strava_code")
-    @patch("keys.views.get_strava_activities")
     def test_shows_error_message_when_receives_none_as_token(
-        self, mock_get_activities, mock_exchange_code
+        self, mock_exchange_code
     ):
         """Test keys.views.strava_token_exchange displays error when receives None as token"""
         mock_exchange_code.return_value = (None, "2")
@@ -85,9 +82,8 @@ class StravaTokenExchangeView(TestCase):
         self.assertContains(response, expected_error)
 
     @patch("keys.views.exchange_strava_code")
-    @patch("keys.views.get_strava_activities")
     def test_shows_error_message_when_receives_none_as_strava_id(
-        self, mock_get_activities, mock_exchange_code
+        self, mock_exchange_code
     ):
         """Test keys.views.strava_token_exchange displays error when receives None as strava_id"""
         mock_exchange_code.return_value = ("2", None)
@@ -96,9 +92,8 @@ class StravaTokenExchangeView(TestCase):
         self.assertContains(response, expected_error)
 
     @patch("keys.views.exchange_strava_code")
-    @patch("keys.views.get_strava_activities")
     def test_stores_token_and_strava_id_in_database(
-        self, mock_get_activities, mock_exchange_code
+        self, mock_exchange_code
     ):
         """Test keys.views.strava_token_exchange stores token and strava id received"""
         mock_exchange_code.return_value = ("Token", "Strava_id")
@@ -111,9 +106,8 @@ class StravaTokenExchangeView(TestCase):
         self.assertEqual(Key.objects.all()[0].strava_id, "Strava_id")
 
     @patch("keys.views.exchange_strava_code")
-    @patch("keys.views.get_strava_activities")
     def test_links_token_and_stravaid_to_logged_in_user(
-        self, mock_get_activities, mock_exchange_code
+        self, mock_exchange_code
     ):
         """Test keys.views.strava_token_exchange linkss token and id to user logged in"""
         mock_exchange_code.return_value = ("Token", "Strava_id")
@@ -125,58 +119,57 @@ class StravaTokenExchangeView(TestCase):
         self.assertEqual(stored_key.strava_id, "Strava_id")
 
     @patch("keys.views.exchange_strava_code")
-    @patch("keys.views.get_strava_activities")
-    def test_uses_congratulations_template_on_success(
-        self, mock_get_activities, mock_exchange_code
+    def test_redirects_to_activity_summary_on_success(
+        self, mock_exchange_code
     ):
-        """Test keys.views.strava_token_exchange renders right template"""
+        """Test keys.views.strava_token_exchange redirects to activity_summary after succesful exchange"""
         mock_exchange_code.return_value = ("Token", "Strava_id")
 
-        response = self.client.get("/keys/stravatokenexchange?state=&code=abc123")
-        self.assertTemplateUsed(response, "congratulations.html")
+        response = self.client.get("/keys/stravatokenexchange?state=&code=abc123",follow=True)
+        self.assertRedirects(response,"/keys/-activity-summary")
 
-    @patch("keys.views.exchange_strava_code")
-    @patch("keys.views.get_strava_activities")
-    def test_includes_change_password_form_on_succes(
-        self, mock_get_activities, mock_exchange_code
-    ):
-        """ Test keys.view.strava_token_exchange includes change_password form in the context on success"""
-        mock_exchange_code.return_value = ("Token", "Strava_id")
-        response = self.client.get("/keys/stravatokenexchange?state=&code=abc123")
-        form_used = response.context['change_password_form']
-        self.assertIsInstance(form_used, ChangePasswordForm)
+class ActivitySummaryView(TestCase):
+
+    """Unit test for Keys.ActivitySummary view"""
     
-    @patch("keys.views.exchange_strava_code")
-    @patch("keys.views.get_strava_activities")
-    def test_calls_get_strava_activities_on_success(
-        self, mock_get_activities, mock_exchange_code
-    ):
-        """Test keys.views.strava_token_exchange calls get strava activities helper after succesful exchange"""
-        mock_exchange_code.return_value = ("Token", "Strava_id")
+    def create_user_and_login(self, email, password):
+        """Helper function to create a user and log it in"""
+        user_model = auth.get_user_model()
+        self.existing_user = user_model.objects.create_user(
+            username=email, email=email, password=password
+        )
+        auth.authenticate(
+            username=self.existing_user.email, password=self.existing_user.password
+        )
+        self.client.login(username="edith@mailinator.com", password="epwd")
 
-        response = self.client.get("/keys/stravatokenexchange?state=&code=abc123")
-        self.assertTrue(mock_get_activities.called)
+    def setUp(self):
+        """Create a user in the database, a key and log it in before runinng each test"""
+        self.create_user_and_login("edith@mailinator.com", "epwd")
+        key = Key(
+            user=self.existing_user, 
+            token="stored_token", 
+            refresh_token="",
+            strava_id="10", 
+            service=Key.STRAVA
+        )
+        key.save() 
 
-    @patch("keys.views.exchange_strava_code")
     @patch("keys.views.get_strava_activities")
     def test_calls_get_strava_activities_with_token_argument(
-        self, mock_get_activities, mock_exchange_code
+        self, mock_get_activities
     ):
-        """Test keys.views.strava_token_exchange sends token received to get strava activities helper after succesful exchange"""
-        mock_exchange_code.return_value = ("Token", "Strava_id")
-
-        response = self.client.get("/keys/stravatokenexchange?state=&code=abc123")
+        """Test keys.views.activity_summary sends token received to get strava activities helper after succesful exchange"""
+        response = self.client.get("/keys/-activity-summary")
         used_args = mock_get_activities.call_args
-        self.assertEqual(used_args, call("Token"))
-
-    @patch("keys.views.exchange_strava_code")
+        self.assertEqual(used_args, call("stored_token"))
+    
     @patch("keys.views.get_strava_activities")
     def test_shows_km_from_last_activity_on_success(
-        self, mock_get_activities, mock_exchange_code
+        self, mock_get_activities
     ):
-        """Test keys.views.strava_token_exchange renders distance from last run"""
+        """Test keys.views.activity_summary renders distance from last run"""
         expected_km_number = 3.14
-        mock_exchange_code.return_value = ("Token", "Id")
         mock_get_activities.return_value = [
             {
                 "distance": expected_km_number * 1000,
@@ -190,26 +183,39 @@ class StravaTokenExchangeView(TestCase):
                 "average_cadence": 79.1,
             }
         ]
-        response = self.client.get("/keys/stravatokenexchange?state=&code=abc123")
+        response = self.client.get("/keys/-activity-summary")
         self.assertContains(response, expected_km_number)
-
-    @patch("keys.views.exchange_strava_code")
+    
     @patch("keys.views.get_strava_activities")
-    def test_renders_home_on_failure(self, mock_get_activities, mock_exchange_code):
-        """Test keys.views.strava_token_exchange renders home if receives error activity summary"""
-        mock_exchange_code.return_value = ("Token", "Id")
+    def test_uses_congratulations_template_on_success(
+        self, mock_get_activities
+    ):
+        """Test keys.views.activity_summary renders right template"""
+        response = self.client.get("/keys/-activity-summary")
+        self.assertTemplateUsed(response, "congratulations.html")
+    
+    @patch("keys.views.get_strava_activities")
+    def test_includes_change_password_form_on_succes(
+        self, mock_get_activities
+    ):
+        """ Test keys.view.activity_summary includes change_password form in the context on success"""
+        response = self.client.get("/keys/-activity-summary")
+        form_used = response.context['change_password_form']
+        self.assertIsInstance(form_used, ChangePasswordForm)
+    
+    @patch("keys.views.get_strava_activities")
+    def test_renders_home_on_failure(self, mock_get_activities):
+        """Test keys.views.activity_summary renders home if receives error activity summary"""
         mock_get_activities.return_value = None
-        response = self.client.get("/keys/stravatokenexchange?state=&code=abc123")
+        response = self.client.get("/keys/-activity-summary")
         self.assertTemplateUsed(response, "home.html")
 
-    @patch("keys.views.exchange_strava_code")
     @patch("keys.views.get_strava_activities")
-    def test_shows_message_on_failure(self, mock_get_activities, mock_exchange_code):
-        """Test keys.views.strava_token_exchange displays error if receives error activity summary"""
-        mock_exchange_code.return_value = ("Token", "Id")
+    def test_shows_message_on_failure(self, mock_get_activities):
+        """Test keys.views.activity_summary displays error if receives error activity summary"""
         mock_get_activities.return_value = None
         expected_error = escape(STRAVA_AUTH_ERROR)
-        response = self.client.get("/keys/stravatokenexchange?state=&code=abc123")
+        response = self.client.get("/keys/-activity-summary")
         self.assertContains(response, expected_error)
 
 class SpotifyTokenExchangeView(TestCase):

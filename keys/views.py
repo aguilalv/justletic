@@ -4,7 +4,7 @@ import os
 import logging
 from structlog import wrap_logger
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib import messages
 
@@ -48,6 +48,19 @@ def strava_token_exchange(request):
     )
     new_key.save()
     logger.info("Access to Strava authorised")
+    return redirect('activity_summary')
+
+def activity_summary(request):
+    """Recovers Strava token for logged in user, recover list of activites and present summary of activity"""
+    global logger
+    logged_in_user = request.user
+    logger = logger.bind(user=logged_in_user.email) 
+    token = None
+
+    keys = Key.objects.filter(user=logged_in_user) 
+    for key in keys:
+        if key.service == Key.STRAVA:
+            token = key.token
 
     activities = get_strava_activities(token)
     if activities:
